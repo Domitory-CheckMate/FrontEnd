@@ -1,24 +1,13 @@
-import React from 'react';
-import logo from './logo.svg';
+/** @jsxImportSource @emotion/react */
 import './App.css';
+import tw from 'twin.macro';
 
 function App() {
+  const Input = () => <input tw="border hover:border-black bg-red-500" />;
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div css={tw`bg-red-100`}>
+      <Input />
+      안녕하세요
     </div>
   );
 }
