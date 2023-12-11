@@ -88,6 +88,7 @@ const JoinPage = () => {
           text="(필수) 서비스 이용약관 동의"
           checked={isServiceChecked}
           onClick={changeServiceChecked}
+          showContents={() => navigate('/join/detail')}
         />
         <CheckBox
           text="(필수) 개인정보 수집/이용 동의"
@@ -108,7 +109,7 @@ const JoinPage = () => {
       <NextButton
         text="다음"
         isCanBeNext={isCanBeNext}
-        onClick={() => navigate('/join/detail')}
+        onClick={() => navigate('/join/info')}
       />
     </div>
   );

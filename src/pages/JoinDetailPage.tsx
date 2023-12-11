@@ -1,5 +1,4 @@
 import React from 'react';
-import NextButton from '../components/joinPage/NextButton';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Close } from '../assets/icon/icon_close.svg';
 
@@ -28,12 +27,6 @@ const JoinPage = () => {
           본 이용약관은 주식회사 체크메이트(이하 “회사”라 합니다)가 제공하는
         </div>
       </div>
-
-      <NextButton
-        text="다음"
-        isCanBeNext={true}
-        onClick={() => navigate('/join/info')}
-      />
     </div>
   );
 };
