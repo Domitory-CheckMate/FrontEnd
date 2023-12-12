@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ReactComponent as Welcome } from '../assets/icon/welcome.svg';
+import { ReactComponent as Welcome } from '../../assets/icon/welcome.svg';
 
 const JoinCompletedPage = () => {
   const navigate = useNavigate();

@@ -1,11 +1,11 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import JoinPage from './pages/JoinPage';
+import JoinPage from './pages/join/JoinPage';
 import FindIdPage from './pages/login/FindIdPage';
 import FindPwPage from './pages/login/FindPwPage';
 import LoginPage from './pages/login/LoginPage';
-import JoinDetailPage from './pages/JoinDetailPage';
-import JoinInfoPage from './pages/JoinInfoPage';
-import JoinCompletedPage from './pages/JoinCompletedPage';
+import JoinDetailPage from './pages/join/JoinDetailPage';
+import JoinInfoPage from './pages/join/JoinInfoPage';
+import JoinCompletedPage from './pages/join/JoinCompletedPage';
 
 function App() {
   return (

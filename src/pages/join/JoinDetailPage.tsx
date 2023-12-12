@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ReactComponent as Close } from '../assets/icon/icon_close.svg';
+import { ReactComponent as Close } from '../../assets/icon/icon_close.svg';
 
 const JoinPage = () => {
   const navigate = useNavigate();
