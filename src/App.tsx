@@ -1,8 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import FindIdPage from './pages/FindIdPage';
-import FindPwPage from './pages/FindPwPage';
 import JoinPage from './pages/JoinPage';
-import LoginPage from './pages/LoginPage';
+import FindIdPage from './pages/login/FindIdPage';
+import FindPwPage from './pages/login/FindPwPage';
+import LoginPage from './pages/login/LoginPage';
 import JoinDetailPage from './pages/JoinDetailPage';
 import JoinInfoPage from './pages/JoinInfoPage';
 import JoinCompletedPage from './pages/JoinCompletedPage';
