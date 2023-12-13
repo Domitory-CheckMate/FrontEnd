@@ -1,14 +1,17 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import JoinPage from './pages/JoinPage';
+import JoinPage from './pages/join/JoinPage';
 import FindIdPage from './pages/login/FindIdPage';
 import FindPwPage from './pages/login/FindPwPage';
 import LoginPage from './pages/login/LoginPage';
-import JoinDetailPage from './pages/JoinDetailPage';
-import JoinInfoPage from './pages/JoinInfoPage';
-import JoinCompletedPage from './pages/JoinCompletedPage';
 import SplashPage from './pages/SplashPage';
 import OnboardingPage from './pages/onboarding/OnboardingPage';
 import OnboardingPage2 from './pages/onboarding/OnboardingPage2';
+import JoinDetailPage from './pages/join/JoinDetailPage';
+import JoinInfoPage from './pages/join/JoinInfoPage';
+import JoinCompletedPage from './pages/join/JoinCompletedPage';
+import MyPage from './pages/myPage/MyPage';
+import MembershipPage from './pages/myPage/MembershipPage';
+import ChecklistPage from './pages/myPage/ChecklistPage';
 
 function App() {
   return (
@@ -24,6 +27,9 @@ function App() {
         <Route path="/join/completed" element={<JoinCompletedPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/onboarding/2" element={<OnboardingPage2 />} />
+        <Route path="/my-page" element={<MyPage />} />
+        <Route path="/membership" element={<MembershipPage />} />
+        <Route path="/checklist" element={<ChecklistPage />} />
       </Routes>
     </Router>
   );

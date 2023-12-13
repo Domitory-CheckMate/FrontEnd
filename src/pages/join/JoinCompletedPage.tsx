@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ReactComponent as Welcome } from '../assets/icon/welcome.svg';
+import { ReactComponent as Welcome } from '../../assets/icon/welcome.svg';
 
 const JoinCompletedPage = () => {
   const navigate = useNavigate();
@@ -21,14 +21,14 @@ const JoinCompletedPage = () => {
       <button
         className={`py-4 
       bg-primary text-white text-[18px] absolute rounded-full bottom-[95px] left-4 right-4`}
-        onClick={() => navigate('/join/completed')}
+        onClick={() => navigate('/my-page')}
       >
         체크리스트 작성하기
       </button>
       <button
         className={`
       bg-white text-primary text-[18px] absolute rounded-full bottom-[48px] left-4 right-4`}
-        onClick={() => navigate('/join/completed')}
+        onClick={() => navigate('/main')}
       >
         구경 먼저 할래요
       </button>

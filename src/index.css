@@ -14,7 +14,9 @@
 
 html,
 body,
-div,
+div{
+  border-style: solid; /* border 스타일 설정 */
+}
 span,
 applet,
 object,
@@ -141,7 +143,7 @@ table {
   box-sizing: border-box;
 }
 
-// css 시작
+/* // css 시작 */
 
 body {
   margin: auto auto;

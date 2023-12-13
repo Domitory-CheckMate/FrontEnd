@@ -1,8 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import HeaderBar from '../components/joinPage/HeaderBar';
-import CheckBox from '../components/joinPage/CheckBox';
-import NextButton from '../components/joinPage/NextButton';
+import HeaderBar from '../../components/joinPage/HeaderBar';
+import CheckBox from '../../components/joinPage/CheckBox';
+import NextButton from '../../components/joinPage/NextButton';
 import { useNavigate } from 'react-router-dom';
 
 const JoinPage = () => {

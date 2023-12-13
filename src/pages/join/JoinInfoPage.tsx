@@ -1,9 +1,9 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import HeaderBar from '../components/joinPage/HeaderBar';
-import NextButton from '../components/joinPage/NextButton';
+import HeaderBar from '../../components/joinPage/HeaderBar';
+import NextButton from '../../components/joinPage/NextButton';
 import { useNavigate } from 'react-router-dom';
-import { ReactComponent as Check } from '../assets/icon/icon_check.svg';
+import { ReactComponent as Check } from '../../assets/icon/icon_check.svg';
 
 // 모달 컴포넌트
 const AuthCheckModal = ({ onClose }: { onClose: () => void }) => {
@@ -13,7 +13,7 @@ const AuthCheckModal = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-transparent flex justify-center items-center z-50">
       <div
-        className="absolute bg-black opacity-50 w-full h-full"
+        className="absolute bg-modalBackground w-full h-full"
         onClick={handleCloseModal}
       ></div>
       <div className="relative mx-4 w-96 font-normal text-base text-center flex-col justify-center bg-white rounded-[27px] pb-[21px] px-[22px] pt-[27px] text-black z-50">
@@ -286,6 +286,7 @@ const JoinInfoPage = () => {
               </button>
             </div>
           </div>
+
           {isAuthNumSent === false ? (
             <div className="text-xs mt-[8px] text-[#FF6C3E]">
               {emailComment}
@@ -360,18 +361,18 @@ const JoinInfoPage = () => {
 
       {isAuthNumSent === false ? null : (
         <div className="w-full px-4 absolute bottom-[124px]">
-          <div className="text-[10px] text-defaultTextGray mt-[16px]">
+          <div className="text-[10px] text-defaultTextGray mt-[16px] leading-[15px]">
             인증번호 발송에는 시간이 소요되며 하루 최대 5회까지 전송할 수
             있습니다.
           </div>
-          <div className="text-[10px] text-defaultTextGray">
+          <div className="text-[10px] text-defaultTextGray leading-[15px]">
             인증번호는
-            <span className="text-[#c1c1c1] font-semibold ">
+            <span className="text-[#c1c1c1] font-semibold leading-[15px]">
               입력한 이메일 주소
             </span>
             로 발송됩니다. 수신하지 못했다면 스팸함 또는 해당 이메일 서
           </div>
-          <div className="text-[10px] text-defaultTextGray">
+          <div className="text-[10px] text-defaultTextGray leading-[15px]">
             비스의 설정을 확인해주세요.
           </div>
         </div>
