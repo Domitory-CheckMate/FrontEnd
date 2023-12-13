@@ -118,11 +118,13 @@ const FindPwPage2 = ({
           </div>
         </div>
       </div>
-      <CompleteButton
-        text="로그인하기"
-        onClick={nextStepHandler}
-        isAble={isPasswordValid && isPasswordConfirmValid}
-      />
+      <div className="w-full flex items-center">
+        <CompleteButton
+          text="로그인하기"
+          onClick={nextStepHandler}
+          isAble={isPasswordValid && isPasswordConfirmValid}
+        />
+      </div>
     </>
   );
 };

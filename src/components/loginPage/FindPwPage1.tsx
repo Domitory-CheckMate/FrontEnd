@@ -195,11 +195,13 @@ const FindPwPage1 = ({
           </div>
         </div>
       </div>
-      <CompleteButton
-        text="확인"
-        onClick={() => handleNextStep(2)}
-        isAble={isCertified}
-      />
+      <div className="w-full flex items-center">
+        <CompleteButton
+          text="확인"
+          onClick={() => handleNextStep(2)}
+          isAble={isCertified}
+        />
+      </div>
     </>
   );
 };
