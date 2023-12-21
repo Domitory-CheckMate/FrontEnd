@@ -7,7 +7,7 @@ import { ReactComponent as Chat } from '../../assets/icon/icon_chat.svg';
 
 const BottomNav = () => {
   return (
-    <div className="w-full h-[99px] flex border-t border-[#EEE] pb-10">
+    <div className="w-full h-[99px] flex border-t border-[#EEE] pb-10 pt-[14px]">
       <div className="grow 1 flex justify-center items-center">
         <div className="w-[21px] h-[21px]">
           <Home />

@@ -99,7 +99,7 @@ const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
         </div>
         <button
           onClick={changeProfile}
-          className="w-full h-[50px] mt-8 bg-primary text-white rounded-[27px]"
+          className="w-full h-[54px] mt-8 bg-primary text-white rounded-[27px]"
         >
           확인
         </button>
@@ -141,7 +141,7 @@ const MyPage = () => {
         </div>
       </div>
       <div className="p-4 mt-[17px] flex w-full rounded-[10px] bg-[#F5F5F5] justify-between items-center">
-        <div className="ml-[21px] flex-col">
+        <div className="ml-[21px] flex-col pb-[15px]">
           <div className="text-base font-semibold">멤버십</div>
           <div className="mt-[5px] text-[14px] text-[#797979]">
             사용중인 멤버십이 없습니다.
@@ -186,7 +186,7 @@ const MyPage = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-[12px] bg-[#F7F7F7]"></div>
+      <div className="w-full p-[6px] bg-[#F7F7F7]"> </div>
 
       <div className="p-4 grid grid-cols-1 gap-y-[34px] pt-[32px] w-full grow text-base text-black font-semibold">
         <div className="text-[18px] font-bold">이용안내</div>
