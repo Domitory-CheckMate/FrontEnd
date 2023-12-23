@@ -197,7 +197,7 @@ const MyPage = () => {
         <div></div>
       </div>
 
-      <BottomNav />
+      <BottomNav state="user" />
       {showModal && <ChangeProfileModal onClose={handleCloseModal} />}
     </div>
   );

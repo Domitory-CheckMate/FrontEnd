@@ -12,6 +12,10 @@ import JoinCompletedPage from './pages/join/JoinCompletedPage';
 import MyPage from './pages/myPage/MyPage';
 import MembershipPage from './pages/myPage/MembershipPage';
 import ChecklistPage from './pages/myPage/ChecklistPage';
+import MainPage from './pages/main/MainPage';
+import KeywordMatchingPage from './pages/main/KeywordMatchingPage';
+import MateMatchingPage from './pages/main/MateMatchingPage';
+import ArticlePage from './pages/article/ArticlePage';
 
 function App() {
   return (
@@ -26,6 +30,10 @@ function App() {
         <Route path="/join/info" element={<JoinInfoPage />} />
         <Route path="/join/completed" element={<JoinCompletedPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/main/keyword" element={<KeywordMatchingPage />} />
+        <Route path="/main/mate" element={<MateMatchingPage />} />
+        <Route path="/article/:id" element={<ArticlePage />} />
         <Route path="/onboarding/2" element={<OnboardingPage2 />} />
         <Route path="/my-page" element={<MyPage />} />
         <Route path="/membership" element={<MembershipPage />} />
