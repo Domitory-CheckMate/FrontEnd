@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ReactComponent as Logo } from '../../assets/logo/logo_text_primary.svg';
 import { ReactComponent as Bookmark } from '../../assets/icon/icon_bookmark.svg';
 import { ReactComponent as Notice } from '../../assets/icon/icon_notice.svg';
@@ -7,19 +7,40 @@ import { ReactComponent as NextGray } from '../../assets/icon/icon_next_gray.svg
 import Divider from '../../components/mainPage/Divider';
 import TitleBar from '../../components/mainPage/TitleBar';
 import KeywordCard from '../../components/mainPage/KeywordCard';
-import { articleDummy, keywordCardDummy } from '../../data/dummy';
+import {
+  articleDummy,
+  keywordCardDummy,
+  keywordCardMorning,
+  keywordCardNight,
+  keywordCardSmoke,
+} from '../../data/dummy';
 import ArticleItem from '../../components/mainPage/ArticleItem';
 import BottomNav from '../../components/myPage/BottomNav';
 import { useNavigate } from 'react-router-dom';
+import WriteBtn from '../../components/mainPage/WriteBtn';
+import { Client } from '@stomp/stompjs';
+import { sendMessagePublish } from '../../socket/socketClient';
 
-const MainPage = () => {
+const MainPage = ({ client }: { client: Client | null }) => {
   const navigate = useNavigate();
+  const [searchContent, setSearchContent] = useState<string>('');
   const articleList = [articleDummy, articleDummy, articleDummy];
   const keywordCardList = [
     keywordCardDummy,
-    keywordCardDummy,
-    keywordCardDummy,
+    keywordCardSmoke,
+    keywordCardMorning,
+    keywordCardNight,
   ];
+
+  const sendMessage = (message: string) => {
+    if (client !== null) {
+      sendMessagePublish(
+        client,
+        'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxIiwiaWF0IjoxNzA0MTMwNDAyLCJleHAiOjE3MDQ3MzUyMDJ9.kl1wCtFSDmAELz5u7k6QWBuntWMa5pGpJVxd6p1ef9s',
+        message,
+      );
+    }
+  };
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-start">
@@ -33,10 +54,13 @@ const MainPage = () => {
         </div>
         <div className="w-full px-4 flex flex-col gap-y-[12px] pt-[7px]">
           <div className="flex gap-x-[10px] rounded-[25.5px] bg-cardBg px-[17px] py-[14px]">
-            <Search />
-            <div className="text-[14px] text-cardText">
-              어떤 룸메이트를 찾고 있으신가요?
-            </div>
+            <Search onClick={() => sendMessage(searchContent)} />
+            <input
+              className="text-[14px] text-cardText "
+              placeholder="어떤 룸메이트를 찾고 있으신가요?"
+              value={searchContent}
+              onChange={(e) => setSearchContent(e.target.value)}
+            />
           </div>
           <div className="flex items-center justify-between rounded-2xl bg-primary10 py-[15px] pl-4 pr-[21px] mb-[17px]">
             <div className="flex flex-col gap-y-[6px] items-start">
@@ -91,6 +115,7 @@ const MainPage = () => {
         </div>
       </div>
       <BottomNav state="home" />
+      <WriteBtn />
     </div>
   );
 };

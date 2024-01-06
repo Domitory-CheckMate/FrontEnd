@@ -90,9 +90,9 @@ const ArticlePage = () => {
           </div>
         </div>
       </div>
-      <div className="w-full h-[89px] shrink-0 flex items-center justify-center border-t border-solid border-buttonContainerBorder">
+      <div className="w-full h-[89px] shrink-0 flex items-center px-4 justify-center border-t border-solid border-buttonContainerBorder">
         <div className="w-full flex items-center justify-center gap-x-[22px]">
-          <Bookmark className={article.isMine ? 'hidden cursor-pointer' : ''} />
+          <Bookmark className={article.isMine ? 'hidden' : ' cursor-pointer'} />
           <div className="grow flex items-center justify-center py-[13px] bg-primary rounded-full text-white text-sm font-semibold cursor-pointer">
             {article.isMine ? '모집 완료' : '채팅하기'}
           </div>

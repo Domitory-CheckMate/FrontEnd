@@ -19,6 +19,27 @@ export const keywordCardDummy: keywordCardType = {
   keyword: 'clean',
 };
 
+export const keywordCardSmoke: keywordCardType = {
+  tag: '비흡연자 1순위',
+  title: '냄새에 예민한 비흡연자',
+  text: `간접흡연도 싫어요!\n같이 노담이면 좋겠어요.`,
+  keyword: 'clean',
+};
+
+export const keywordCardMorning: keywordCardType = {
+  tag: '아침형 인간 1순위',
+  title: '부지런한 아침형 인간',
+  text: `주로 오전에 생활하고 있어요!\n저처럼 아침형 인간이었으면 좋겠어요`,
+  keyword: 'clean',
+};
+
+export const keywordCardNight: keywordCardType = {
+  tag: '저녁형 1순위',
+  title: '느긋한 저녁형 인간',
+  text: `주로 오후에 생활하고 있어요!\n저처럼 저녁형 인간이었으면 좋겠어요`,
+  keyword: 'clean',
+};
+
 export const articleListDummy: articleType[] = [
   articleDummy,
   articleDummy,
