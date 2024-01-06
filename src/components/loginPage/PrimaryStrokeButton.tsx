@@ -9,7 +9,7 @@ const PrimaryStrokeButton = ({
 }) => {
   return (
     <button
-      className="mt-8 py-4 w-full border border-primary text-[18px] rounded-full"
+      className="mt-2.5 py-4 w-full border border-primary text-[18px] rounded-full"
       onClick={onClick}
     >
       {text}

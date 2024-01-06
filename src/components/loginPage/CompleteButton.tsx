@@ -11,7 +11,7 @@ const CompleteButton = ({
 }) => {
   return (
     <button
-      className="w-full mx-4 mb-[50px] py-4 bg-primary text-[18px] text-white rounded-full disabled:bg-[#F7F7F7] disabled:text-[#B9B9B9]"
+      className="w-full mx-4 mb-[50px] py-4 bg-primary text-[18px] text-white rounded-full disabled:bg-grayScale1 disabled:text-grayScale4"
       onClick={onClick}
       disabled={!isAble}
     >
