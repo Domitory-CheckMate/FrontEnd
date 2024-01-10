@@ -12,6 +12,14 @@ import JoinCompletedPage from './pages/join/JoinCompletedPage';
 import MyPage from './pages/myPage/MyPage';
 import MembershipPage from './pages/myPage/MembershipPage';
 import ChecklistPage from './pages/myPage/ChecklistPage';
+import MainPage from './pages/main/MainPage';
+import KeywordMatchingPage from './pages/main/KeywordMatchingPage';
+import MateMatchingPage from './pages/main/MateMatchingPage';
+import ArticlePage from './pages/article/ArticlePage';
+import WritePage from './pages/write/WritePage';
+import KeywordPage from './pages/write/KeywordPage';
+import ChatPage from './pages/chat/ChatPage';
+import ChatRoomPage from './pages/chat/ChatRoomPage';
 
 function App() {
   return (
@@ -26,10 +34,18 @@ function App() {
         <Route path="/join/info" element={<JoinInfoPage />} />
         <Route path="/join/completed" element={<JoinCompletedPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
+        <Route path="/main" element={<MainPage />} />
+        <Route path="/main/keyword" element={<KeywordMatchingPage />} />
+        <Route path="/main/mate" element={<MateMatchingPage />} />
+        <Route path="/article/:id" element={<ArticlePage />} />
         <Route path="/onboarding/2" element={<OnboardingPage2 />} />
         <Route path="/my-page" element={<MyPage />} />
         <Route path="/membership" element={<MembershipPage />} />
         <Route path="/checklist" element={<ChecklistPage />} />
+        <Route path="/write" element={<WritePage />} />
+        <Route path="/keyword" element={<KeywordPage />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chatroom" element={<ChatRoomPage />} />
       </Routes>
     </Router>
   );

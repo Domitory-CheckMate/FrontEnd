@@ -5,9 +5,9 @@ const ChecklistBlock = ({
   text2,
   text3,
 }: {
-  text1: string;
+  text1?: string;
   text2: string;
-  text3: string;
+  text3?: string;
 }) => {
   return (
     <div className="flex text-lg font-normal text-center items-center text-black px-4 py-1.5">

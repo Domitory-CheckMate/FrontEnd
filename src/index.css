@@ -10,11 +10,12 @@
   margin: auto;
   font-family: 'Pretendard', sans-serif;
   position: relative;
+  user-select: none;
 }
 
 html,
 body,
-div{
+div {
   border-style: solid; /* border 스타일 설정 */
 }
 span,
