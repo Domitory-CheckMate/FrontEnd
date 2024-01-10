@@ -44,7 +44,7 @@ const CategorySelector = () => {
   // 다른 카테고리의 핸들러 함수들 추가
 
   return (
-    <div>
+    <div className=" flex flex-col h-full ">
       <ChecklistCheckBlock
         title={'흡연여부 🚬'}
         option={['흡연자 선호', '비흡연자 선호']}

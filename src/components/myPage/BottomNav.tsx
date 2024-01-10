@@ -2,25 +2,41 @@ import React from 'react';
 // import { useState, useEffect } from 'react';
 // import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Home } from '../../assets/icon/icon_home.svg';
-import { ReactComponent as User } from '../../assets/icon/icon_user.svg';
 import { ReactComponent as Chat } from '../../assets/icon/icon_chat.svg';
+import { ReactComponent as User } from '../../assets/icon/icon_user.svg';
+import { ReactComponent as HomeSelect } from '../../assets/icon/icon_home_select.svg';
+import { ReactComponent as ChatSelect } from '../../assets/icon/icon_chat_select.svg';
+import { ReactComponent as UserSelect } from '../../assets/icon/icon_user_select.svg';
+import { bottomNavType } from '../../data/type';
+import { useNavigate } from 'react-router-dom';
 
-const BottomNav = () => {
+const BottomNav = ({ state }: { state: bottomNavType }) => {
+  const navigate = useNavigate();
+
   return (
     <div className="w-full h-[99px] flex border-t border-[#EEE] pb-10 pt-[14px]">
       <div className="grow 1 flex justify-center items-center">
-        <div className="w-[21px] h-[21px]">
-          <Home />
+        <div
+          className="w-[21px] h-[21px] cursor-pointer"
+          onClick={() => navigate('/main')}
+        >
+          {state === 'home' ? <HomeSelect /> : <Home />}
         </div>
       </div>
       <div className="grow 1 flex justify-center items-center">
-        <div className="w-[21px] h-[21px]">
-          <Chat />
+        <div
+          className="w-[21px] h-[21px] cursor-pointer"
+          onClick={() => navigate('/chat')}
+        >
+          {state === 'chat' ? <ChatSelect /> : <Chat />}
         </div>
       </div>
       <div className="grow 1 flex justify-center items-center">
-        <div className="w-[21px] h-[21px]">
-          <User />
+        <div
+          className="w-[21px] h-[21px] cursor-pointer"
+          onClick={() => navigate('/my-page')}
+        >
+          {state === 'user' ? <UserSelect /> : <User />}
         </div>
       </div>
     </div>
