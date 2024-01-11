@@ -50,6 +50,10 @@ const ChatPage = () => {
     //   .catch((error) => console.error('Error fetching data:', error));
   }, []);
 
+  useEffect(() => {
+    setOrder('최신순');
+  }, []);
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-start p-[16px]">
       <div className="flex justify-between items-center w-full mt-[65px] relative mb-[48px]">

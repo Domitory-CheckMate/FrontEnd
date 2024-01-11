@@ -15,6 +15,7 @@ const MsgItem = ({
   content: string;
   time: string;
 }) => {
+  console.log(img, name);
   return (
     <div className="w-full  ">
       {id === 1 && (

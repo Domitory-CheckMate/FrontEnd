@@ -4,6 +4,10 @@ import HeaderBar from '../../components/joinPage/HeaderBar';
 import NextButton from '../../components/joinPage/NextButton';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Check } from '../../assets/icon/icon_check.svg';
+import { useMutation } from 'react-query';
+import { validateEmailApi } from '../../api/userApi';
+import { CustomError } from '../../data/type';
+import { ReactComponent as Search } from '../../assets/icon/icon_search_black.svg';
 
 // 모달 컴포넌트
 const AuthCheckModal = ({ onClose }: { onClose: () => void }) => {
@@ -44,12 +48,10 @@ const JoinInfoPage = () => {
   const navigate = useNavigate();
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
-
-  // const [nameComment, setNameComment] =
-  //   useState<string>('올바른 이름을 입력해주세요');
+  const [major, setMajor] = useState<string>('');
   const emailContentArray = [
+    '학교 도메인과 연동된 이메일을 입력해주세요.',
     '이미 가입된 이메일입니다.',
-    '학교 도메인과 연동된 이메일을 입 력해주세요.',
   ];
   const [emailComment, setEmailComment] = useState<string>(
     emailContentArray[0],
@@ -75,7 +77,8 @@ const JoinInfoPage = () => {
   const [isConfirmedPasswordShown, setIsConfirmedPasswordShown] =
     useState<boolean>(false);
 
-  const [authNum, setAuthNum] = useState<number>(0);
+  const [originAuth, setOriginAuth] = useState<string>('');
+  const [authNum, setAuthNum] = useState<string>('');
 
   const [isInputValid, setIsInputValid] = useState<boolean>(false);
 
@@ -107,6 +110,7 @@ const JoinInfoPage = () => {
 
   const sentAuthNum = () => {
     setIsAuthNumSent(true);
+    sendEmailCode();
     setSentAuthNumComment('재전송');
   };
 
@@ -115,8 +119,11 @@ const JoinInfoPage = () => {
   };
 
   const checkAuthNum = () => {
-    if (authNum > 0) {
+    console.log('ORIGIN : ', originAuth);
+    console.log('INPUT : ', authNum);
+    if (originAuth === authNum) {
       setIsAuthNumValid(true);
+      console.log('인증번호가 일치합니다.');
     } else {
       setShowFailModal(true);
       console.log('인증번호가 일치하지 않습니다.');
@@ -186,20 +193,15 @@ const JoinInfoPage = () => {
   }, [name]);
 
   useEffect(() => {
-    setIsEmailValid(email.length > 0);
     // 이메일 확인
-    if (email.length > 0) {
+    if (email.length > 0 && email.endsWith('@gachon.ac.kr')) {
       setEmailComment('');
       setIsEmailValid(true);
     } else {
-      setEmailComment('이미 가입된 이메일입니다.');
+      setEmailComment(emailContentArray[0]);
       setIsEmailValid(false);
     }
   }, [email]);
-
-  useEffect(() => {
-    setIsAuthNumValid(authNum === 1);
-  }, [authNum]);
 
   useEffect(() => {
     setIsInputValid(isNameValid && isEmailValid);
@@ -223,10 +225,16 @@ const JoinInfoPage = () => {
         }
       });
     }, 1000);
+
+    if (isAuthNumValid) {
+      setLeftTime('0:00');
+      clearInterval(timer);
+    }
+
     setIsAuthNumSentAgain(false);
 
     return () => clearInterval(timer);
-  }, [isAuthNumSent, isAuthNumSentAgain]);
+  }, [isAuthNumSent, isAuthNumSentAgain, isAuthNumValid]);
 
   useEffect(() => {
     // 전체 확인
@@ -236,6 +244,20 @@ const JoinInfoPage = () => {
       setIsCanBeNext(false);
     }
   }, [isInputValid, isAuthNumValid, isPasswordMatch]);
+
+  const { mutate: sendEmailCode } = useMutation(() => validateEmailApi(email), {
+    onSuccess: (data) => {
+      console.log(data);
+      setOriginAuth(data.data.data.code);
+    },
+    onError: (error: unknown) => {
+      console.log(error);
+      const customErr = error as CustomError;
+      if (customErr.response?.status === 409) {
+        setEmailComment(emailContentArray[1]);
+      }
+    },
+  });
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -259,14 +281,14 @@ const JoinInfoPage = () => {
               className="w-full py-4 outline-none text-base placeholder:text-defaultTextGray"
               type="email"
               placeholder={
-                isAuthNumSent ? '학교 이메일' : '예)test@gachon.ac.kr'
+                isAuthNumSent ? '학교 이메일' : '예)checkmate@gachon.ac.kr'
               }
               onChange={(e) => setEmail(e.target.value)}
             />
             <div className="flex items-center justify-center mr-[8px] py-[10px]">
               <button
                 className={`w-[104px] h-[35px] rounded-[27px] ${
-                  isInputValid
+                  isInputValid && !isAuthNumValid
                     ? 'bg-primary text-white'
                     : 'bg-[#CBCBCC] text-white cursor-not-allowed'
                 } 
@@ -295,16 +317,24 @@ const JoinInfoPage = () => {
             <div>
               <div className="w-full flex border-b border-[#CCCCCC]">
                 <input
-                  className="w-full py-4 outline-none text-base placeholder:text-defaultTextGray"
+                  className="w-full py-4 outline-none text-base placeholder:text-defaultTextGray disabled:bg-white disabled:text-grayScale3"
                   type="email"
                   placeholder="인증번호 6자리"
-                  onChange={(e) => setAuthNum(parseInt(e.target.value))}
+                  disabled={isAuthNumValid}
+                  onChange={(e) => setAuthNum(e.target.value)}
                 />
                 <div className="flex items-center justify-center mr-[8px] py-[10px] space-x-4">
-                  <div className="text-primary text-base">{leftTime}</div>
+                  <div
+                    className={
+                      'text-base ' +
+                      (isAuthNumValid ? 'text-grayScale3' : 'text-prim')
+                    }
+                  >
+                    {leftTime}
+                  </div>
                   <button
                     className={`w-[52px] h-[35px] rounded-[27px] ${
-                      authNum > 0
+                      authNum.length === 6 && !isAuthNumValid
                         ? 'bg-primary text-white'
                         : 'bg-[#CBCBCC] text-white cursor-not-allowed'
                     } text-sm`}
@@ -316,6 +346,16 @@ const JoinInfoPage = () => {
               </div>
             </div>
           )}
+          {isAuthNumSent &&
+            (isAuthNumValid ? (
+              <div className="text-xs mt-[8px] text-[#FF6C3E]">
+                인증번호가 확인되었습니다.
+              </div>
+            ) : (
+              <div className="text-xs mt-[8px] text-[#FF6C3E]">
+                인증번호가 일치하지 않습니다.
+              </div>
+            ))}
         </div>
         <div className="flex flex-col">
           <div className="font-semibold text-sm ">비밀번호</div>
@@ -327,7 +367,10 @@ const JoinInfoPage = () => {
               onChange={(e) => setPassword(e.target.value)}
             />
             <div
-              className="flex items-center justify-center mr-[17px] w-[30px] cursor-pointer text-primary"
+              className={
+                'flex items-center justify-center mr-[17px] w-[30px] cursor-pointer ' +
+                (isPasswordShown ? 'text-primary' : 'text-grayScale3')
+              }
               onClick={togglePasswordVisibility}
             >
               보기
@@ -347,7 +390,10 @@ const JoinInfoPage = () => {
               onChange={(e) => setConfirmedPassword(e.target.value)}
             />
             <div
-              className="flex items-center justify-center mr-[17px] w-[30px] cursor-pointer text-primary"
+              className={
+                'flex items-center justify-center mr-[17px] w-[30px] cursor-pointer ' +
+                (isConfirmedPasswordShown ? 'text-primary' : 'text-grayScale3')
+              }
               onClick={toggleConfirmedPasswordVisibility}
             >
               보기
@@ -357,8 +403,23 @@ const JoinInfoPage = () => {
             <CheckLine text="비밀번호 일치" check={isPasswordMatch} />
           </div>
         </div>
+        <div className="flex flex-col">
+          <div className="font-semibold text-sm ">학과</div>
+          <div className="w-full flex items-center border-b border-[#CCCCCC]">
+            <div
+              className={`w-full py-4 text-base ${
+                major.length > 0 ? 'text-black' : 'text-grayScale3'
+              }`}
+            >
+              {major.length > 0 ? major : '이름으로 찾기'}
+            </div>
+            <Search
+              className="flex items-center justify-center mr-2 cursor-pointer"
+              onClick={() => setMajor('소프트웨어전공')}
+            />
+          </div>
+        </div>
       </div>
-
       {isAuthNumSent === false ? null : (
         <div className="w-full px-4 absolute bottom-[124px]">
           <div className="text-[10px] text-defaultTextGray mt-[16px] leading-[15px]">

@@ -17,6 +17,7 @@ const ChatItem = ({
   info: string;
   newChat: number;
 }) => {
+  console.log(img);
   return (
     <div className="flex w-full justify-center items-center py-[14px] border-b-[1px] border-[#F7F7F7]">
       <div className="mr-[16px] w-[19px] h-[19px] rounded-full border-[1px] border-[#E5E5E5]"></div>
