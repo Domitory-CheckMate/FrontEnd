@@ -6,8 +6,6 @@ import { ReactComponent as More } from '../../assets/icon/icon_more_vertical.svg
 import { ReactComponent as Calendar } from '../../assets/icon/icon_calendar.svg';
 import ChatInput from '../../components/chatPage/ChatInput';
 import MsgItemList from '../../components/chatPage/MsgItemList';
-
-import MsgItem from '../../components/chatPage/MsgItem';
 import { MsgItem as MsgItemType } from '../../types'; // ChatItem 타입 import
 
 const ChatRoomPage = () => {
