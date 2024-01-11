@@ -68,7 +68,7 @@ export type keywordCardType = {
   tag: string;
   title: string;
   text: string;
-  keyword: 'clean' | 'quiet' | 'morning' | 'night';
+  keyword: 'clean' | 'smoke' | 'morning' | 'night';
 };
 
 export type bottomNavType = 'home' | 'chat' | 'user';

@@ -19,6 +19,10 @@ const FindPwPage1 = ({
   const birthdayRef = useRef<HTMLInputElement>(null);
   const backNumberRef = useRef<HTMLInputElement>(null);
 
+  const isOkToSendRequest =
+    id !== '' && birthday !== '' && backNumber !== '' && phoneNumber !== '';
+  const isOkToCheckVerificationNumber = certificationNumber !== '';
+
   const handleRequestBtnClick = () => {
     if (id === '') {
       alert('아이디를 입력해주세요.');
@@ -93,7 +97,7 @@ const FindPwPage1 = ({
         <input
           type="text"
           placeholder="아이디(이메일)"
-          className="w-full py-[23px] outline-none border-b border-[#CCCCCC]"
+          className="w-full py-[23px] outline-none border-b border-[#CCCCCC] placeholder:text-grayScale3"
           value={id}
           ref={idRef}
           onChange={(e) => setId(e.target.value)}
@@ -103,7 +107,7 @@ const FindPwPage1 = ({
             <input
               type="tel"
               placeholder="생년월일(ex:900101)"
-              className="py-[23px] px-0 outline-none bg-transparent max-w-[180px]"
+              className="py-[23px] px-0 outline-none bg-transparent max-w-[180px] placeholder:text-grayScale3"
               maxLength={6}
               ref={birthdayRef}
               value={birthday}
@@ -142,14 +146,16 @@ const FindPwPage1 = ({
               <input
                 type="tel"
                 placeholder="휴대폰 번호 (-제외)"
-                className="grow py-[23px] outline-none bg-transparent"
+                className="grow py-[23px] outline-none bg-transparent placeholder:text-grayScale3"
                 maxLength={11}
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
               />
               <button
-                type="button"
-                className="text-sm w-[104px] h-9 leading-normal rounded-full bg-[#CBCBCC] text-white"
+                className={
+                  'flex items-center justify-center text-sm px-[14px] h-9 leading-normal rounded-full text-white ' +
+                  (isOkToSendRequest ? 'bg-primary' : 'bg-grayScale3')
+                }
                 onClick={handleRequestBtnClick}
               >
                 {sendRequest ? '재전송' : '인증번호 전송'}
@@ -163,12 +169,12 @@ const FindPwPage1 = ({
                 <input
                   type="tel"
                   placeholder="인증번호 6자리"
-                  className="grow py-[23px] outline-none bg-transparent"
+                  className="grow py-[23px] outline-none bg-transparent placeholder:text-grayScale3"
                   maxLength={11}
                   value={certificationNumber}
                   onChange={(e) => setCertificationNumber(e.target.value)}
                 />
-                <div className="text-sm text-primary mr-1">
+                <div className="text-sm text-primary mr-[14px]">
                   {Math.floor(remainingTime / 60)}:
                   {remainingTime % 60 < 10
                     ? `0${remainingTime % 60}`
@@ -176,7 +182,12 @@ const FindPwPage1 = ({
                 </div>
                 <button
                   type="button"
-                  className="text-sm px-[14px] py-[9px] leading-normal rounded-full bg-[#CBCBCC] text-white"
+                  className={
+                    'text-sm px-[14px] py-[9px] leading-normal rounded-full text-white ' +
+                    (isOkToCheckVerificationNumber
+                      ? 'bg-primary'
+                      : 'bg-grayScale3')
+                  }
                   onClick={handleCertificationBtnClick}
                   disabled={certificationNumber.length !== 6}
                 >
@@ -186,7 +197,7 @@ const FindPwPage1 = ({
               <div className="w-full h-px bg-[#CCCCCC]" />
             </div>
           )}
-          <div className="flex flex-col mt-[14px] text-[10px] leading-[18px] text-[#D0D0D0]">
+          <div className="flex flex-col mt-[14px] text-[10px] leading-[18px] text-grayScale3">
             <div>인증번호 발송에는 시간이 소요됩니다.</div>
             <div>
               인증번호가 문자메시지로 발송되며, 수신하지 못했다면 차단된

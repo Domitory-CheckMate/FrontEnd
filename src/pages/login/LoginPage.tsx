@@ -15,7 +15,7 @@ const LoginPage = () => {
           <div className="flex flex-col">
             <div className="font-semibold">아이디</div>
             <input
-              className="py-3 outline-none border-b border-[#CCCCCC]"
+              className="py-3 outline-none border-b border-[#CCCCCC] placeholder:text-grayScale3"
               type="text"
               placeholder="예)checkmate@checkmate.co.kr"
             />
@@ -30,30 +30,19 @@ const LoginPage = () => {
         </div>
         <div className="w-full px-4">
           <PrimaryFillButton text="로그인" onClick={() => navigate('/')} />
-          <div className="flex justify-center text-sm align-center mt-8">
-            <div
-              className="cursor-pointer"
-              onClick={() => navigate('/login/id')}
-            >
-              아이디 찾기
-            </div>
-            <div className="mx-[25px] text-dividerGray">|</div>
-            <div
-              className="cursor-pointer"
-              onClick={() => navigate('/login/pw')}
-            >
-              비밀번호 찾기
-            </div>
+          <PrimaryStrokeButton
+            text="회원가입"
+            onClick={() => navigate('/join')}
+          />
+          <div
+            className="w-full flex items-center mt-[31px] justify-center cursor-pointer text-sm"
+            onClick={() => navigate('/login/pw')}
+          >
+            비밀번호 찾기
           </div>
         </div>
       </div>
-      <div className="w-full px-4">
-        <PrimaryStrokeButton
-          text="회원가입"
-          onClick={() => navigate('/join')}
-        />
-      </div>
-      <div className="flex flex-col items-center mt-[30px] mb-[36px] text-xs text-textGray leading-3 font-medium">
+      <div className="flex flex-col items-center mt-[30px] mb-[36px] text-xs text-grayScale5 leading-3 font-medium">
         <div>로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.</div>
         <div className="mt-4">
           <span>개인정보처리방침</span>

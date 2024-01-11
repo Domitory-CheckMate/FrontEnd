@@ -34,6 +34,8 @@ const OnboardingPage2 = () => {
           <div className="flex items-center w-full gap-x-2">
             <MBTIButton
               text="E"
+              icon="👩🏻‍❤️‍👩🏻"
+              content="외향형"
               isSelected={selectedMBTI.first === 'E'}
               onSelected={() =>
                 setSelectedMBTI((prev) => ({ ...prev, first: 'E' }))
@@ -41,6 +43,8 @@ const OnboardingPage2 = () => {
             />
             <MBTIButton
               text="I"
+              icon="💆🏻‍♀️"
+              content="내향형"
               isSelected={selectedMBTI.first === 'I'}
               onSelected={() =>
                 setSelectedMBTI((prev) => ({ ...prev, first: 'I' }))
@@ -50,6 +54,8 @@ const OnboardingPage2 = () => {
           <div className="flex items-center w-full gap-x-2">
             <MBTIButton
               text="S"
+              icon="🙋🏻‍️"
+              content="감각형"
               isSelected={selectedMBTI.second === 'S'}
               onSelected={() =>
                 setSelectedMBTI((prev) => ({ ...prev, second: 'S' }))
@@ -57,6 +63,8 @@ const OnboardingPage2 = () => {
             />
             <MBTIButton
               text="N"
+              icon="💭"
+              content="직관형"
               isSelected={selectedMBTI.second === 'N'}
               onSelected={() =>
                 setSelectedMBTI((prev) => ({ ...prev, second: 'N' }))
@@ -65,23 +73,29 @@ const OnboardingPage2 = () => {
           </div>
           <div className="flex items-center w-full gap-x-2">
             <MBTIButton
-              text="F"
-              isSelected={selectedMBTI.third === 'F'}
-              onSelected={() =>
-                setSelectedMBTI((prev) => ({ ...prev, third: 'F' }))
-              }
-            />
-            <MBTIButton
               text="T"
+              icon="🧐‍"
+              content="사고형"
               isSelected={selectedMBTI.third === 'T'}
               onSelected={() =>
                 setSelectedMBTI((prev) => ({ ...prev, third: 'T' }))
+              }
+            />
+            <MBTIButton
+              text="F"
+              icon="🥺"
+              content="감정형"
+              isSelected={selectedMBTI.third === 'F'}
+              onSelected={() =>
+                setSelectedMBTI((prev) => ({ ...prev, third: 'F' }))
               }
             />
           </div>
           <div className="flex items-center w-full gap-x-2">
             <MBTIButton
               text="J"
+              icon="📑"
+              content="판단형"
               isSelected={selectedMBTI.fourth === 'J'}
               onSelected={() =>
                 setSelectedMBTI((prev) => ({ ...prev, fourth: 'J' }))
@@ -89,6 +103,8 @@ const OnboardingPage2 = () => {
             />
             <MBTIButton
               text="P"
+              icon="🗯️"
+              content="인식형"
               isSelected={selectedMBTI.fourth === 'P'}
               onSelected={() =>
                 setSelectedMBTI((prev) => ({ ...prev, fourth: 'P' }))
