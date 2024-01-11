@@ -7,7 +7,6 @@ import { ReactComponent as Settings } from '../../assets/icon/icon_settings.svg'
 import { ReactComponent as Profile0 } from '../../assets/icon/icon_profile0.svg';
 import { ReactComponent as Profile1 } from '../../assets/icon/icon_profile1.svg';
 import { ReactComponent as Profile2 } from '../../assets/icon/icon_profile2.svg';
-import { ReactComponent as NextGray } from '../../assets/icon/icon_next_gray.svg';
 import { ReactComponent as Next } from '../../assets/icon/icon_next_black.svg';
 import { ReactComponent as Checklist } from '../../assets/icon/icon_checklist.svg';
 import { ReactComponent as TimeBoard } from '../../assets/icon/icon_timeBoard.svg';
@@ -99,7 +98,7 @@ const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
         </div>
         <button
           onClick={changeProfile}
-          className="w-full h-[50px] mt-8 bg-primary text-white rounded-[27px]"
+          className="w-full h-[54px] mt-8 bg-primary text-white rounded-[27px]"
         >
           확인
         </button>
@@ -117,84 +116,68 @@ const MyPage = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center">
-      <div className="mt-[65px] w-full flex justify-end">
-        <div className="w-[19px] h-[19px]">
-          <Settings />
+      <div className="w-full grow flex-col items-center overflow-y-auto scrollbar-hide">
+        <div className="px-4 mt-[56px] w-full flex justify-end">
+          <div className="w-[19px] h-[19px]">
+            <Settings />
+          </div>
         </div>
-      </div>
-      <div className="p-4 flex mt-[15px] w-full justify-start gap-x-[24px]">
-        <div
-          className="rounded-[28px] bg-[#FDD678]
+        <div className="p-4 flex mt-[0px] w-full justify-start gap-x-[24px]">
+          <div
+            className="rounded-[28px] bg-[#FDD678]
         "
-          onClick={() => setShowModal(true)}
-        >
-          <div className="w-[73px] h-[73px]">
-            <Profile0 />
-          </div>
-        </div>
-        <div className="flex-col flex gap-y-[7px] mt-[4px]">
-          <div className="text-black text-[24px] font-bold">홍길동</div>
-          <div className="rounded-[27px] px-[14px] py-[6px] flex items-center gap-x-[6px] align-center bg-[#CBCBCC] text-white text-xs">
-            이메일을 인증해주세요
-            <NextGray />
-          </div>
-        </div>
-      </div>
-      <div className="p-4 mt-[17px] flex w-full rounded-[10px] bg-[#F5F5F5] justify-between items-center">
-        <div className="ml-[21px] flex-col">
-          <div className="text-base font-semibold">멤버십</div>
-          <div className="mt-[5px] text-[14px] text-[#797979]">
-            사용중인 멤버십이 없습니다.
-          </div>
-        </div>
-        <button
-          className="w-[61px] h-[43px] rounded-[27px] 
-                        bg-primary text-white
-                    text-sm  cursor-pointer"
-          onClick={() => navigate('/membership')}
-        >
-          가입
-        </button>
-      </div>
-      <div className="mt-[30px] border-t border-[#F7F7F7] py-4 flex-col w-full">
-        <div className="pl-[18px] pr-[22px] h-16 flex w-full items-center">
-          <div className="w-[25px] h-[25px]">
-            <Checklist />
-          </div>
-          <div
-            className="grow ml-[12px]  items-center flex text-base text-black font-semibold align-start"
-            onClick={() => navigate('/checklist')}
+            onClick={() => setShowModal(true)}
           >
-            내 체크리스트
+            <div className="w-[73px] h-[73px]">
+              <Profile0 />
+            </div>
           </div>
-          <div className="w-[25px] h-[25px] flex items-center">
-            <Next />
-          </div>
-        </div>
-        <div className="pl-[18px] pr-[22px] h-16 flex w-full items-center">
-          <div className="w-[25px] h-[25px]">
-            <TimeBoard />
-          </div>
-          <div
-            className="grow ml-[12px] text-base text-black font-semibold align-start"
-            onClick={() => navigate('/timeboard')}
-          >
-            내 시간표{' '}
-          </div>
-          <div className="w-[25px] h-[25px] flex items-center">
-            <Next />
+          <div className="flex-col flex gap-y-[7px] mt-[4px]">
+            <div className="text-black text-[24px] font-bold">홍길동</div>
+            <div className="rounded-[27px] px-[14px] py-[6px] flex items-center gap-x-[6px] align-center bg-primary text-white text-xs">
+              소프트웨어학과・여자・ISFP
+            </div>
           </div>
         </div>
-      </div>
-      <div className="w-full h-[12px] bg-[#F7F7F7]"></div>
 
-      <div className="p-4 grid grid-cols-1 gap-y-[34px] pt-[32px] w-full grow text-base text-black font-semibold">
-        <div className="text-[18px] font-bold">이용안내</div>
-        <div>알림 설정</div>
-        <div>문의하기</div>
-        <div>공지사항</div>
-        <div>고객센터</div>
-        <div></div>
+        <div className="mt-[0px] border-t border-[#F7F7F7] py-4 flex-col w-full">
+          <div className="pl-4 h-16 flex w-full items-center">
+            <div className="w-[25px] h-[25px]">
+              <Checklist />
+            </div>
+            <div
+              className="grow ml-[12px]  items-center flex text-base text-black font-medium align-start"
+              onClick={() => navigate('/checklist')}
+            >
+              내 체크리스트
+            </div>
+            <div className="w-[25px] h-[25px] flex items-center">
+              <Next />
+            </div>
+          </div>
+          <div className="pl-4  h-16 flex w-full items-center">
+            <div className="w-[25px] h-[25px]">
+              <TimeBoard />
+            </div>
+            <div
+              className="grow ml-[12px] text-base text-black font-medium align-start"
+              onClick={() => navigate('/timeboard')}
+            >
+              내 시간표{' '}
+            </div>
+            <div className="w-[25px] h-[25px] flex items-center">
+              <Next />
+            </div>
+          </div>
+        </div>
+        <div className="w-full p-[6px] bg-[#F7F7F7]"> </div>
+
+        <div className="p-4 grid grid-cols-1 gap-y-[34px] pt-[32px] w-full grow text-base text-black font-semibold">
+          <div className="text-[18px] font-bold">이용안내</div>
+          <div>문의하기</div>
+          <div>공지사항</div>
+          <div></div>
+        </div>
       </div>
 
       <BottomNav state="user" />

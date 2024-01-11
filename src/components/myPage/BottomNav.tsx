@@ -14,7 +14,7 @@ const BottomNav = ({ state }: { state: bottomNavType }) => {
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-[89px] shrink-0 flex border-t border-[#EEE] pt-[15px] items-start">
+    <div className="w-full h-[99px] flex border-t border-[#EEE] pb-10 pt-[14px]">
       <div className="grow 1 flex justify-center items-center">
         <div
           className="w-[21px] h-[21px] cursor-pointer"
@@ -24,7 +24,10 @@ const BottomNav = ({ state }: { state: bottomNavType }) => {
         </div>
       </div>
       <div className="grow 1 flex justify-center items-center">
-        <div className="w-[21px] h-[21px] cursor-pointer">
+        <div
+          className="w-[21px] h-[21px] cursor-pointer"
+          onClick={() => navigate('/chat')}
+        >
           {state === 'chat' ? <ChatSelect /> : <Chat />}
         </div>
       </div>

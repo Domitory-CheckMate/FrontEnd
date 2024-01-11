@@ -24,6 +24,10 @@ import {
   getRoomListPublish,
 } from './socket/socketClient';
 import { Client } from '@stomp/stompjs';
+import WritePage from './pages/write/WritePage';
+import KeywordPage from './pages/write/KeywordPage';
+import ChatPage from './pages/chat/ChatPage';
+import ChatRoomPage from './pages/chat/ChatRoomPage';
 
 function App() {
   const [client, changeClient] = useState<Client | null>(null);
@@ -114,6 +118,10 @@ function App() {
         <Route path="/my-page" element={<MyPage />} />
         <Route path="/membership" element={<MembershipPage />} />
         <Route path="/checklist" element={<ChecklistPage />} />
+        <Route path="/write" element={<WritePage />} />
+        <Route path="/keyword" element={<KeywordPage />} />
+        <Route path="/chat" element={<ChatPage />} />
+        <Route path="/chatroom" element={<ChatRoomPage />} />
       </Routes>
     </Router>
   );
