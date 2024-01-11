@@ -4,6 +4,9 @@ import HeaderBar from '../../components/joinPage/HeaderBar';
 import NextButton from '../../components/joinPage/NextButton';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Check } from '../../assets/icon/icon_check.svg';
+import { ReactComponent as Search } from '../../assets/icon/icon_chat_search.svg';
+import { ReactComponent as CheckedCircle } from '../../assets/icon/icon_circle_checked.svg';
+import { ReactComponent as UnCheckedCircle } from '../../assets/icon/icon_circle_unchecked.svg';
 
 // 모달 컴포넌트
 const AuthCheckModal = ({ onClose }: { onClose: () => void }) => {
@@ -44,6 +47,8 @@ const JoinInfoPage = () => {
   const navigate = useNavigate();
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
+  const [major, setMajor] = useState<string>('');
+  const [gender, setGender] = useState<string>('');
 
   // const [nameComment, setNameComment] =
   //   useState<string>('올바른 이름을 입력해주세요');
@@ -240,7 +245,7 @@ const JoinInfoPage = () => {
   return (
     <div className="w-full h-full flex flex-col items-center">
       <HeaderBar text="회원가입" />
-      <div className="w-full px-4 flex flex-col gap-y-[16px] mt-10 text-sm">
+      <div className="w-full px-4 flex flex-col gap-y-[16px] mt-10 text-sm scrollbar-hide overflow-y-auto ">
         <div className="flex flex-col">
           <div className="font-semibold text-sm">이름</div>
           <input
@@ -357,26 +362,67 @@ const JoinInfoPage = () => {
             <CheckLine text="비밀번호 일치" check={isPasswordMatch} />
           </div>
         </div>
-      </div>
-
-      {isAuthNumSent === false ? null : (
-        <div className="w-full px-4 absolute bottom-[124px]">
-          <div className="text-[10px] text-defaultTextGray mt-[16px] leading-[15px]">
-            인증번호 발송에는 시간이 소요되며 하루 최대 5회까지 전송할 수
-            있습니다.
-          </div>
-          <div className="text-[10px] text-defaultTextGray leading-[15px]">
-            인증번호는
-            <span className="text-[#c1c1c1] font-semibold leading-[15px]">
-              입력한 이메일 주소
-            </span>
-            로 발송됩니다. 수신하지 못했다면 스팸함 또는 해당 이메일 서
-          </div>
-          <div className="text-[10px] text-defaultTextGray leading-[15px]">
-            비스의 설정을 확인해주세요.
+        <div className="flex flex-col">
+          <div className="font-semibold text-sm">학과</div>
+          <div className="w-full flex border-b border-[#CCCCCC]">
+            <input
+              className="w-full py-4 outline-none text-base placeholder:text-defaultTextGray"
+              type={passwordInputType}
+              placeholder="이름으로 찾기"
+              onChange={(e) => setMajor(e.target.value)}
+            />
+            <div className="flex items-center">
+              <Search className="w-[11px] mr-[8px]" />
+            </div>
           </div>
         </div>
-      )}
+        <div className="flex mb-[8px]">
+          <div className="font-semibold text-sm whitespace-nowrap">성별</div>
+          <div className="w-full flex justify-end text-[14px] font-normal py-[8px] gap-[23px]">
+            <div
+              onClick={() => setGender('m')}
+              className="cursor-pointer flex items-center"
+            >
+              {gender === 'm' ? (
+                <CheckedCircle className="w-[24px] h-[24px] mr-[11px]" />
+              ) : (
+                <UnCheckedCircle className="w-[24px] h-[24px] mr-[11px]" />
+              )}
+              남자
+            </div>
+            <div
+              onClick={() => setGender('f')}
+              className="cursor-pointer flex items-center"
+            >
+              {gender === 'f' ? (
+                <CheckedCircle className="w-[24px] h-[24px] mr-[11px]" />
+              ) : (
+                <UnCheckedCircle className="w-[24px] h-[24px] mr-[11px]" />
+              )}
+              여자
+            </div>
+          </div>
+        </div>
+        {isAuthNumSent === false ? null : (
+          <div className="w-full px-4  mb-[124px]">
+            <div className="text-[10px] text-defaultTextGray mt-[16px] leading-[15px]">
+              인증번호 발송에는 시간이 소요되며 하루 최대 5회까지 전송할 수
+              있습니다.
+            </div>
+            <div className="text-[10px] text-defaultTextGray leading-[15px]">
+              인증번호는
+              <span className="text-[#c1c1c1] font-semibold leading-[15px]">
+                입력한 이메일 주소
+              </span>
+              로 발송됩니다. 수신하지 못했다면 스팸함 또는 해당 이메일 서
+            </div>
+            <div className="text-[10px] text-defaultTextGray leading-[15px]">
+              비스의 설정을 확인해주세요.
+            </div>
+          </div>
+        )}
+      </div>
+
       <NextButton
         text="회원가입"
         isCanBeNext={isCanBeNext}

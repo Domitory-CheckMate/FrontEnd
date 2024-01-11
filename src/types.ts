@@ -5,6 +5,7 @@ export interface ChatItem {
     name: string;
     content: string;
     period: string;
+    info: string;
     newChat: number;
   }
 

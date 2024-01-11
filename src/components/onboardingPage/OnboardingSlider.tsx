@@ -20,8 +20,8 @@ const OnboardingSlider = () => {
 
   const moveStyle: { [key: number]: string } = {
     1: 'translate-x-0',
-    2: '-translate-x-[33%]',
-    3: '-translate-x-[66%]',
+    2: '-translate-x-[34%]',
+    3: '-translate-x-[67%]',
   };
 
   const handleSlideNext = () => {

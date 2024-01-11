@@ -1,5 +1,7 @@
 import React from 'react';
 import { ReactComponent as Next } from '../../assets/icon/icon_next.svg';
+import { ReactComponent as Checked } from '../../assets/icon/icon_checkbox_checked.svg';
+import { ReactComponent as Unchecked } from '../../assets/icon/icon_checkbox_unchecked.svg';
 
 const CheckBox = ({
   text,
@@ -15,17 +17,23 @@ const CheckBox = ({
   return (
     // checkbox
     <div className="w-full flex mt-4 items-center">
-      <div
-        className="w-full flex cursor-pointer"
-        onClick={() => onClick(!checked)}
-      >
-        <input className="mr-4" type="checkbox" checked={checked} />
-        <div className="grow text-sm text-textGray2">{text}</div>
+      <div className="w-full flex cursor-pointer items-center h-[17px] ">
+        <div className="flex items-center h-[17px] w-[15px] mr-[7px] pt-[2px]">
+          {checked ? (
+            <Checked onClick={() => onClick(!checked)} />
+          ) : (
+            <Unchecked onClick={() => onClick(!checked)} />
+          )}
+        </div>
+
+        <div
+          className="grow text-sm text-textGray2 align-middle flex items-center"
+          onClick={showContents}
+        >
+          {text}
+        </div>
       </div>
-      <Next
-        className="inset-y-0 left-4 cursor-pointer"
-        onClick={showContents}
-      />
+      <Next className="w-[14px] cursor-pointer" onClick={showContents} />
     </div>
   );
 };
