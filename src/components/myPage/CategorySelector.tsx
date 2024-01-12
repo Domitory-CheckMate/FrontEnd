@@ -2,31 +2,89 @@ import React, { useState } from 'react';
 import ChecklistCheckBlock from './ChecklistCheckBlock';
 import ChecklistMultiCheckBlock from './ChecklistMultiCheckBlock';
 import { ReactComponent as Check } from '../../assets/icon/icon_check_primary.svg';
+import axios from 'axios';
 
 const CategorySelector = ({
   setEdit,
 }: {
   setEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
-  const [smokingPreference, setSmokingPreference] = useState('');
-  const [lifestylePattern, setLifestylePattern] = useState('');
+  const [smokingPreference, setSmokingPreference] = useState(-1);
+  const [lifestylePattern, setLifestylePattern] = useState(-1);
   const [cleaningFrequency, setCleaningFrequency] = useState(-1);
   const [sleepingHabit, setSleepingHabit] = useState([0, 0, 0, 0, 0]);
-  const [drinkingFrequency, setDrinkingFrequency] = useState('');
-  const [hometown, setHometown] = useState('');
+  const [drinkingFrequency, setDrinkingFrequency] = useState(-1);
+  const [hometown, setHometown] = useState(-1);
   const [noiseLevel, setNoiseLevel] = useState([0, 0, 0, 0]);
+
+  const smokeType = ['NO', 'YES'];
+  const cleanType = ['RARELY', 'SOMETIMES', 'OFTEN', 'USUALLY', 'ALWAYS'];
+  const drinkType = ['NEVER', 'SOMETIMES', 'OFTEN', 'ALWAYS'];
+  const homeType = ['RARELY', 'SOMETIMES', 'OFTEN', 'ALWAYS'];
+  const lifePatternType = ['MORNING', 'EVENING'];
+  const noiseType = ['EARPHONE', 'OUTSIDE', 'SHORT', 'ANYWAY'];
+  const sleepType = ['SNORING', 'GRINDING', 'TALKING', 'TURNING', 'NOTHING'];
+
+  // type NoiseLevelType = {
+  //   [key in (typeof noiseType)[number]]: number;
+  // };
+
+  // const generateNoiseLevelArray = (selectedTypes: string[]): NoiseLevelType => {
+  //   const initialNoiseLevel: NoiseLevelType = {
+  //     EARPHONE: 0,
+  //     OUTSIDE: 0,
+  //     SHORT: 0,
+  //     ANYWAY: 0,
+  //   };
+
+  //   selectedTypes.forEach((type) => {
+  //     if (initialNoiseLevel.hasOwnProperty(type)) {
+  //       initialNoiseLevel[type] = 1;
+  //     }
+  //   });
+
+  //   return initialNoiseLevel;
+  // };
+
+  const token =
+    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsImlhdCI6MTcwNDk5NTkzMSwiZXhwIjoxNzA1NjAwNzMxfQ.24gTBd8ecIiLtMsZjia6ixrfB_aq_nH8ojNpjwZ0s1Y';
 
   // 다른 카테고리의 상태 관리 변수들 추가
   const handleEditClick = () => {
     // setEdit 함수 호출
+    axios
+      .patch(
+        'https://checkmate-domitory.shop/api/checklist/my',
+        {
+          smokeType: smokeType[smokingPreference],
+          cleanType: cleanType[cleaningFrequency],
+          drinkType: drinkType[drinkingFrequency],
+          homeType: homeType[hometown],
+          lifePatternType: lifePatternType[lifestylePattern],
+          // noiseType: noiseType[noiseLevel],
+          // sleepType: sleepType[sleepingHabit],
+        },
+
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      )
+      .then((response) => {
+        const data = response.data.data;
+      })
+      .catch((Error) => {
+        console.log(Error);
+      });
     setEdit(false);
   };
 
-  const handleSmokingPreferenceChange = (selectedOption: string) => {
+  const handleSmokingPreferenceChange = (selectedOption: number) => {
     setSmokingPreference(selectedOption);
   };
 
-  const handleLifestylePatternChange = (selectedOption: string) => {
+  const handleLifestylePatternChange = (selectedOption: number) => {
     setLifestylePattern(selectedOption);
   };
 
@@ -34,11 +92,11 @@ const CategorySelector = ({
     setSleepingHabit(array);
   };
 
-  const handleDrinkingFrequencyChange = (selectedOption: string) => {
+  const handleDrinkingFrequencyChange = (selectedOption: number) => {
     setDrinkingFrequency(selectedOption);
   };
 
-  const handleHometownChange = (selectedOption: string) => {
+  const handleHometownChange = (selectedOption: number) => {
     setHometown(selectedOption);
   };
 
