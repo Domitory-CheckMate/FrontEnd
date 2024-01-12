@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { ReactComponent as Calendar } from '../../assets/icon/icon_calendar.svg';
 
 const PeriodInput = () => {
@@ -11,6 +11,17 @@ const PeriodInput = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [isEdit, setIsEdit] = useState(false);
+
+  useEffect(() => {
+    setDefaultDate(
+      `${startDate.getFullYear()}. ${
+        startDate.getMonth() + 1
+      }. ${startDate.getDate()}`,
+    );
+    setStartDate(startDate);
+    setEndDate(endDate);
+    setIsEdit(false);
+  }, []);
 
   return (
     <div className="flex-col">

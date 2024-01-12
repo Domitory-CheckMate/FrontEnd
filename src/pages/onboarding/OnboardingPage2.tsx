@@ -1,28 +1,68 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import MBTIButton from './MBTIButton';
-import { mbtiType } from '../../data/type';
+import { CustomError, joinInfoType, mbtiType } from '../../data/type';
 import CompleteButton from '../../components/loginPage/CompleteButton';
-import { ReactComponent as Close } from '../../assets/icon/icon_close.svg';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useMutation } from 'react-query';
+import { joinApi } from '../../api/userApi';
+import {
+  setAccessToken,
+  setMemberId,
+  setMemberName,
+  setRefreshToken,
+} from '../../api/manageToken';
 
 const OnboardingPage2 = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const { joinInfo } = state;
+  const [finalJoin, setFinalJoin] = useState<joinInfoType>(joinInfo);
   const [selectedMBTI, setSelectedMBTI] = useState<mbtiType>({
     first: '',
     second: '',
     third: '',
     fourth: '',
   });
+
+  useEffect(() => {
+    const onHandleJoinInfo = () => {
+      setFinalJoin((prev) => ({
+        ...prev,
+        mbtiType:
+          selectedMBTI.first +
+          selectedMBTI.second +
+          selectedMBTI.third +
+          selectedMBTI.fourth,
+      }));
+    };
+    onHandleJoinInfo();
+  }, [selectedMBTI]);
+
+  const onHandleClickJoin = () => {
+    console.log(finalJoin);
+    tryJoin();
+  };
+
+  const { mutate: tryJoin } = useMutation(() => joinApi(finalJoin), {
+    onSuccess: (data) => {
+      console.log(data);
+      setMemberId(data.data.data.memberId.toString());
+      setMemberName(data.data.data.name);
+      setAccessToken(data.data.data.accessToken);
+      setRefreshToken(data.data.data.refreshToken);
+      navigate('/join/completed', data.data.data.name);
+    },
+    onError: (error: unknown) => {
+      console.log(error);
+      const customErr = error as CustomError;
+      if (customErr.response?.status === 500) {
+        console.log('오류가 발생하였습니다.');
+      }
+    },
+  });
+
   return (
     <div className="w-full h-full flex flex-col items-center relative">
-      <div
-        className="absolute top-[68px] right-4 cursor-pointer"
-        onClick={() => {
-          navigate('/login');
-        }}
-      >
-        <Close />
-      </div>
       <div className="w-full flex flex-col px-4 grow">
         <div className="mt-[102px] flex w-full flex-col gap-y-[14px]">
           <div className="text-[22px] leading-8">MBTI를 알려주세요</div>
@@ -115,10 +155,10 @@ const OnboardingPage2 = () => {
       </div>
       <div className="w-full flex items-center">
         <CompleteButton
-          text="확인"
+          text="회원가입"
           isAble={true}
           onClick={() => {
-            navigate('/login');
+            onHandleClickJoin();
           }}
         />
       </div>
