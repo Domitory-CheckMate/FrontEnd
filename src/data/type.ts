@@ -81,3 +81,13 @@ export type keywordCardType = {
 };
 
 export type bottomNavType = 'home' | 'chat' | 'user';
+
+export type joinInfoType = {
+  email: string;
+  password: string;
+  name: string;
+  school: string;
+  major: string;
+  genderType: 'MAN' | 'WOMAN';
+  mbtiType: string;
+};
