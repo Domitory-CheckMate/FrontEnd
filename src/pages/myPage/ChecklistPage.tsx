@@ -4,7 +4,9 @@ import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Prev } from '../../assets/icon/icon_prev.svg';
 import ChecklistBlock from '../../components/myPage/ChecklistBlock';
 import CategorySelector from '../../components/myPage/CategorySelector';
-import axios from 'axios';
+import { useQuery } from 'react-query';
+import { getChecklistApi } from '../../api/userApi';
+import { CustomError } from '../../data/type';
 
 const ChecklistPage = () => {
   const navigate = useNavigate();
@@ -19,42 +21,44 @@ const ChecklistPage = () => {
   const [sleepType, setSleepType] = useState('');
   const [smokeType, setSmokeType] = useState('');
 
-  const token =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsImlhdCI6MTcwNDk5NTkzMSwiZXhwIjoxNzA1NjAwNzMxfQ.24gTBd8ecIiLtMsZjia6ixrfB_aq_nH8ojNpjwZ0s1Y';
+  const { data, error, isLoading } = useQuery(
+    'getChecklistInfo',
+    getChecklistApi,
+  );
 
   useEffect(() => {
-    axios
-      .get('https://checkmate-domitory.shop/api/checklist/my', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        const data = response.data.data;
+    if (data) {
+      console.log('Data:', data);
+      // 여기에서 데이터 처리 로직을 추가할 수 있습니다.
 
-        // data 객체 내에서 필요한 정보 추출
-        const {
-          cleaningType,
-          drinkType,
-          homeType,
-          lifePatternType,
-          noiseType,
-          sleepType,
-          smokeType,
-        } = data;
-        // state 업데이트
-        setCleanType(cleaningType);
-        setDrinkType(drinkType);
-        setHomeType(homeType);
-        setLifePatternType(lifePatternType);
-        setNoiseType(noiseType);
-        setSleepType(sleepType);
-        setSmokeType(smokeType);
-      })
-      .catch((Error) => {
-        console.log(Error);
-      });
-  }, [isEditMode]);
+      // data 객체 내에서 필요한 정보 추출
+      const {
+        cleaningType,
+        drinkType,
+        homeType,
+        lifePatternType,
+        noiseType,
+        sleepType,
+        smokeType,
+      } = data.data.data;
+      // state 업데이트
+      setCleanType(cleaningType);
+      setDrinkType(drinkType);
+      setHomeType(homeType);
+      setLifePatternType(lifePatternType);
+      setNoiseType(noiseType);
+      setSleepType(sleepType);
+      setSmokeType(smokeType);
+    }
+
+    if (error) {
+      console.error('Error:', error);
+      const customErr = error as CustomError;
+      if (customErr.response?.status === 500) {
+        console.log('오류가 발생하였습니다.');
+      }
+    }
+  }, [data, error, isEditMode]);
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -104,6 +108,16 @@ const ChecklistPage = () => {
                 text1={'본가는'}
                 text2={'🏠 매주' + homeType}
                 text3="갈 예정이고,"
+              />
+              <ChecklistBlock
+                text1={'방 안에서는'}
+                text2={'🗣️ ' + noiseType}
+                text3="부탁"
+              />
+              <ChecklistBlock
+                text1={'방 안에서는'}
+                text2={'🗣️ ' + noiseType}
+                text3="부탁"
               />
               <ChecklistBlock
                 text1={'방 안에서는'}

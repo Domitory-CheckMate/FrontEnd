@@ -2,7 +2,7 @@ import React from 'react';
 import CompleteButton from '../../components/loginPage/CompleteButton';
 import { useNavigate } from 'react-router-dom';
 import OnboardingSlider from '../../components/onboardingPage/OnboardingSlider';
-import { setOnboardingFinished } from '../../api/manageToken';
+import { setOnboardingFinished } from '../../api/manageLocalStorage';
 
 const OnboardingPage = () => {
   const navigate = useNavigate();

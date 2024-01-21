@@ -10,7 +10,7 @@ import {
   setMemberId,
   setMemberName,
   setRefreshToken,
-} from '../../api/manageToken';
+} from '../../api/manageLocalStorage';
 
 const OnboardingPage2 = () => {
   const navigate = useNavigate();

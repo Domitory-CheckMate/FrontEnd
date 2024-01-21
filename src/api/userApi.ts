@@ -40,7 +40,16 @@ export const loginApi = async (email: string, password: string) => {
  *
  */
 export const editChecklistApi = async (checklist: checklistApiType) => {
-  return authAxios.patch('/checklist/my', { checklist });
+  return authAxios.patch('/checklist/my', { checklist }
+  )
+};
+
+  /**
+  * @param email
+ * @returns 비밀번호 재설정 이메일 전송
+ */
+export const validateEmailForPwApi = async (email: string) => {
+  return baseAxios.post('/member/email/reset', { email });
 };
 
 /**
@@ -63,6 +72,7 @@ export const postChecklistApi = async (checklist: checklistApiType) => {
 /**
  *
  * @param profileImg
+ * @returns 프로필 이미지 수정
  */
 export const editProfileImg = async (profileImageType: string) => {
   return authAxios.patch('/member/profile', { profileImageType });
@@ -74,4 +84,13 @@ export const editProfileImg = async (profileImageType: string) => {
  */
 export const getMyInfoApi = async () => {
   return authAxios.get('/member/mypage', {});
+};
+
+/**
+ * @param email
+ * @param newPassword
+ * @returns 비밀번호 재설정
+ */
+export const changePwApi = async (email: string, newPassword: string) => {
+  return baseAxios.patch('/member/reset', { email, newPassword });
 };

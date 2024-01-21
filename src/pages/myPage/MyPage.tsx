@@ -2,20 +2,119 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { useQuery, useMutation } from 'react-query';
 
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import BottomNav from '../../components/myPage/BottomNav';
 import { ReactComponent as Settings } from '../../assets/icon/icon_settings.svg';
-import { ReactComponent as Profile0 } from '../../assets/icon/icon_profile0.svg';
-import { ReactComponent as Profile1 } from '../../assets/icon/icon_profile1.svg';
-import { ReactComponent as Profile2 } from '../../assets/icon/icon_profile2.svg';
-import { ReactComponent as Next } from '../../assets/icon/icon_next_black.svg';
+import { ReactComponent as Profile0 } from '../../assets/illust/character_blue.svg';
+import { ReactComponent as Profile1 } from '../../assets/illust/character_red.svg';
+import { ReactComponent as Profile2 } from '../../assets/illust/character_yellow.svg';
+import { ReactComponent as SmallNext } from '../../assets/icon/icon_next_small.svg';
+import { ReactComponent as Up } from '../../assets/icon/icon_up_mypage.svg';
+import { ReactComponent as Edit } from '../../assets/icon/icon_edit.svg';
+import { ReactComponent as Down } from '../../assets/icon/icon_down_mypage.svg';
 import { ReactComponent as Checklist } from '../../assets/icon/icon_checklist.svg';
-import { ReactComponent as TimeBoard } from '../../assets/icon/icon_timeBoard.svg';
 import { ReactComponent as ModalLine } from '../../assets/icon/icon_modal_line.svg';
-import axios from 'axios';
-import { editProfileImg, getMyInfoApi } from '../../api/userApi';
+import {
+  editProfileImg,
+  getMyInfoApi,
+  getChecklistApi,
+} from '../../api/userApi';
 
 import { CustomError } from '../../data/type';
+
+const CheckBlock = ({ emoji, content }: { emoji: string; content: string }) => {
+  return (
+    <div className="ml-[13px] mr-[4px] text-base text-center flex py-2 px-4 text-white rounded-[19px] bg-black cursor-pointer">
+      {content}
+    </div>
+  );
+};
+
+const MyCheckList = () => {
+  const { data, error, isLoading } = useQuery(
+    'getChecklistInfo',
+    getChecklistApi,
+  );
+  const [cleanType, setCleanType] = useState('');
+  const [drinkType, setDrinkType] = useState('');
+  const [homeType, setHomeType] = useState('');
+  const [lifePatternType, setLifePatternType] = useState('');
+  const [noiseType, setNoiseType] = useState('');
+  const [callType, setCallType] = useState('');
+  const [earphoneType, setEarphoneType] = useState('');
+  const [smokeType, setSmokeType] = useState('');
+  const [sleepGridingType, setSleepGridingType] = useState('');
+  const [sleepSnoreType, setSleepSnoreType] = useState('');
+  const [sleepTalkingType, setSleepTalkingType] = useState('');
+  const [sleepTurningType, setSleepTurningType] = useState('');
+  const [sleepType, setSleepType] = useState('');
+
+  useEffect(() => {
+    if (data) {
+      console.log('Data:', data);
+      // 여기에서 데이터 처리 로직을 추가할 수 있습니다.
+
+      // data 객체 내에서 필요한 정보 추출
+      const {
+        cleaningType,
+        drinkType,
+        homeType,
+        lifePatternType,
+        callType,
+        earphoneType,
+        smokeType,
+        sleepGridingType,
+        sleepSnoreType,
+        sleepTalkingType,
+        sleepTurningType,
+      } = data.data.data;
+      // state 업데이트
+      setCleanType(cleaningType);
+      setDrinkType(drinkType);
+      setHomeType(homeType);
+      setLifePatternType(lifePatternType);
+      setCallType(callType);
+      setEarphoneType(earphoneType);
+      setSmokeType(smokeType);
+      if (
+        sleepGridingType === false &&
+        sleepSnoreType === false &&
+        sleepTalkingType === false &&
+        sleepTurningType === false
+      ) {
+        setSleepType('상관없음');
+      }
+
+      setSleepGridingType(sleepGridingType);
+      setSleepSnoreType(sleepSnoreType);
+      setSleepTalkingType(sleepTalkingType);
+      setSleepTurningType(sleepTurningType);
+    } else {
+    }
+
+    if (error) {
+      console.error('Error:', error);
+      const customErr = error as CustomError;
+      if (customErr.response?.status === 500) {
+        console.log('오류가 발생하였습니다.');
+      }
+    }
+  }, [data, error]);
+
+  return (
+    <div className="flex gap-[8px] gap-y-[10px]">
+      <CheckBlock emoji="🚬" content={smokeType} />
+      <CheckBlock emoji="🌙" content={lifePatternType} />
+
+      <CheckBlock emoji="🧹" content={cleanType} />
+      <CheckBlock emoji="😴" content={sleepGridingType} />
+
+      <CheckBlock emoji="🍺" content={drinkType} />
+      <CheckBlock emoji="🏠" content={homeType} />
+      <CheckBlock emoji="🗣️" content={callType} />
+    </div>
+  );
+};
 
 // 모달 컴포넌트
 const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
@@ -83,38 +182,38 @@ const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
         </div>
         <div className="flex justify-evenly mt-[27px] grow">
           <div
-            className={`rounded-[28px] border-2 bg-[#FDD678] ${
+            className={`rounded-[28px] border-[1px] w-[73px] h-[73px] bg-[#FDD678] flex items-center justify-center  ${
               profileIndex === 0
                 ? 'border-primary'
                 : 'opacity-70 border-transparent'
             }`}
             onClick={() => setProfileIndex(0)}
           >
-            <div className="w-[73px] h-[73px]">
+            <div className=" flex items-enter justify-center">
               <Profile0 />
             </div>
           </div>
           <div
-            className={`rounded-[26.5px] border-2 bg-[#99A2E9] ${
+            className={`rounded-[28px] border-[1px] w-[73px] h-[73px] bg-[#99A2E9] flex items-center justify-center ${
               profileIndex === 1
                 ? 'border-[#FDD678]'
                 : 'opacity-70 border-transparent'
             }`}
             onClick={() => setProfileIndex(1)}
           >
-            <div className="w-[73px] h-[73px]">
+            <div className=" flex items-enter justify-center">
               <Profile1 />
             </div>
           </div>
           <div
-            className={`rounded-[28px] border-2 bg-primary ${
+            className={`rounded-[28px] border-[1px] w-[73px] h-[73px] bg-primary  flex items-center justify-center ${
               profileIndex === 2
                 ? 'border-[#99A2E9]'
                 : 'opacity-70 border-transparent'
             }`}
             onClick={() => setProfileIndex(2)}
           >
-            <div className="w-[73px] h-[73px]">
+            <div className=" flex items-center justify-center">
               <Profile2 />
             </div>
           </div>
@@ -142,10 +241,6 @@ const MyPage = () => {
   const [major, setMajor] = useState<string>('소프트웨어학과');
   const [gender, setGender] = useState<string>('여자');
   const [mbti, setMbti] = useState<string>('ISFP');
-
-  const token =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsImlhdCI6MTcwNDk5NTkzMSwiZXhwIjoxNzA1NjAwNzMxfQ.24gTBd8ecIiLtMsZjia6ixrfB_aq_nH8ojNpjwZ0s1Y';
-
   const { data, error, isLoading } = useQuery('getMyInfo', getMyInfoApi);
 
   useEffect(() => {
@@ -171,6 +266,9 @@ const MyPage = () => {
       }
     }
   }, [data, error, showModal]);
+
+  const [isChecklistShow, setIsChecklistShow] = useState<boolean>(false);
+
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className="w-full grow flex-col items-center overflow-y-auto scrollbar-hide">
@@ -198,7 +296,10 @@ const MyPage = () => {
         </div>
 
         <div className="mt-[0px] border-t border-[#F7F7F7] py-4 flex-col w-full">
-          <div className="pl-4 h-16 flex w-full items-center">
+          <div
+            className="pl-4 h-16 flex w-full items-center"
+            onClick={() => setIsChecklistShow(!isChecklistShow)}
+          >
             <div className="w-[25px] h-[25px]">
               <Checklist />
             </div>
@@ -209,30 +310,44 @@ const MyPage = () => {
               내 체크리스트
             </div>
             <div className="w-[25px] h-[25px] flex items-center">
-              <Next />
+              {isChecklistShow ? <Up /> : <Down />}
             </div>
           </div>
+          {/* {isChecklistShow && ( */}
+
+          {/* } */}
           <div className="pl-4  h-16 flex w-full items-center">
             <div className="w-[25px] h-[25px]">
-              <TimeBoard />
+              <Edit />{' '}
             </div>
             <div
               className="grow ml-[12px] text-base text-black font-medium align-start"
               onClick={() => navigate('/timeboard')}
             >
-              내 시간표{' '}
+              내 모집글{' '}
             </div>
-            <div className="w-[25px] h-[25px] flex items-center">
-              <Next />
-            </div>
+            <div className="w-[25px] h-[25px] flex items-center"></div>
           </div>
         </div>
         <div className="w-full p-[6px] bg-[#F7F7F7]"> </div>
 
-        <div className="p-4 grid grid-cols-1 gap-y-[34px] pt-[32px] w-full grow text-base text-black font-semibold">
-          <div className="text-[18px] font-bold">이용안내</div>
-          <div>문의하기</div>
-          <div>공지사항</div>
+        <div className="p-4 grid grid-cols-1 pt-[32px] w-full grow text-base text-black font-semibold">
+          <div className="flex justify-between items-center text-[14px] font-normal border-b-[1px] border-[#f7f7f7] py-[23px] cursor-pointer">
+            <div>내 정보 관리</div>
+            <SmallNext />
+          </div>
+          <div className="flex justify-between items-center text-[14px] font-normal border-b-[1px] border-[#f7f7f7] py-[23px] cursor-pointer">
+            <div>문의하기</div>
+            <SmallNext />
+          </div>{' '}
+          <div className="flex justify-between items-center text-[14px] font-normal border-b-[1px] border-[#f7f7f7] py-[23px] cursor-pointer">
+            <div>공지사항</div>
+            <SmallNext />
+          </div>{' '}
+          <div className="flex justify-between items-center text-[14px] font-normal border-b-[1px] border-[#f7f7f7] py-[23px] cursor-pointer">
+            <div>설정</div>
+            <SmallNext />
+          </div>
           <div></div>
         </div>
       </div>
