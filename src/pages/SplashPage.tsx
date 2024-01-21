@@ -2,14 +2,21 @@ import React, { useEffect } from 'react';
 import { ReactComponent as Logo } from '../assets/logo/logo_splash.svg';
 import { ReactComponent as LogoText } from '../assets/logo/logo_text_black.svg';
 import { useNavigate } from 'react-router-dom';
-import { getOnboardingFinished } from '../api/manageToken';
+import {
+  getAccessToken,
+  getOnboardingFinished,
+} from '../api/manageLocalStorage';
 
 const SplashPage = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
     setTimeout(() => {
-      getOnboardingFinished() ? navigate('/login') : navigate('/onboarding');
+      getAccessToken()
+        ? navigate('/main')
+        : getOnboardingFinished()
+        ? navigate('/login')
+        : navigate('/onboarding');
     }, 2000);
   }, []);
 

@@ -2,18 +2,19 @@ import React, { useState } from 'react';
 import { ReactComponent as Down } from '../../assets/icon/icon_down_gray.svg';
 import { ReactComponent as Check } from '../../assets/icon/icon_check_black.svg';
 import { orderList } from '../../data/value';
+import { orderType } from '../../data/type';
 
 const OrderDropDown = ({
   currentOrder,
-  setCurrentOrder,
+  handleOrderChange,
 }: {
-  currentOrder: string;
-  setCurrentOrder: (order: string) => void;
+  currentOrder: orderType;
+  handleOrderChange: (order: orderType) => void;
 }) => {
   const [isOrderOpen, setIsOrderOpen] = useState<boolean>(false);
 
-  const clickOrderHandler = (order: string) => {
-    setCurrentOrder(order);
+  const clickOrderHandler = (order: orderType) => {
+    handleOrderChange(order);
     setIsOrderOpen(false);
   };
 

@@ -1,78 +1,35 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CompleteButton from './CompleteButton';
+import { useMutation } from 'react-query';
+import { validateEmailForPwApi } from '../../api/userApi';
+import { CustomError } from '../../data/type';
 
 const FindPwPage1 = ({
   handleNextStep,
+  setEmail,
 }: {
   handleNextStep: (step: number) => void;
+  setEmail: (email: string) => void;
 }) => {
+  const emailFormat = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
   const [id, setId] = useState('');
-  const [birthday, setBirthday] = useState('');
-  const [backNumber, setBackNumber] = useState('');
-  const [phoneNumber, setPhoneNumber] = useState('');
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const [isInfo, setIsInfo] = useState(false);
+  const [infoMessage, setInfoMessage] = useState<string>('');
   const [sendRequest, setSendRequest] = useState(false);
+  const [sendRequestAgain, setSendRequestAgain] = useState(false);
+  const [originCertificationNumber, setOriginCertificationNumber] =
+    useState('');
   const [certificationNumber, setCertificationNumber] = useState('');
   const [isCertified, setIsCertified] = useState(false);
   const [remainingTime, setRemainingTime] = useState(180);
 
-  const idRef = useRef<HTMLInputElement>(null);
-  const birthdayRef = useRef<HTMLInputElement>(null);
-  const backNumberRef = useRef<HTMLInputElement>(null);
-
-  const isOkToSendRequest =
-    id !== '' && birthday !== '' && backNumber !== '' && phoneNumber !== '';
-  const isOkToCheckVerificationNumber = certificationNumber !== '';
-
-  const handleRequestBtnClick = () => {
-    if (id === '') {
-      alert('아이디를 입력해주세요.');
-      return;
-    }
-    if (birthday === '') {
-      alert('생년월일을 입력해주세요.');
-      return;
-    }
-    if (backNumber === '') {
-      alert('성별을 입력해주세요.');
-      return;
-    }
-    if (phoneNumber === '') {
-      alert('휴대폰 번호를 입력해주세요.');
-      return;
-    }
-
-    setSendRequest(true);
-    setRemainingTime(180);
-  };
-
-  const handleCertificationBtnClick = () => {
-    if (certificationNumber === '') {
-      alert('인증번호를 입력해주세요.');
-      return;
-    }
-
-    setIsCertified(true);
-  };
-
   useEffect(() => {
-    idRef.current?.focus();
+    if (isError) {
+      setIsError(false);
+    }
   }, [id]);
-
-  useEffect(() => {
-    if (birthday.length === 6 && backNumberRef.current !== null) {
-      backNumberRef.current.focus();
-    }
-  }, [birthday]);
-
-  useEffect(() => {
-    if (
-      birthday.length > 1 &&
-      backNumber.length < 1 &&
-      birthdayRef.current !== null
-    ) {
-      birthdayRef.current.focus();
-    }
-  }, [backNumber]);
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
@@ -91,90 +48,123 @@ const FindPwPage1 = ({
     };
   }, [sendRequest, isCertified]);
 
+  const handleRequestBtnClick = () => {
+    if (id === '' || emailFormat.test(id) === false) {
+      setIsError(true);
+      setErrorMessage('올바른 아이디를 입력해주세요.');
+      return;
+    }
+
+    setSendRequest(true);
+    setSendRequestAgain(false);
+    trySendEmail();
+  };
+
+  const handleCertificationBtnClick = () => {
+    if (
+      certificationNumber === '' ||
+      certificationNumber !== originCertificationNumber
+    ) {
+      setIsInfo(true);
+      setInfoMessage('인증번호가 일치하지 않습니다.');
+      return;
+    }
+
+    setIsInfo(true);
+    setInfoMessage('인증이 완료되었습니다.');
+    setIsCertified(true);
+  };
+
+  const handleNextBtnClick = () => {
+    setEmail(id);
+    handleNextStep(2);
+  };
+
+  const { mutate: trySendEmail } = useMutation(
+    () => validateEmailForPwApi(id),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        setOriginCertificationNumber(data.data.data.code);
+        setRemainingTime(180);
+        setIsError(false);
+        setSendRequestAgain(true);
+      },
+      onError: (error) => {
+        console.log(error);
+        setSendRequest(false);
+        setIsError(true);
+        const customErr = error as CustomError;
+        if (
+          customErr.response?.status === 409 ||
+          customErr.response?.status === 500
+        ) {
+          setErrorMessage(customErr.response.data.message);
+          console.log(customErr.response.data.message);
+        } else {
+          setErrorMessage('오류가 발생하였습니다. 다시 시도해주세요.');
+        }
+      },
+    },
+  );
+
   return (
     <>
       <div className="grow flex flex-col w-full items-start px-4 mt-14">
-        <input
-          type="text"
-          placeholder="아이디(이메일)"
-          className="w-full py-[23px] outline-none border-b border-[#CCCCCC] placeholder:text-grayScale3"
-          value={id}
-          ref={idRef}
-          onChange={(e) => setId(e.target.value)}
-        />
-        <div className="w-full flex flex-col">
-          <div className="flex w-full items-center justify-between mt-[22px]">
-            <input
-              type="tel"
-              placeholder="생년월일(ex:900101)"
-              className="py-[23px] px-0 outline-none bg-transparent max-w-[180px] placeholder:text-grayScale3"
-              maxLength={6}
-              ref={birthdayRef}
-              value={birthday}
-              onChange={(e) => setBirthday(e.target.value)}
-            />
-            <div className="grow flex items-center justify-center">-</div>
-            <div className="grow py-[23px] flex gap-x-2 items-center px-2 max-w-[180px]">
-              <div className="w-2 h-2 flex items-center justify-center relative">
-                <input
-                  className="w-full h-full outline-none bg-transparent absolute top-0 left-0 caret-transparent"
-                  type="password"
-                  ref={backNumberRef}
-                  maxLength={1}
-                  value={backNumber}
-                  onChange={(e) => setBackNumber(e.target.value)}
-                />
-                {backNumber.length !== 1 ? (
-                  <div className="w-2 h-2 border border-solid border-black rounded-full " />
-                ) : (
-                  <div className="w-2 h-2 bg-[#000000] rounded-full" />
-                )}
-              </div>
-              <div className="w-2 h-2 bg-[#000000] rounded-full" />
-              <div className="w-2 h-2 bg-[#000000] rounded-full" />
-              <div className="w-2 h-2 bg-[#000000] rounded-full" />
-              <div className="w-2 h-2 bg-[#000000] rounded-full" />
-              <div className="w-2 h-2 bg-[#000000] rounded-full" />
-              <div className="w-2 h-2 bg-[#000000] rounded-full" />
-            </div>
-          </div>
-          <div className="w-full h-px bg-[#CCCCCC]" />
-        </div>
-        <div className="mt-[22px] w-full">
+        <div className="w-full">
           <div className="w-full flex flex-col">
             <div className="flex w-full items-center">
               <input
                 type="tel"
-                placeholder="휴대폰 번호 (-제외)"
-                className="grow py-[23px] outline-none bg-transparent placeholder:text-grayScale3"
-                maxLength={11}
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="아이디 (이메일)"
+                className="grow py-[23px] outline-none bg-transparent placeholder:text-grayScale3 disabled:text-grayScale3"
+                value={id}
+                disabled={isCertified}
+                onChange={(e) => setId(e.target.value)}
               />
               <button
                 className={
-                  'flex items-center justify-center text-sm px-[14px] h-9 leading-normal rounded-full text-white ' +
-                  (isOkToSendRequest ? 'bg-primary' : 'bg-grayScale3')
+                  'flex items-center justify-center text-sm px-[14px] h-9 leading-normal rounded-full text-white disabled:bg-grayScale3 ' +
+                  ((id != '' && !sendRequest) ||
+                  (sendRequest && sendRequestAgain)
+                    ? 'bg-primary'
+                    : 'bg-grayScale3')
                 }
+                disabled={isCertified ? true : id === '' ? true : false}
                 onClick={handleRequestBtnClick}
               >
-                {sendRequest ? '재전송' : '인증번호 전송'}
+                {sendRequestAgain
+                  ? '재전송'
+                  : sendRequest
+                  ? '전송됨'
+                  : '인증번호 전송'}
               </button>
             </div>
             <div className="w-full h-px bg-[#CCCCCC]" />
+            {isError && (
+              <div className="text-xs mt-[8px] text-[#FF6C3E]">
+                {errorMessage}
+              </div>
+            )}
           </div>
-          {sendRequest && (
+          {sendRequestAgain && (
             <div className="w-full flex flex-col">
               <div className="flex w-full items-center">
                 <input
                   type="tel"
                   placeholder="인증번호 6자리"
-                  className="grow py-[23px] outline-none bg-transparent placeholder:text-grayScale3"
-                  maxLength={11}
+                  className="grow py-[23px] outline-none bg-transparent placeholder:text-grayScale3 disabled:text-grayScale3"
+                  maxLength={6}
                   value={certificationNumber}
+                  disabled={isCertified}
                   onChange={(e) => setCertificationNumber(e.target.value)}
                 />
-                <div className="text-sm text-primary mr-[14px]">
+                <div
+                  className={
+                    'text-sm mr-[14px] ' +
+                    (isCertified ? 'text-grayScale3' : 'text-primary')
+                  }
+                >
                   {Math.floor(remainingTime / 60)}:
                   {remainingTime % 60 < 10
                     ? `0${remainingTime % 60}`
@@ -184,7 +174,7 @@ const FindPwPage1 = ({
                   type="button"
                   className={
                     'text-sm px-[14px] py-[9px] leading-normal rounded-full text-white ' +
-                    (isOkToCheckVerificationNumber
+                    (!isCertified && certificationNumber.length === 6
                       ? 'bg-primary'
                       : 'bg-grayScale3')
                   }
@@ -195,6 +185,11 @@ const FindPwPage1 = ({
                 </button>
               </div>
               <div className="w-full h-px bg-[#CCCCCC]" />
+              {isInfo && (
+                <div className="text-xs mt-[8px] text-[#FF6C3E]">
+                  {infoMessage}
+                </div>
+              )}
             </div>
           )}
           <div className="flex flex-col mt-[14px] text-[10px] leading-[18px] text-grayScale3">
@@ -209,7 +204,7 @@ const FindPwPage1 = ({
       <div className="w-full flex items-center">
         <CompleteButton
           text="확인"
-          onClick={() => handleNextStep(2)}
+          onClick={() => handleNextBtnClick()}
           isAble={isCertified}
         />
       </div>

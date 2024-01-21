@@ -3,34 +3,43 @@ import { ReactComponent as Logo } from '../../assets/logo/logo_text_primary.svg'
 import { ReactComponent as Bookmark } from '../../assets/icon/icon_bookmark.svg';
 import { ReactComponent as Notice } from '../../assets/icon/icon_notice.svg';
 import { ReactComponent as Search } from '../../assets/icon/icon_search_gray.svg';
-import { ReactComponent as NextGray } from '../../assets/icon/icon_next_gray.svg';
 import Divider from '../../components/mainPage/Divider';
 import TitleBar from '../../components/mainPage/TitleBar';
 import KeywordCard from '../../components/mainPage/KeywordCard';
-import {
-  articleDummy,
-  keywordCardDummy,
-  keywordCardMorning,
-  keywordCardNight,
-  keywordCardSmoke,
-} from '../../data/dummy';
+import { keywordCardList } from '../../data/dummy';
 import ArticleItem from '../../components/mainPage/ArticleItem';
 import BottomNav from '../../components/myPage/BottomNav';
 import { useNavigate } from 'react-router-dom';
 import WriteBtn from '../../components/mainPage/WriteBtn';
 import { Client } from '@stomp/stompjs';
 import { sendMessagePublish } from '../../socket/socketClient';
+import { getIsDoneChecklist } from '../../api/manageLocalStorage';
+import { useQuery } from 'react-query';
+import { getPostListApi } from '../../api/articleApi';
+import { convertOrderToNum } from '../../data/type';
+import NoticeCheckListBox from '../../components/mainPage/NoticeCheckListBox';
 
 const MainPage = ({ client }: { client: Client | null }) => {
   const navigate = useNavigate();
+  const {
+    isLoading: perfectMatchingIsLoding,
+    error: perfectMatchingIsError,
+    data: perfectMatchingData,
+  } = useQuery(
+    'perfectMatching',
+    () =>
+      getPostListApi({
+        type: convertOrderToNum['일치율 높은 순'],
+        size: 3,
+      }),
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    },
+  );
   const [searchContent, setSearchContent] = useState<string>('');
-  const articleList = [articleDummy, articleDummy, articleDummy];
-  const keywordCardList = [
-    keywordCardDummy,
-    keywordCardSmoke,
-    keywordCardMorning,
-    keywordCardNight,
-  ];
 
   const sendMessage = (message: string) => {
     if (client !== null) {
@@ -62,17 +71,7 @@ const MainPage = ({ client }: { client: Client | null }) => {
               onChange={(e) => setSearchContent(e.target.value)}
             />
           </div>
-          <div className="flex items-center justify-between rounded-2xl bg-primary10 py-[15px] pl-4 pr-[21px] mb-[17px]">
-            <div className="flex flex-col gap-y-[6px] items-start">
-              <div className="text-primary font-bold">
-                룸메이트 체크리스트 작성하러 가기
-              </div>
-              <div className="text-[12px] text-[#838383]">
-                내가 찾는 룸메이트를 추천받을 수 있어요.
-              </div>
-            </div>
-            <NextGray />
-          </div>
+          {!getIsDoneChecklist() && <NoticeCheckListBox />}
         </div>
         <Divider />
         <div className="w-full flex flex-col gap-y-[26px] mt-[21px]">
@@ -104,14 +103,20 @@ const MainPage = ({ client }: { client: Client | null }) => {
             text="나와 딱 맞는 룸메이트"
             deco={'👭🏻'}
             onClick={() => {
-              navigate('/main/mate');
+              navigate(`/main/mate`);
             }}
           />
-          <div className="w-full flex flex-col gap-y-[12px] mb-[104px] px-4">
-            {articleList.map((article, idx) => (
-              <ArticleItem article={article} key={idx} />
-            ))}
-          </div>
+          {perfectMatchingIsLoding ? (
+            <div className="w-full py-5 mb-4 flex justify-center items-center text-sm text-center text-grayScale3 whitespace-pre">{`Loading...`}</div>
+          ) : perfectMatchingIsError ? (
+            <div className="w-full py-5 mb-4 flex justify-center items-center text-sm text-center text-grayScale3 whitespace-pre">{`오류가 발생하였습니다.\n잠시 후 다시 시도해주세요.`}</div>
+          ) : (
+            <div className="w-full flex flex-col gap-y-[12px] mb-[104px] px-4">
+              {perfectMatchingData?.data.data.results.map((article, idx) => (
+                <ArticleItem article={article} key={idx} />
+              ))}
+            </div>
+          )}
         </div>
       </div>
       <BottomNav state="home" />
