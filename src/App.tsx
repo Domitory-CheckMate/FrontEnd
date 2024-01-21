@@ -29,7 +29,7 @@ import KeywordPage from './pages/write/KeywordPage';
 import ChatPage from './pages/chat/ChatPage';
 import ChatRoomPage from './pages/chat/ChatRoomPage';
 import { useEffect } from 'react';
-import { getAccessToken, getMemberId } from './api/manageToken';
+import { getAccessToken, getMemberId } from './api/manageLocalStorage';
 
 function App() {
   // const [client, changeClient] = useState<Client | null>(null);

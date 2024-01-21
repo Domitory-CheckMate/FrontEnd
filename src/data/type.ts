@@ -14,7 +14,7 @@ export type mbtiType = {
   fourth: string;
 };
 
-export type articleStateType = '모집 중' | '모집 완료';
+export type articleStateType = '모집중' | '모집완료';
 
 export type userType = {
   id: number;
@@ -23,6 +23,19 @@ export type userType = {
   major: string;
   gender: '남자' | '여자';
   mbti: string;
+};
+
+export type articleListType = {
+  postId: number;
+  title: string;
+  content: string;
+  importantKey: keywordType;
+  similarityKey: string;
+  scrapCount: number;
+  remainDate: number;
+  accuracy: number;
+  gender: '남자' | '여자';
+  postState: articleStateType;
 };
 
 export type articleType = {
@@ -73,11 +86,62 @@ export type noiseType =
   | '전화는 짧게'
   | '상관없음';
 
+export type keywordType =
+  | '청결도'
+  | '비흡연'
+  | '흡연'
+  | '아침형'
+  | '저녁형'
+  | '잠버릇'
+  | '애주가';
+
+export const convertKeywordToNum: Record<keywordType, string> = {
+  청결도: '1',
+  비흡연: '2',
+  흡연: '3',
+  아침형: '4',
+  저녁형: '5',
+  잠버릇: '6',
+  애주가: '7',
+};
+
+export const convertNumToKeyword: Record<string, keywordType> = {
+  '1': '청결도',
+  '2': '비흡연',
+  '3': '흡연',
+  '4': '아침형',
+  '5': '저녁형',
+  '6': '잠버릇',
+  '7': '애주가',
+};
+
+export type orderType =
+  | '일치율 높은 순'
+  | '등록일 순'
+  | '모집마감 임박 순'
+  | '저장 많은 순'
+  | '에러 확인용';
+
+export const convertOrderToNum: Record<orderType, string> = {
+  '등록일 순': '1',
+  '일치율 높은 순': '2',
+  '모집마감 임박 순': '3',
+  '저장 많은 순': '4',
+  '에러 확인용': '5',
+};
+
+export const convertNumToOrder: Record<string, orderType> = {
+  '1': '등록일 순',
+  '2': '일치율 높은 순',
+  '3': '모집마감 임박 순',
+  '4': '저장 많은 순',
+};
+
 export type keywordCardType = {
   tag: string;
   title: string;
   text: string;
-  keyword: 'clean' | 'smoke' | 'morning' | 'night';
+  keyword: keywordType;
 };
 
 export type bottomNavType = 'home' | 'chat' | 'user';

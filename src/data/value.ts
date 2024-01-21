@@ -1,17 +1,18 @@
-export const keywordList = [
-  '청결',
-  '비흡연자',
-  '흡연자',
-  '아침형인간',
-  '저녁형인간',
-  '잠버릇 없는',
-  '잠버릇 있는',
+import { keywordType, orderType } from './type';
+
+export const keywordList: keywordType[] = [
+  '청결도',
+  '비흡연',
+  '흡연',
+  '아침형',
+  '저녁형',
+  '잠버릇',
   '애주가',
 ];
 
-export const orderList = [
-  '일치율 높은 순',
+export const orderList: orderType[] = [
   '등록일 순',
+  '일치율 높은 순',
   '모집마감 임박 순',
   '저장 많은 순',
 ];

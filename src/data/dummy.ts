@@ -2,7 +2,7 @@ import { articleDetailType, articleType, keywordCardType } from './type';
 
 export const articleDummy: articleType = {
   id: 1,
-  state: '모집 중',
+  state: '모집중',
   title: 'ISFP들 중 80%이상 일치하는 사람~!',
   keywords: ['아침형생활1순위', '80%이상'],
   content:
@@ -12,33 +12,64 @@ export const articleDummy: articleType = {
   bookmark: 25,
 };
 
-export const keywordCardDummy: keywordCardType = {
+export const keywordCardClean: keywordCardType = {
   tag: '청결 1순위',
   title: '청결이 중요한 프로 깔끔러',
   text: `매일매일 청소는 기본!\n청결이 1순위였으면 좋겠어요`,
-  keyword: 'clean',
+  keyword: '청결도',
 };
 
-export const keywordCardSmoke: keywordCardType = {
+export const keywordCardUnSmoke: keywordCardType = {
   tag: '비흡연자 1순위',
   title: '냄새에 예민한 비흡연자',
   text: `간접흡연도 싫어요!\n같이 노담이면 좋겠어요.`,
-  keyword: 'clean',
+  keyword: '비흡연',
+};
+
+export const keywordCardSmoke: keywordCardType = {
+  tag: '흡연자 1순위',
+  title: '냄새에 익숙한 흡연자',
+  text: `냄새에 예민한 분들은 어려워요!\n같은 흡연자였으면 좋겠어요.`,
+  keyword: '흡연',
 };
 
 export const keywordCardMorning: keywordCardType = {
   tag: '아침형 인간 1순위',
   title: '부지런한 아침형 인간',
   text: `주로 오전에 생활하고 있어요!\n저처럼 아침형 인간이었으면 좋겠어요`,
-  keyword: 'clean',
+  keyword: '아침형',
 };
 
 export const keywordCardNight: keywordCardType = {
   tag: '저녁형 1순위',
   title: '느긋한 저녁형 인간',
   text: `주로 오후에 생활하고 있어요!\n저처럼 저녁형 인간이었으면 좋겠어요`,
-  keyword: 'clean',
+  keyword: '저녁형',
 };
+
+export const keywordCardSleep: keywordCardType = {
+  tag: '잠버릇 없는 1순위',
+  title: '잠귀가 밝은 예민러',
+  text: `잠잘 때 소리에 예민해요!\n잠버릇 없는 사람이었으면 좋겠어요`,
+  keyword: '잠버릇',
+};
+
+export const keywordCardDrink: keywordCardType = {
+  tag: '애주가 1순위',
+  title: '술없이 못사는 애주가',
+  text: `술자리가 잦아요!\n신경 안쓰는 분이면 좋겠어요`,
+  keyword: '애주가',
+};
+
+export const keywordCardList = [
+  keywordCardClean,
+  keywordCardUnSmoke,
+  keywordCardSmoke,
+  keywordCardMorning,
+  keywordCardNight,
+  keywordCardSleep,
+  keywordCardDrink,
+];
 
 export const articleListDummy: articleType[] = [
   articleDummy,
@@ -56,7 +87,7 @@ export const articleListDummy2: articleType[] = [
 
 export const articleDetailDummy: articleDetailType = {
   id: 0,
-  state: '모집 중',
+  state: '모집중',
   title: '내 체크리스트랑 딱 맞는 사람만!',
   deadline: '~1월 19일(금) 까지',
   percent: 100,

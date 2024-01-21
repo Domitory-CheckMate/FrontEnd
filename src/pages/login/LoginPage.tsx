@@ -9,7 +9,7 @@ import {
   setAccessToken,
   setMemberId,
   setRefreshToken,
-} from '../../api/manageToken';
+} from '../../api/manageLocalStorage';
 import { CustomError } from '../../data/type';
 
 const LoginPage = () => {
@@ -104,7 +104,7 @@ const LoginPage = () => {
             className="w-full flex items-center mt-[31px] justify-center cursor-pointer text-sm"
             onClick={() => navigate('/login/pw')}
           >
-            비밀번호 찾기
+            비밀번호를 잊으셨나요?
           </div>
         </div>
       </div>

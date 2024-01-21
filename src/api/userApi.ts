@@ -32,3 +32,22 @@ export const joinApi = async (joinInfo: joinInfoType) => {
 export const loginApi = async (email: string, password: string) => {
   return baseAxios.post('/member/signin', { email, password });
 };
+
+/**
+ *
+ * @param email
+ * @returns 비밀번호 재설정 이메일 전송
+ */
+export const validateEmailForPwApi = async (email: string) => {
+  return baseAxios.post('/member/email/reset', { email });
+};
+
+/**
+ *
+ * @param email
+ * @param newPassword
+ * @returns 비밀번호 재설정
+ */
+export const changePwApi = async (email: string, newPassword: string) => {
+  return baseAxios.patch('/member/reset', { email, newPassword });
+};
