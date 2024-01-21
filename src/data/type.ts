@@ -1,3 +1,12 @@
+export interface CustomError extends Error {
+  response?: {
+    status: number;
+    data: {
+      message: string;
+    };
+  };
+}
+
 export type mbtiType = {
   first: string;
   second: string;
@@ -56,6 +65,32 @@ export type checklistType = {
   noise: noiseType[];
 };
 
+// export type checklistApiType = {
+//   cleanType: 'RARELY'| 'SOMETIMES' | 'OFTEN' | 'USUALLY' | 'ALWAYS';
+//     drinkType:"NEVER"| "SOMETIMES" | "OFTEN" | "ALWAYS";
+//     homeType:"RARELY" | "SOMETIMES" | "OFTEN" | "ALWAYS";
+//     lifePatternType:"MORNING" | "EVENING";
+//     noiseType: "EARPHONE" | "OUTSIDE" | "SHORT" | "ANYWAY";
+// 		smokeType:"NONE" | "SMOKE";
+// 		sleepGridingType: "TRUE" | "FALSE";
+// 		sleepSnoreType: "TRUE" | "FALSE";
+// 		sleepTalkingType: "TRUE" | "FALSE";
+// 		sleepTurningType: "TRUE" | "FALSE";
+// };
+
+export type checklistApiType = {
+    cleanType: 'RARELY'| 'SOMETIMES' | 'OFTEN' | 'USUALLY' | 'ALWAYS';
+      drinkType:"NEVER"| "SOMETIMES" | "OFTEN" | "ALWAYS";
+      homeType:"RARELY" | "SOMETIMES" | "OFTEN" | "ALWAYS";
+      lifePatternType:"MORNING" | "EVENING";
+      noiseType: "EARPHONE" | "OUTSIDE" | "SHORT" | "ANYWAY";
+  		smokeType:"NONE" | "SMOKE";
+  		sleepGridingType: "TRUE" | "FALSE";
+  		sleepSnoreType: "TRUE" | "FALSE";
+  		sleepTalkingType: "TRUE" | "FALSE";
+  		sleepTurningType: "TRUE" | "FALSE";
+  };
+
 export type sleepType = '코골이' | '이갈이' | '잠꼬대' | '뒤척임';
 
 export type noiseType =
@@ -72,3 +107,22 @@ export type keywordCardType = {
 };
 
 export type bottomNavType = 'home' | 'chat' | 'user';
+
+export type joinInfoType = {
+  email: string;
+  password: string;
+  name: string;
+  school: string;
+  major: string;
+  genderType: 'MAN' | 'WOMAN';
+  mbtiType: string;
+};
+
+
+// export type myInfoType = {
+//   profileImg: string;
+//   name: string;
+//   major: string;
+//   gender: "man" | "woman";
+//   mbti: string;
+// };

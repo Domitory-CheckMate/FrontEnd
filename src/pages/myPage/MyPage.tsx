@@ -1,7 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import { useQuery, useMutation } from 'react-query';
 
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import BottomNav from '../../components/myPage/BottomNav';
 import { ReactComponent as Settings } from '../../assets/icon/icon_settings.svg';
 import { ReactComponent as Profile0 } from '../../assets/icon/icon_profile0.svg';
@@ -12,6 +13,9 @@ import { ReactComponent as Checklist } from '../../assets/icon/icon_checklist.sv
 import { ReactComponent as TimeBoard } from '../../assets/icon/icon_timeBoard.svg';
 import { ReactComponent as ModalLine } from '../../assets/icon/icon_modal_line.svg';
 import axios from 'axios';
+import { editProfileImg, getMyInfoApi } from '../../api/userApi';
+
+import { CustomError } from '../../data/type';
 
 // 모달 컴포넌트
 const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
@@ -33,36 +37,27 @@ const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
     setIsModalOpen(true);
   }, []);
 
-  const token =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsImlhdCI6MTcwNDk5NTkzMSwiZXhwIjoxNzA1NjAwNzMxfQ.24gTBd8ecIiLtMsZjia6ixrfB_aq_nH8ojNpjwZ0s1Y';
+  const { mutate: tryEdit } = useMutation(
+    () => editProfileImg('PROFILE_' + (profileIndex + 1)),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+
+        onClose();
+      },
+      onError: (error: unknown) => {
+        console.log(error);
+        const customErr = error as CustomError;
+        if (customErr.response?.status === 500) {
+          console.log('오류가 발생하였습니다.');
+        }
+      },
+    },
+  );
 
   const changeProfile = () => {
     // 프로필 변경 API 호출
-
-    console.log('프로필 변경 성공하냐?');
-
-    axios
-      .patch(
-        'https://checkmate-domitory.shop/api/member/profile',
-        {
-          profileImageType: 'PROFILE_' + (profileIndex + 1),
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((response) => {
-        console.log('프로필 변경 성공');
-
-        // 프로필 변경 성공 시
-        onClose();
-      })
-      .catch((Error) => {
-        console.log(Error);
-        onClose();
-      });
+    tryEdit();
 
     // 프로필 변경 실패 시
     // alert('프로필 변경에 실패했습니다.');
@@ -151,31 +146,31 @@ const MyPage = () => {
   const token =
     'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsImlhdCI6MTcwNDk5NTkzMSwiZXhwIjoxNzA1NjAwNzMxfQ.24gTBd8ecIiLtMsZjia6ixrfB_aq_nH8ojNpjwZ0s1Y';
 
+  const { data, error, isLoading } = useQuery('getMyInfo', getMyInfoApi);
+
   useEffect(() => {
-    axios
-      .get('https://checkmate-domitory.shop/api/member/mypage', {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      })
-      .then((response) => {
-        const data = response.data.data;
+    if (data) {
+      console.log('Data:', data);
+      // 여기에서 데이터 처리 로직을 추가할 수 있습니다.
+      // data 객체 내에서 필요한 정보 추출
+      const { profileImg, name, major, gender, mbti } = data.data.data;
 
-        // data 객체 내에서 필요한 정보 추출
-        const { profileImg, name, major, gender, mbti } = data;
+      // state 업데이트
+      setProfileImg(profileImg);
+      setName(name);
+      setMajor(major);
+      setGender(gender);
+      setMbti(mbti.toUpperCase());
+    }
 
-        // state 업데이트
-        setProfileImg(profileImg);
-        setName(name);
-        setMajor(major);
-        setGender(gender);
-        setMbti(mbti.toUpperCase());
-      })
-      .catch((Error) => {
-        console.log(Error);
-      });
-  }, [showModal]);
-
+    if (error) {
+      console.error('Error:', error);
+      const customErr = error as CustomError;
+      if (customErr.response?.status === 500) {
+        console.log('오류가 발생하였습니다.');
+      }
+    }
+  }, [data, error, showModal]);
   return (
     <div className="w-full h-full flex flex-col items-center">
       <div className="w-full grow flex-col items-center overflow-y-auto scrollbar-hide">

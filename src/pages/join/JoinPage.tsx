@@ -15,7 +15,6 @@ const JoinPage = () => {
   const [isPersonalInfoChecked, setIsPersonalInfoChecked] = useState(false);
   const [isPersonalInfoProvidedChecked, setIsPersonalInfoProvidedChecked] =
     useState(false);
-  const [isEventBenefitChecked, setIsEventBenefitChecked] = useState(false);
 
   const onAllCheckClick = () => {
     setIsAllChecked(!isAllChecked);
@@ -27,13 +26,11 @@ const JoinPage = () => {
       setIsServiceChecked(true);
       setIsPersonalInfoChecked(true);
       setIsPersonalInfoProvidedChecked(true);
-      setIsEventBenefitChecked(true);
       setIsCanBeNext(true);
     } else {
       setIsServiceChecked(false);
       setIsPersonalInfoChecked(false);
       setIsPersonalInfoProvidedChecked(false);
-      setIsEventBenefitChecked(false);
     }
   };
 
@@ -45,9 +42,6 @@ const JoinPage = () => {
   };
   const changePersonalInfoProvidedChecked = (bool: boolean) => {
     setIsPersonalInfoProvidedChecked(bool);
-  };
-  const changeEventBenefitChecked = (bool: boolean) => {
-    setIsEventBenefitChecked(bool);
   };
 
   const [isCanBeNext, setIsCanBeNext] = useState(false);
@@ -62,13 +56,8 @@ const JoinPage = () => {
       isPersonalInfoChecked &&
       isPersonalInfoProvidedChecked;
     setIsCanBeNext(checkNext);
-    setIsAllChecked(checkNext && isEventBenefitChecked);
-  }, [
-    isServiceChecked,
-    isPersonalInfoChecked,
-    isPersonalInfoProvidedChecked,
-    isEventBenefitChecked,
-  ]);
+    setIsAllChecked(checkNext);
+  }, [isServiceChecked, isPersonalInfoChecked, isPersonalInfoProvidedChecked]);
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -108,11 +97,6 @@ const JoinPage = () => {
           text="(필수) 개인정보 제3자 제공 동의"
           checked={isPersonalInfoProvidedChecked}
           onClick={changePersonalInfoProvidedChecked}
-        />
-        <CheckBox
-          text="(선택) 이벤트 혜택 및 광고성 정보 수신 동의"
-          checked={isEventBenefitChecked}
-          onClick={changeEventBenefitChecked}
         />
       </div>
       <NextButton

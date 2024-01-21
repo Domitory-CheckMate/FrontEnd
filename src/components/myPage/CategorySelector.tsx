@@ -1,8 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ChecklistCheckBlock from './ChecklistCheckBlock';
 import ChecklistMultiCheckBlock from './ChecklistMultiCheckBlock';
 import { ReactComponent as Check } from '../../assets/icon/icon_check_primary.svg';
-import axios from 'axios';
+import { useLocation } from 'react-router-dom';
+import { useMutation, useQuery } from 'react-query';
+import { editChecklistApi, getChecklistApi } from '../../api/userApi';
+import { postChecklistApi } from '../../api/userApi';
+import { CustomError, checklistApiType } from '../../data/type';
+import { sleep } from 'react-query/types/core/utils';
 
 const CategorySelector = ({
   setEdit,
@@ -25,60 +30,95 @@ const CategorySelector = ({
   const noiseType = ['EARPHONE', 'OUTSIDE', 'SHORT', 'ANYWAY'];
   const sleepType = ['SNORING', 'GRINDING', 'TALKING', 'TURNING', 'NOTHING'];
 
-  // type NoiseLevelType = {
-  //   [key in (typeof noiseType)[number]]: number;
-  // };
+  const { state } = useLocation();
+  const { checklist } = state;
+  const [finalList, setFinalList] = useState<checklistApiType>(checklist);
 
-  // const generateNoiseLevelArray = (selectedTypes: string[]): NoiseLevelType => {
-  //   const initialNoiseLevel: NoiseLevelType = {
-  //     EARPHONE: 0,
-  //     OUTSIDE: 0,
-  //     SHORT: 0,
-  //     ANYWAY: 0,
-  //   };
+  // const token =
+  //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsImlhdCI6MTcwNDk5NTkzMSwiZXhwIjoxNzA1NjAwNzMxfQ.24gTBd8ecIiLtMsZjia6ixrfB_aq_nH8ojNpjwZ0s1Y';
 
-  //   selectedTypes.forEach((type) => {
-  //     if (initialNoiseLevel.hasOwnProperty(type)) {
-  //       initialNoiseLevel[type] = 1;
-  //     }
-  //   });
+  const onHandleClickEdit = () => {
+    const sleepGridingType = sleepingHabit[1] == 1 ? 'TRUE' : 'FALSE';
+    const sleepSnoreType = sleepingHabit[0] == 1 ? 'TRUE' : 'FALSE';
+    const sleepTalkingType = sleepingHabit[2] == 1 ? 'TRUE' : 'FALSE';
+    const sleepTurningType = sleepingHabit[3] == 1 ? 'TRUE' : 'FALSE';
 
-  //   return initialNoiseLevel;
-  // };
+    const myCheckList: checklistApiType = {
+      cleanType: cleanType[cleaningFrequency] as checklistApiType['cleanType'],
+      drinkType: drinkType[drinkingFrequency] as checklistApiType['drinkType'],
+      homeType: homeType[hometown] as checklistApiType['homeType'],
+      lifePatternType: lifePatternType[
+        lifestylePattern
+      ] as checklistApiType['lifePatternType'],
+      noiseType: noiseType[noiseLevel[0]] as checklistApiType['noiseType'],
+      smokeType: smokeType[smokingPreference] as checklistApiType['smokeType'],
+      sleepGridingType:
+        sleepGridingType as checklistApiType['sleepGridingType'],
+      sleepSnoreType: sleepSnoreType as checklistApiType['sleepSnoreType'],
+      sleepTalkingType:
+        sleepTalkingType as checklistApiType['sleepTalkingType'],
+      sleepTurningType:
+        sleepTurningType as checklistApiType['sleepTurningType'],
+    };
 
-  const token =
-    'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsImlhdCI6MTcwNDk5NTkzMSwiZXhwIjoxNzA1NjAwNzMxfQ.24gTBd8ecIiLtMsZjia6ixrfB_aq_nH8ojNpjwZ0s1Y';
-
-  // 다른 카테고리의 상태 관리 변수들 추가
-  const handleEditClick = () => {
-    // setEdit 함수 호출
-    axios
-      .patch(
-        'https://checkmate-domitory.shop/api/checklist/my',
-        {
-          smokeType: smokeType[smokingPreference],
-          cleanType: cleanType[cleaningFrequency],
-          drinkType: drinkType[drinkingFrequency],
-          homeType: homeType[hometown],
-          lifePatternType: lifePatternType[lifestylePattern],
-          // noiseType: noiseType[noiseLevel],
-          // sleepType: sleepType[sleepingHabit],
-        },
-
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        },
-      )
-      .then((response) => {
-        const data = response.data.data;
-      })
-      .catch((Error) => {
-        console.log(Error);
-      });
-    setEdit(false);
+    setFinalList(myCheckList);
+    tryChecklistEdit();
   };
+
+  const { data, error, isLoading } = useQuery('checklistData', getChecklistApi);
+
+  useEffect(() => {
+    if (data) {
+      console.log('Data:', data);
+      // 여기에서 데이터 처리 로직을 추가할 수 있습니다.
+      setCleaningFrequency(cleanType.indexOf(data.data.data.cleanType));
+      setDrinkingFrequency(drinkType.indexOf(data.data.data.drinkType));
+      setHometown(homeType.indexOf(data.data.data.homeType));
+      setLifestylePattern(
+        lifePatternType.indexOf(data.data.data.lifePatternType),
+      );
+      setNoiseLevel([noiseType.indexOf(data.data.data.noiseType), 0, 0, 0]);
+      setSmokingPreference(smokeType.indexOf(data.data.data.smokeType));
+      setSleepingHabit([
+        data.data.data.sleepSnoreType == 'TRUE' ? 1 : 0,
+        data.data.data.sleepGridingType == 'TRUE' ? 1 : 0,
+        data.data.data.sleepTalkingType == 'TRUE' ? 1 : 0,
+        data.data.data.sleepTurningType == 'TRUE' ? 1 : 0,
+        data.data.data.sleepSnoreType == 'FALSE' &&
+        data.data.data.sleepGridingType == 'FALSE' &&
+        data.data.data.sleepTalkingType == 'FALSE' &&
+        data.data.data.sleepTurningType == 'FALSE'
+          ? 1
+          : 0,
+      ]);
+
+      setFinalList(data.data.data);
+    }
+
+    if (error) {
+      console.error('Error:', error);
+      const customErr = error as CustomError;
+      if (customErr.response?.status === 500) {
+        console.log('오류가 발생하였습니다.');
+      }
+    }
+  }, [data, error, setEdit]);
+
+  const { mutate: tryChecklistEdit } = useMutation(
+    () => editChecklistApi(finalList),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: (error: unknown) => {
+        console.log(error);
+        const customErr = error as CustomError;
+        if (customErr.response?.status === 500) {
+          console.log('오류가 발생하였습니다.');
+        }
+      },
+    },
+  );
 
   const handleSmokingPreferenceChange = (selectedOption: number) => {
     setSmokingPreference(selectedOption);
@@ -213,7 +253,7 @@ const CategorySelector = ({
 
       <div className="bg-white  px-[16px] pt-[11px] pb-[29px]">
         <button
-          onClick={handleEditClick}
+          onClick={onHandleClickEdit}
           className="w-full h-[50px]  bg-primary text-white rounded-[27px]"
         >
           {' '}
