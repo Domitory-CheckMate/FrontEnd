@@ -1,10 +1,10 @@
 import React from 'react';
-import { articleType } from '../../data/type';
+import { articleListType } from '../../data/type';
 import { ReactComponent as Bookmark } from '../../assets/icon/icon_bookmark_fill.svg';
 import Divider from './Divider';
 import { useNavigate } from 'react-router-dom';
 
-const ArticleItem = ({ article }: { article: articleType }) => {
+const ArticleItem = ({ article }: { article: articleListType }) => {
   const navigate = useNavigate();
 
   const articleClickHandler = (id: number) => {
@@ -13,15 +13,21 @@ const ArticleItem = ({ article }: { article: articleType }) => {
 
   return (
     <div
-      onClick={() => articleClickHandler(article.id)}
+      onClick={() => articleClickHandler(article.postId)}
       className="w-full flex flex-col bg-cardBg rounded-[20px] pt-[13px] pb-4 cursor-pointer"
     >
       <div className="w-full flex flex-col items-start pl-[27px] pr-[13px]">
         <div className="w-full flex items-center justify-between text-[10px]">
-          <div className="text-primary">{article.state}</div>
+          <div className="text-primary">
+            {article.postState === '모집완료'
+              ? article.postState
+              : article.remainDate < 0
+              ? '기간만료'
+              : article.postState}
+          </div>
           <div className="flex items-center gap-x-1 text-white">
-            <div className="flex items-center justify-center px-2 py-1 bg-primaryLight rounded-full">{`D-${article.dday}`}</div>
-            <div className="flex items-center justify-center px-2 py-1 bg-primary rounded-full">{`${article.percent}% 일치`}</div>
+            <div className="flex items-center justify-center px-2 py-1 bg-primaryLight rounded-full">{`D-${article.remainDate}`}</div>
+            <div className="flex items-center justify-center px-2 py-1 bg-primary rounded-full">{`${article.accuracy}% 일치`}</div>
           </div>
         </div>
         <div className="text-[18px] font-semibold mt-[10px]">
@@ -29,11 +35,11 @@ const ArticleItem = ({ article }: { article: articleType }) => {
         </div>
         <div className="w-full flex items-center justify-between mt-[8px]">
           <div className="text-[14px] font-medium text-[#888888] mb-[6px]">
-            #{article.keywords.join(' #')}
+            {`#${article.importantKey} #${article.similarityKey}`}
           </div>
           <div className="flex items-center gap-x-[6px]">
             <Bookmark />
-            <div className="text-[11px] text-[#777]">{article.bookmark}</div>
+            <div className="text-[11px] text-[#777]">{article.scrapCount}</div>
           </div>
         </div>
       </div>

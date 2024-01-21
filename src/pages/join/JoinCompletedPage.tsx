@@ -1,9 +1,11 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as Welcome } from '../../assets/icon/welcome.svg';
 
 const JoinCompletedPage = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const { name } = state;
 
   return (
     <div className="w-full h-full flex flex-col justify-start ">
@@ -11,7 +13,7 @@ const JoinCompletedPage = () => {
         회원가입 완료!
       </div>
       <div className="mt-[16px] px-4 text-[#646464] text-xl font-normal leading-[30px]">
-        OOO님, 내가 찾던 룸메이트를{' '}
+        {name}님, 내가 찾던 룸메이트를{' '}
       </div>
       <div className="px-4 text-[#646464] text-xl font-normal leading-[30px]">
         체크메이트에서 쉽게 찾아보세요.

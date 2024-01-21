@@ -28,6 +28,8 @@ import WritePage from './pages/write/WritePage';
 import KeywordPage from './pages/write/KeywordPage';
 import ChatPage from './pages/chat/ChatPage';
 import ChatRoomPage from './pages/chat/ChatRoomPage';
+import { useEffect } from 'react';
+import { getAccessToken, getMemberId } from './api/manageLocalStorage';
 
 function App() {
   // const [client, changeClient] = useState<Client | null>(null);
@@ -99,6 +101,25 @@ function App() {
   //   }
   // }, [canGetPrev]);
 
+  useEffect(() => {
+    const token = getAccessToken();
+    const memberId = getMemberId();
+    if (
+      (token === null || memberId === null) &&
+      window.location.pathname !== '/' &&
+      window.location.pathname !== '/login' &&
+      window.location.pathname !== '/login/pw' &&
+      window.location.pathname !== '/join' &&
+      window.location.pathname !== '/join/detail' &&
+      window.location.pathname !== '/join/info' &&
+      window.location.pathname !== '/join/mbti' &&
+      window.location.pathname !== '/join/completed' &&
+      window.location.pathname !== '/onboarding'
+    ) {
+      window.location.href = '/login';
+    }
+  }, []);
+
   return (
     <Router>
       <Routes>
@@ -108,13 +129,13 @@ function App() {
         <Route path="/join" element={<JoinPage />} />
         <Route path="/join/detail" element={<JoinDetailPage />} />
         <Route path="/join/info" element={<JoinInfoPage />} />
+        <Route path="/join/mbti" element={<OnboardingPage2 />} />
         <Route path="/join/completed" element={<JoinCompletedPage />} />
         <Route path="/onboarding" element={<OnboardingPage />} />
         <Route path="/main" element={<MainPage client={null} />} />
         <Route path="/main/keyword" element={<KeywordMatchingPage />} />
         <Route path="/main/mate" element={<MateMatchingPage />} />
         <Route path="/article/:id" element={<ArticlePage />} />
-        <Route path="/onboarding/2" element={<OnboardingPage2 />} />
         <Route path="/my-page" element={<MyPage />} />
         <Route path="/membership" element={<MembershipPage />} />
         <Route path="/checklist" element={<ChecklistPage />} />

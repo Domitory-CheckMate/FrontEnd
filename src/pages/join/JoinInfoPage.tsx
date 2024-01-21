@@ -3,11 +3,12 @@ import { useState, useEffect } from 'react';
 import HeaderBar from '../../components/joinPage/HeaderBar';
 import NextButton from '../../components/joinPage/NextButton';
 import { useNavigate } from 'react-router-dom';
-import { ReactComponent as Check } from '../../assets/icon/icon_check.svg';
+import { ReactComponent as Check } from '../../assets/icon/icon_check_gray.svg';
 import { useMutation } from 'react-query';
 import { validateEmailApi } from '../../api/userApi';
-import { CustomError } from '../../data/type';
+import { CustomError, joinInfoType } from '../../data/type';
 import { ReactComponent as Search } from '../../assets/icon/icon_search_black.svg';
+import { ReactComponent as CheckWhite } from '../../assets/icon/icon_check_white.svg';
 
 // 모달 컴포넌트
 const AuthCheckModal = ({ onClose }: { onClose: () => void }) => {
@@ -46,9 +47,19 @@ const CheckLine = ({ text, check }: { text: string; check: boolean }) => {
 
 const JoinInfoPage = () => {
   const navigate = useNavigate();
+  const [joinInfo, setJoinInfo] = useState<joinInfoType>({
+    email: '',
+    password: '',
+    name: '',
+    school: '가천',
+    major: '',
+    genderType: 'MAN',
+    mbtiType: '',
+  });
   const [name, setName] = useState<string>('');
   const [email, setEmail] = useState<string>('');
   const [major, setMajor] = useState<string>('');
+  const [gender, setGender] = useState<'MAN' | 'WOMAN'>('MAN');
   const emailContentArray = [
     '학교 도메인과 연동된 이메일을 입력해주세요.',
     '이미 가입된 이메일입니다.',
@@ -109,13 +120,13 @@ const JoinInfoPage = () => {
     : 'password';
 
   const sentAuthNum = () => {
-    setIsAuthNumSent(true);
+    setEmailComment('인증번호를 전송하였습니다.');
     sendEmailCode();
-    setSentAuthNumComment('재전송');
   };
 
   const sentAuthNumAgain = () => {
     setIsAuthNumSentAgain(true);
+    sendEmailCode();
   };
 
   const checkAuthNum = () => {
@@ -176,12 +187,19 @@ const JoinInfoPage = () => {
     // 비밀번호 일치 확인
     if (password === confirmedPassword && confirmedPassword.length > 0) {
       setIsPasswordMatch(true);
+      setJoinInfo((prev) => ({ ...prev, password: password }));
     } else {
       setIsPasswordMatch(false);
     }
 
     // 모든 조건이 만족할 때 다음 버튼 활성화
-    if (isNameValid && isEmailValid && isPasswordValid && isPasswordMatch) {
+    if (
+      isNameValid &&
+      isEmailValid &&
+      isPasswordValid &&
+      isPasswordMatch &&
+      major !== ''
+    ) {
       setIsCanBeNext(true);
     } else {
       setIsCanBeNext(false);
@@ -190,12 +208,14 @@ const JoinInfoPage = () => {
 
   useEffect(() => {
     setIsNameValid(name.length > 0);
+    setJoinInfo((prev) => ({ ...prev, name: name }));
   }, [name]);
 
   useEffect(() => {
     // 이메일 확인
     if (email.length > 0 && email.endsWith('@gachon.ac.kr')) {
       setEmailComment('');
+      setJoinInfo((prev) => ({ ...prev, email: email }));
       setIsEmailValid(true);
     } else {
       setEmailComment(emailContentArray[0]);
@@ -245,16 +265,27 @@ const JoinInfoPage = () => {
     }
   }, [isInputValid, isAuthNumValid, isPasswordMatch]);
 
+  useEffect(() => {
+    setJoinInfo((prev) => ({ ...prev, major: major }));
+  }, [major]);
+
+  useEffect(() => {
+    setJoinInfo((prev) => ({ ...prev, genderType: gender }));
+  }, [gender]);
+
   const { mutate: sendEmailCode } = useMutation(() => validateEmailApi(email), {
     onSuccess: (data) => {
       console.log(data);
       setOriginAuth(data.data.data.code);
+      setIsAuthNumSent(true);
+      setSentAuthNumComment('재전송');
     },
     onError: (error: unknown) => {
       console.log(error);
       const customErr = error as CustomError;
       if (customErr.response?.status === 409) {
-        setEmailComment(emailContentArray[1]);
+        console.log('이미 가입된 이메일입니다.');
+        setEmailComment('이미 가입된 이메일입니다.');
       }
     },
   });
@@ -346,16 +377,11 @@ const JoinInfoPage = () => {
               </div>
             </div>
           )}
-          {isAuthNumSent &&
-            (isAuthNumValid ? (
-              <div className="text-xs mt-[8px] text-[#FF6C3E]">
-                인증번호가 확인되었습니다.
-              </div>
-            ) : (
-              <div className="text-xs mt-[8px] text-[#FF6C3E]">
-                인증번호가 일치하지 않습니다.
-              </div>
-            ))}
+          {isAuthNumValid && (
+            <div className="text-xs mt-[8px] text-[#FF6C3E]">
+              인증번호가 확인되었습니다.
+            </div>
+          )}
         </div>
         <div className="flex flex-col">
           <div className="font-semibold text-sm ">비밀번호</div>
@@ -419,6 +445,43 @@ const JoinInfoPage = () => {
             />
           </div>
         </div>
+        <div className="flex justify-between items-center">
+          <div className="font-semibold text-sm ">성별</div>
+          <div className="flex gap-x-[23px] items-center">
+            <div
+              className="flex items-center gap-x-[11px] text-semibold text-black cursor-pointer"
+              onClick={() => setGender('MAN')}
+            >
+              <div
+                className={
+                  'flex w-6 h-6 rounded-full items-center justify-center ' +
+                  (gender === 'MAN'
+                    ? 'bg-primary'
+                    : 'bg-white border border-solid border-grayScale2')
+                }
+              >
+                <CheckWhite />
+              </div>
+              남성
+            </div>
+            <div
+              className="flex items-center gap-x-[11px] text-semibold text-black cursor-pointer"
+              onClick={() => setGender('WOMAN')}
+            >
+              <div
+                className={
+                  'flex w-6 h-6 rounded-full items-center justify-center ' +
+                  (gender === 'WOMAN'
+                    ? 'bg-primary'
+                    : 'bg-white border border-solid border-grayScale2')
+                }
+              >
+                <CheckWhite />
+              </div>
+              여성
+            </div>
+          </div>
+        </div>
       </div>
       {isAuthNumSent === false ? null : (
         <div className="w-full px-4 absolute bottom-[124px]">
@@ -439,9 +502,11 @@ const JoinInfoPage = () => {
         </div>
       )}
       <NextButton
-        text="회원가입"
+        text="다음"
         isCanBeNext={isCanBeNext}
-        onClick={() => navigate('/join/completed')}
+        onClick={() =>
+          navigate('/join/mbti', { state: { joinInfo: joinInfo } })
+        }
       />
       {showFailModal && <AuthCheckModal onClose={handleCloseModal} />}
     </div>
