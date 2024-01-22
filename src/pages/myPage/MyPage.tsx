@@ -107,7 +107,7 @@ const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-const MyPage = () => {
+const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => {
     setShowModal(false);
@@ -180,7 +180,7 @@ const MyPage = () => {
         </div>
       </div>
 
-      <BottomNav state="user" />
+      <BottomNav state="user" notReadCnt={notReadCnt} />
       {showModal && <ChangeProfileModal onClose={handleCloseModal} />}
     </div>
   );

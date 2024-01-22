@@ -6,7 +6,7 @@ export const connectClient = (
 ) => {
   try {
     const client = new Client({
-      brokerURL: 'wss://checkmate-domitory.shop/ws',
+      brokerURL: process.env.REACT_APP_SOCKET_URL,
       connectHeaders: {
         Authorization: `Bearer ${token}`,
       },
@@ -21,6 +21,10 @@ export const connectClient = (
     client.onConnect = (frame) => {
       client.subscribe('/queue/user/1', callback);
       console.log('Connected: ' + frame);
+    };
+
+    client.onDisconnect = (frame) => {
+      console.log('Disconnected: ' + frame);
     };
 
     client.activate();
@@ -70,6 +74,7 @@ export const enterRoomPublish = (
   token: string,
   senderId: number,
   receiverId: number,
+  callback: (message: { body: string }) => void,
 ) => {
   try {
     client.subscribe(
@@ -79,13 +84,6 @@ export const enterRoomPublish = (
           : `${senderId}+${receiverId}`),
       callback,
     );
-    // 퇴장 시 구독 취소 해야 됨
-    // client.unsubscribe(
-    //   `/queue/chat/` +
-    //     (senderId > receiverId
-    //       ? `${receiverId}+${senderId}`
-    //       : `${senderId}+${receiverId}`),
-    // );
     client.publish({
       headers: {
         Authorization: `Bearer ${token}`,
@@ -95,6 +93,23 @@ export const enterRoomPublish = (
         otherUserId: receiverId,
       }),
     });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const unSubscribeChatRoom = (
+  client: Client,
+  senderId: number,
+  receiverId: number,
+) => {
+  try {
+    client.unsubscribe(
+      `/queue/chat/` +
+        (senderId > receiverId
+          ? `${receiverId}+${senderId}`
+          : `${senderId}+${receiverId}`),
+    );
   } catch (error) {
     console.log(error);
   }
@@ -136,6 +151,19 @@ export const sendMessagePublish = (
       body: JSON.stringify({
         content: message,
       }),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getNotReadCntPublish = (client: Client, token: string) => {
+  try {
+    client.publish({
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      destination: '/app/not-read',
     });
   } catch (error) {
     console.log(error);

@@ -2,7 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import HeaderBar from '../../components/joinPage/HeaderBar';
 import NextButton from '../../components/joinPage/NextButton';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as Check } from '../../assets/icon/icon_check_gray.svg';
 import { useMutation } from 'react-query';
 import { validateEmailApi } from '../../api/userApi';
@@ -47,19 +47,22 @@ const CheckLine = ({ text, check }: { text: string; check: boolean }) => {
 
 const JoinInfoPage = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  const defaultJoinInfo = state.joinInfo;
   const [joinInfo, setJoinInfo] = useState<joinInfoType>({
-    email: '',
-    password: '',
-    name: '',
-    school: '가천',
-    major: '',
-    genderType: 'MAN',
-    mbtiType: '',
+    email: defaultJoinInfo.email,
+    password: defaultJoinInfo.password,
+    name: defaultJoinInfo.name,
+    school: defaultJoinInfo.school,
+    major: defaultJoinInfo.major,
+    genderType: defaultJoinInfo.genderType,
+    mbtiType: defaultJoinInfo.mbtiType,
   });
-  const [name, setName] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [major, setMajor] = useState<string>('');
-  const [gender, setGender] = useState<'MAN' | 'WOMAN'>('MAN');
+  const [name, setName] = useState<string>(defaultJoinInfo.name);
+  const [email, setEmail] = useState<string>(defaultJoinInfo.email);
+  const [gender, setGender] = useState<'MAN' | 'WOMAN'>(
+    defaultJoinInfo.genderType,
+  );
   const emailContentArray = [
     '학교 도메인과 연동된 이메일을 입력해주세요.',
     '이미 가입된 이메일입니다.',
@@ -68,7 +71,7 @@ const JoinInfoPage = () => {
     emailContentArray[0],
   );
 
-  const [password, setPassword] = useState<string>('');
+  const [password, setPassword] = useState<string>(defaultJoinInfo.password);
   const [confirmedPassword, setConfirmedPassword] = useState<string>('');
   const [isNameValid, setIsNameValid] = useState<boolean>(false);
   const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
@@ -198,7 +201,7 @@ const JoinInfoPage = () => {
       isEmailValid &&
       isPasswordValid &&
       isPasswordMatch &&
-      major !== ''
+      joinInfo.major !== ''
     ) {
       setIsCanBeNext(true);
     } else {
@@ -266,10 +269,6 @@ const JoinInfoPage = () => {
   }, [isInputValid, isAuthNumValid, isPasswordMatch]);
 
   useEffect(() => {
-    setJoinInfo((prev) => ({ ...prev, major: major }));
-  }, [major]);
-
-  useEffect(() => {
     setJoinInfo((prev) => ({ ...prev, genderType: gender }));
   }, [gender]);
 
@@ -301,6 +300,7 @@ const JoinInfoPage = () => {
             type="text"
             placeholder="이름"
             onChange={(e) => setName(e.target.value)}
+            value={name}
           />
         </div>
         <div className="flex flex-col">
@@ -315,6 +315,7 @@ const JoinInfoPage = () => {
                 isAuthNumSent ? '학교 이메일' : '예)checkmate@gachon.ac.kr'
               }
               onChange={(e) => setEmail(e.target.value)}
+              value={email}
             />
             <div className="flex items-center justify-center mr-[8px] py-[10px]">
               <button
@@ -390,6 +391,7 @@ const JoinInfoPage = () => {
               className="w-full py-4 outline-none text-base placeholder:text-defaultTextGray"
               type={passwordInputType}
               placeholder="8~20자 대소문자 영문, 숫자, 특수문자"
+              value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
             <div
@@ -413,6 +415,7 @@ const JoinInfoPage = () => {
               className="w-full py-4 outline-none text-base placeholder:text-defaultTextGray"
               type={confirmedPasswordInputType}
               placeholder="비밀번호 확인"
+              value={confirmedPassword}
               onChange={(e) => setConfirmedPassword(e.target.value)}
             />
             <div
@@ -431,18 +434,20 @@ const JoinInfoPage = () => {
         </div>
         <div className="flex flex-col">
           <div className="font-semibold text-sm ">학과</div>
-          <div className="w-full flex items-center border-b border-[#CCCCCC]">
+          <div
+            className="w-full flex items-center border-b border-grayScale3 cursor-pointer"
+            onClick={() =>
+              navigate('/join/major', { state: { joinInfo: joinInfo } })
+            }
+          >
             <div
               className={`w-full py-4 text-base ${
-                major.length > 0 ? 'text-black' : 'text-grayScale3'
+                joinInfo.major.length > 0 ? 'text-black' : 'text-grayScale3'
               }`}
             >
-              {major.length > 0 ? major : '이름으로 찾기'}
+              {joinInfo.major.length > 0 ? joinInfo.major : '이름으로 찾기'}
             </div>
-            <Search
-              className="flex items-center justify-center mr-2 cursor-pointer"
-              onClick={() => setMajor('소프트웨어전공')}
-            />
+            <Search className="flex items-center justify-center mr-2 cursor-pointer" />
           </div>
         </div>
         <div className="flex justify-between items-center">
