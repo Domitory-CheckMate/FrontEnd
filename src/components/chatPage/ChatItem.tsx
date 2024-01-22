@@ -1,48 +1,60 @@
 import React from 'react';
 
-import { ReactComponent as Img0 } from '../../assets/icon/icon_chat_profile_0.svg';
-
 const ChatItem = ({
   img,
   name,
-  content,
-  period,
-  info,
-  newChat,
+  department,
+  gender,
+  endDate,
+  unRead,
+  lastMessage,
+  onClickHandler,
 }: {
   img: string;
   name: string;
-  content: string;
-  period: string;
-  info: string;
-  newChat: number;
+  department: string;
+  gender: 'MAN' | 'WOMAN';
+  endDate: string | null;
+  unRead: number;
+  lastMessage: string;
+  onClickHandler: () => void;
 }) => {
-  console.log(img);
+  const convertDate = (date: string) => {
+    const today = new Date();
+    const end = new Date(date);
+    const timeDiff = end.getTime() - today.getTime();
+    const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    return `D-${dayDiff}`;
+  };
   return (
-    <div className="flex w-full justify-center items-center py-[14px] border-b-[1px] border-[#F7F7F7]">
-      <div className="mr-[16px] w-[19px] h-[19px] rounded-full border-[1px] border-[#E5E5E5]"></div>
-      <div className="w-[52px] h-[52px] mr-[10px]">
-        <Img0 />
-      </div>
-      <div className="flex grow flex-col gap-[8px]">
-        <div className="flex items-center">
-          <div className="text-black mr-[7px] text-[12px] font-semibold ">
-            {' '}
-            {name}{' '}
-          </div>
-          <div className="mr-[8px] text-[10px] text-[#999]"> {info} </div>
-          <div className="rounded-[18.5px] flex justify-center items-center bg-[#FF9D7E] text-white px-[9px] py-[4px] text-[10px]">
-            {' '}
-            {period}{' '}
-          </div>
+    <div
+      className="shrink-0 flex w-full justify-center items-center gap-x-2.5 py-[15px] border-b border-solid border-grayScale1 last:border-b-0 cursor-pointer"
+      onClick={onClickHandler}
+    >
+      <img
+        src={img}
+        alt="profile"
+        className="w-[52px] h-[52px] rounded-full object-cover"
+      />
+      <div className="grow flex flex-col gap-y-2.5 items-start justify-center">
+        <div className="w-full flex gap-x-2 justify-start items-center">
+          <div className="text-xs font-semibold">{name}</div>
+          <div className="text-[10px] text-grayScale4">{`${department} ・ ${
+            gender === 'MAN' ? '남자' : '여자'
+          }`}</div>
+          {endDate !== null && (
+            <div className="flex justify-center items-center bg-primary text-white text-[10px] rounded-2xl px-2 py-1">
+              {convertDate(endDate)}
+            </div>
+          )}
         </div>
-        <div className="text-[12px] w-full text-[#666] font-medium">
-          {content}
+        <div className="w-full flex justify-start items-center text-xs text-grayScale5">
+          {lastMessage}
         </div>
       </div>
-      {newChat > 0 && (
-        <div className="w-[18px] h-[18px] rounded-full bg-primary text-white text-[8px] font-normal flex items-center justify-center">
-          {newChat.toString()}
+      {unRead > 0 && (
+        <div className="w-[18px] h-[18px] rounded-full bg-primary text-white text-xs flex justify-center items-center">
+          {unRead}
         </div>
       )}
     </div>

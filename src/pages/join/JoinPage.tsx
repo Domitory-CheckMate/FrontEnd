@@ -93,7 +93,21 @@ const JoinPage = () => {
       <NextButton
         text="다음"
         isCanBeNext={isCanBeNext}
-        onClick={() => navigate('/join/info')}
+        onClick={() =>
+          navigate('/join/info', {
+            state: {
+              joinInfo: {
+                email: '',
+                password: '',
+                name: '',
+                school: '가천',
+                major: '',
+                genderType: 'MAN',
+                mbtiType: '',
+              },
+            },
+          })
+        }
       />
     </div>
   );

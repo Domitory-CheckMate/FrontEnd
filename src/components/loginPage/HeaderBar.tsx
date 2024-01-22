@@ -8,7 +8,7 @@ const HeaderBar = ({ text }: { text: string }) => {
     <div className="shrink-0 h-[90px] flex justify-center items-end w-full px-4 pb-3">
       <div className="w-full flex justify-center items-center relative">
         <Prev
-          className="absolute inset-y-0 left-4 cursor-pointer"
+          className="absolute inset-y-0 left-0 cursor-pointer"
           onClick={() => navigate(-1)}
         />
         <div className="text-[18px] font-bold">{text}</div>

@@ -14,6 +14,11 @@ export type mbtiType = {
   fourth: string;
 };
 
+export type departmentType = {
+  department: string;
+  college: string;
+};
+
 export type articleStateType = '모집중' | '모집완료';
 
 export type userType = {
@@ -137,6 +142,21 @@ export const convertNumToOrder: Record<string, orderType> = {
   '4': '저장 많은 순',
 };
 
+export type genderType = '남자' | '여자';
+
+export const convertGenderToNum: Record<genderType, string> = {
+  남자: '1',
+  여자: '2',
+};
+
+export type dormitoryType = '1기숙사' | '2기숙사' | '3기숙사';
+
+export const convertDormitoryToNum: Record<dormitoryType, string> = {
+  '1기숙사': '1',
+  '2기숙사': '2',
+  '3기숙사': '3',
+};
+
 export type keywordCardType = {
   tag: string;
   title: string;
@@ -155,3 +175,10 @@ export type joinInfoType = {
   genderType: 'MAN' | 'WOMAN';
   mbtiType: string;
 };
+
+export interface msgItemType {
+  content: string;
+  isRead: boolean;
+  sendTime: string;
+  userId: number;
+}

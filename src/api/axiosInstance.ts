@@ -2,7 +2,7 @@ import axios from 'axios';
 import { getAccessToken } from './manageLocalStorage';
 
 export const baseAxios = axios.create({
-  baseURL: 'https://checkmate-domitory.shop/api',
+  baseURL: process.env.REACT_APP_API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -11,7 +11,7 @@ export const baseAxios = axios.create({
 });
 
 export const authAxios = axios.create({
-  baseURL: 'https://checkmate-domitory.shop/api',
+  baseURL: process.env.REACT_APP_API_URL,
   timeout: 10000,
   headers: {
     'Content-Type': 'application/json',
@@ -22,7 +22,6 @@ export const authAxios = axios.create({
 authAxios.interceptors.request.use(
   (config) => {
     const token = getAccessToken();
-    console.log('AUTH Axios : ', token);
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }

@@ -12,6 +12,16 @@ export const validateEmailApi = async (email: string) => {
 
 /**
  *
+ * @param univ
+ * @param searchText
+ * @returns 학과 검색 결과
+ */
+export const searchDepartmentApi = async (univ: string, searchText: string) => {
+  return baseAxios.get(`/department?univ=${univ}&searchText=${searchText}`);
+};
+
+/**
+ *
  * @param joinInfo
  * @returns 멤버 아이디, 네임, 액세스 토큰, 리프레시 토큰
  * 회원가입 성공시 로컬 스토리지에 멤버 아이디, 액세스 토큰, 리프레시 토큰 저장
