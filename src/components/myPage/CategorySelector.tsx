@@ -20,29 +20,67 @@ const CategorySelector = ({
   const [sleepingHabit, setSleepingHabit] = useState([0, 0, 0, 0, 0]);
   const [drinkingFrequency, setDrinkingFrequency] = useState(-1);
   const [hometown, setHometown] = useState(-1);
-  const [noiseLevel, setNoiseLevel] = useState([0, 0, 0, 0]);
+  const [earphone, setEarphone] = useState(-1);
+  const [phone, setPhone] = useState(-1);
+
+  const [isFirst, setIsFirst] = useState(true);
 
   const smokeType = ['NO', 'YES'];
   const cleanType = ['RARELY', 'SOMETIMES', 'OFTEN', 'USUALLY', 'ALWAYS'];
   const drinkType = ['NEVER', 'SOMETIMES', 'OFTEN', 'ALWAYS'];
   const homeType = ['RARELY', 'SOMETIMES', 'OFTEN', 'ALWAYS'];
   const lifePatternType = ['MORNING', 'EVENING'];
-  const noiseType = ['EARPHONE', 'OUTSIDE', 'SHORT', 'ANYWAY'];
-  const sleepType = ['SNORING', 'GRINDING', 'TALKING', 'TURNING', 'NOTHING'];
+  const callType = ['OUTSIDE', 'INSIDE', 'ANYWAY'];
+  const earphoneType = ['NEED', 'NOT_NEED'];
 
-  const { state } = useLocation();
-  const { checklist } = state;
-  const [finalList, setFinalList] = useState<checklistApiType>(checklist);
+  const smokeTypeKor = ['흡연자 선호', '비흡연자 선호'];
+  const lifePatternTypeKor = ['아침형 인간', '저녁형 인간'];
+  const cleanTypeKor = [
+    '매일매일',
+    '1주일에 3~4번',
+    '1주에 한 번',
+    '2주에 1번',
+    '한달에 한 번',
+  ];
+  const drinkTypeKor = ['안마심', '1주에 2~3번', '1주에 4~5번', '매일'];
+  const homeTypeKor = ['매일', '1~2주에 한번', '1주에 한 번', '2주에 한 번'];
+  const earphoneTypeKor = ['이어폰 착용', '상관 없음'];
+  const callTypeKor = ['통화는 밖에서', '5분 이내는 안에서', '상관 없음'];
+  const sleepTypeKor = ['코골이', '이갈이', '잠꼬대', '뒤척임', '없음'];
 
-  // const token =
-  //   'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxNSIsImlhdCI6MTcwNDk5NTkzMSwiZXhwIjoxNzA1NjAwNzMxfQ.24gTBd8ecIiLtMsZjia6ixrfB_aq_nH8ojNpjwZ0s1Y';
+  const [finalList, setFinalList] = useState<checklistApiType>();
 
   const onHandleClickEdit = () => {
+    if (
+      smokingPreference == -1 ||
+      lifestylePattern == -1 ||
+      cleaningFrequency == -1 ||
+      drinkingFrequency == -1 ||
+      hometown == -1 ||
+      earphone == -1 ||
+      phone == -1 ||
+      (sleepingHabit[0] == 0 &&
+        sleepingHabit[1] == 0 &&
+        sleepingHabit[2] == 0 &&
+        sleepingHabit[3] == 0 &&
+        sleepingHabit[4] == 0)
+    ) {
+    } else {
+      if (isFirst) {
+        tryChecklistCreate();
+      } else {
+        tryChecklistEdit();
+      }
+    }
+  };
+
+  useEffect(() => {
     const sleepGridingType = sleepingHabit[1] == 1 ? 'TRUE' : 'FALSE';
     const sleepSnoreType = sleepingHabit[0] == 1 ? 'TRUE' : 'FALSE';
     const sleepTalkingType = sleepingHabit[2] == 1 ? 'TRUE' : 'FALSE';
     const sleepTurningType = sleepingHabit[3] == 1 ? 'TRUE' : 'FALSE';
 
+    console.log(cleanType[cleaningFrequency]);
     const myCheckList: checklistApiType = {
       cleanType: cleanType[cleaningFrequency] as checklistApiType['cleanType'],
       drinkType: drinkType[drinkingFrequency] as checklistApiType['drinkType'],
@@ -50,7 +88,8 @@ const CategorySelector = ({
       lifePatternType: lifePatternType[
         lifestylePattern
       ] as checklistApiType['lifePatternType'],
-      noiseType: noiseType[noiseLevel[0]] as checklistApiType['noiseType'],
+      callType: callType[phone] as checklistApiType['callType'],
+      earPhoneType: earphoneType[earphone] as checklistApiType['earPhoneType'],
       smokeType: smokeType[smokingPreference] as checklistApiType['smokeType'],
       sleepGridingType:
         sleepGridingType as checklistApiType['sleepGridingType'],
@@ -60,34 +99,65 @@ const CategorySelector = ({
       sleepTurningType:
         sleepTurningType as checklistApiType['sleepTurningType'],
     };
-
     setFinalList(myCheckList);
-    tryChecklistEdit();
-  };
+  }, [
+    smokingPreference,
+    lifestylePattern,
+    cleaningFrequency,
+    drinkingFrequency,
+    hometown,
+    earphone,
+    phone,
+    sleepingHabit,
+  ]);
 
   const { data, error, isLoading } = useQuery('checklistData', getChecklistApi);
 
   useEffect(() => {
+    console.log('CategorySelector------------------------');
+
     if (data) {
+      if (data.data.data == null) {
+        setIsFirst(true);
+      } else {
+        setIsFirst(false);
+      }
+      // data 객체 내에서 필요한 정보 추출
+
       console.log('Data:', data);
       // 여기에서 데이터 처리 로직을 추가할 수 있습니다.
-      setCleaningFrequency(cleanType.indexOf(data.data.data.cleanType));
-      setDrinkingFrequency(drinkType.indexOf(data.data.data.drinkType));
-      setHometown(homeType.indexOf(data.data.data.homeType));
-      setLifestylePattern(
-        lifePatternType.indexOf(data.data.data.lifePatternType),
-      );
-      setNoiseLevel([noiseType.indexOf(data.data.data.noiseType), 0, 0, 0]);
-      setSmokingPreference(smokeType.indexOf(data.data.data.smokeType));
+      const {
+        cleanType,
+        drinkType,
+        homeType,
+        lifePatternType,
+        callType,
+        earPhoneType,
+        sleepGridingType,
+        sleepSnoreType,
+        sleepTalkingType,
+        sleepTurningType,
+        smokeType,
+      } = data.data.data;
+
+      //kor 배열에서의 index 반환
+      setCleaningFrequency(cleanTypeKor.indexOf(cleanType));
+      setDrinkingFrequency(drinkTypeKor.indexOf(drinkType));
+      setHometown(homeTypeKor.indexOf(homeType));
+      setLifestylePattern(lifePatternTypeKor.indexOf(lifePatternType));
+      setPhone(callTypeKor.indexOf(callType));
+      setEarphone(earphoneTypeKor.indexOf(earPhoneType));
+
+      setSmokingPreference(smokeTypeKor.indexOf(smokeType));
       setSleepingHabit([
-        data.data.data.sleepSnoreType == 'TRUE' ? 1 : 0,
-        data.data.data.sleepGridingType == 'TRUE' ? 1 : 0,
-        data.data.data.sleepTalkingType == 'TRUE' ? 1 : 0,
-        data.data.data.sleepTurningType == 'TRUE' ? 1 : 0,
-        data.data.data.sleepSnoreType == 'FALSE' &&
-        data.data.data.sleepGridingType == 'FALSE' &&
-        data.data.data.sleepTalkingType == 'FALSE' &&
-        data.data.data.sleepTurningType == 'FALSE'
+        sleepSnoreType == '코골이' ? 1 : 0,
+        sleepGridingType == '이갈이' ? 1 : 0,
+        sleepTalkingType == '잠꼬대' ? 1 : 0,
+        sleepTurningType == '뒤척임' ? 1 : 0,
+        sleepSnoreType == 'false' &&
+        sleepGridingType == 'false' &&
+        sleepTalkingType == 'false' &&
+        sleepTurningType == 'false'
           ? 1
           : 0,
       ]);
@@ -106,6 +176,22 @@ const CategorySelector = ({
 
   const { mutate: tryChecklistEdit } = useMutation(
     () => editChecklistApi(finalList),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+      onError: (error: unknown) => {
+        console.log(error);
+        const customErr = error as CustomError;
+        if (customErr.response?.status === 500) {
+          console.log('오류가 발생하였습니다.');
+        }
+      },
+    },
+  );
+
+  const { mutate: tryChecklistCreate } = useMutation(
+    () => postChecklistApi(finalList),
     {
       onSuccess: (data) => {
         console.log(data);
@@ -140,8 +226,12 @@ const CategorySelector = ({
     setHometown(selectedOption);
   };
 
-  const handleNoiseLevelChange = (array: Array<number>) => {
-    setNoiseLevel(array);
+  const handleEarphoneChange = (selectedOption: number) => {
+    setEarphone(selectedOption);
+  };
+
+  const handlePhoneChange = (selectedOption: number) => {
+    setPhone(selectedOption);
   };
 
   // 다른 카테고리의 핸들러 함수들 추가
@@ -242,12 +332,17 @@ const CategorySelector = ({
           selectedOption={hometown}
           onOptionChange={handleHometownChange}
         />
-        <ChecklistMultiCheckBlock
-          title={'소음 🗣️'}
-          option={['이어폰 필수', '전화는 밖에서', '전화는 짧게', '상관 없음']}
-          subtitle="(중복 선택 가능)"
-          selectedOption={noiseLevel}
-          onOptionChange={handleNoiseLevelChange}
+        <ChecklistCheckBlock
+          title={'이어폰 🎧'}
+          option={['이어폰 착용', '상관 없음']}
+          selectedOption={phone}
+          onOptionChange={handlePhoneChange}
+        />
+        <ChecklistCheckBlock
+          title={'통화 ☎️'}
+          option={['통화는 밖에서', '5분 이내는 안에서', '상관 없음']}
+          selectedOption={earphone}
+          onOptionChange={handleEarphoneChange}
         />
       </div>
 

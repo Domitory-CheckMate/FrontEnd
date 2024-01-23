@@ -96,7 +96,8 @@ export type checklistApiType = {
       drinkType:"NEVER"| "SOMETIMES" | "OFTEN" | "ALWAYS";
       homeType:"RARELY" | "SOMETIMES" | "OFTEN" | "ALWAYS";
       lifePatternType:"MORNING" | "EVENING";
-      noiseType: "EARPHONE" | "OUTSIDE" | "SHORT" | "ANYWAY";
+      callType: "OUTSIDE" | "INSIDE" | "ANYWAY";
+      earPhoneType: "NEED" | "NOT_NEED";
   		smokeType:"NONE" | "SMOKE";
   		sleepGridingType: "TRUE" | "FALSE";
   		sleepSnoreType: "TRUE" | "FALSE";

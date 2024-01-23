@@ -23,9 +23,16 @@ import {
 import { CustomError } from '../../data/type';
 
 const CheckBlock = ({ emoji, content }: { emoji: string; content: string }) => {
+  const navigate = useNavigate();
+
   return (
-    <div className="ml-[13px] mr-[4px] text-base text-center flex py-2 px-4 text-white rounded-[19px] bg-black cursor-pointer">
-      {content}
+    <div
+      className="text-[10px] text-center flex py-2 px-4 text-black rounded-[19px] bg-[#FFE2D8] cursor-pointer"
+      onClick={() => {
+        navigate(`/checklist`);
+      }}
+    >
+      {emoji + ' ' + content}
     </div>
   );
 };
@@ -40,8 +47,8 @@ const MyCheckList = () => {
   const [homeType, setHomeType] = useState('');
   const [lifePatternType, setLifePatternType] = useState('');
   const [noiseType, setNoiseType] = useState('');
-  const [callType, setCallType] = useState('');
-  const [earphoneType, setEarphoneType] = useState('');
+  const [noiseCallType, setCallType] = useState('');
+  const [noiseEarPhoneType, setEarphoneType] = useState('');
   const [smokeType, setSmokeType] = useState('');
   const [sleepGridingType, setSleepGridingType] = useState('');
   const [sleepSnoreType, setSleepSnoreType] = useState('');
@@ -56,39 +63,86 @@ const MyCheckList = () => {
 
       // data 객체 내에서 필요한 정보 추출
       const {
-        cleaningType,
+        cleanType,
         drinkType,
         homeType,
-        lifePatternType,
+        lifePatterType,
         callType,
-        earphoneType,
-        smokeType,
+        earPhoneType,
         sleepGridingType,
         sleepSnoreType,
         sleepTalkingType,
         sleepTurningType,
+        smokeType,
       } = data.data.data;
       // state 업데이트
-      setCleanType(cleaningType);
+      setCleanType(cleanType);
       setDrinkType(drinkType);
       setHomeType(homeType);
-      setLifePatternType(lifePatternType);
-      setCallType(callType);
-      setEarphoneType(earphoneType);
+      setLifePatternType(lifePatterType);
       setSmokeType(smokeType);
+
+      // 초기화
+      let sleepType = '';
+
+      // 각 값이 boolean일 때
       if (
-        sleepGridingType === false &&
-        sleepSnoreType === false &&
-        sleepTalkingType === false &&
-        sleepTurningType === false
+        !sleepGridingType &&
+        !sleepSnoreType &&
+        !sleepTalkingType &&
+        !sleepTurningType
       ) {
-        setSleepType('상관없음');
+        sleepType = '상관없음';
       }
 
-      setSleepGridingType(sleepGridingType);
-      setSleepSnoreType(sleepSnoreType);
-      setSleepTalkingType(sleepTalkingType);
-      setSleepTurningType(sleepTurningType);
+      // 각 값이 문자열일 때
+      if (
+        typeof sleepGridingType === 'string' &&
+        sleepGridingType !== 'false'
+      ) {
+        sleepType += sleepGridingType;
+      }
+      if (typeof sleepSnoreType === 'string' && sleepSnoreType !== 'false') {
+        sleepType += (sleepType ? ', ' : '') + sleepSnoreType;
+      }
+      if (
+        typeof sleepTalkingType === 'string' &&
+        sleepTalkingType !== 'false'
+      ) {
+        sleepType += (sleepType ? ', ' : '') + sleepTalkingType;
+      }
+      if (
+        typeof sleepTurningType === 'string' &&
+        sleepTurningType !== 'false'
+      ) {
+        sleepType += (sleepType ? ', ' : '') + sleepTurningType;
+      }
+
+      // 결과 사용
+      setSleepType(sleepType);
+
+      var noiseCall;
+      if (callType === '1') {
+        noiseCall = '통화는 밖에서';
+      } else if (callType === '2') {
+        noiseCall = '전화는 짧게';
+      } else if (callType === '3') {
+        noiseCall = '통화는 자유롭게';
+      } else {
+        console.log(noiseCallType);
+      }
+
+      var noiseEarPhone;
+
+      if (earPhoneType === '1') {
+        noiseEarPhone = '이어폰 필수';
+      } else if (earPhoneType === '2') {
+        noiseEarPhone = '이어폰 상관 없이';
+      } else {
+        console.log(noiseEarPhoneType);
+      }
+
+      setNoiseType(noiseCall + ', ' + noiseEarPhone);
     } else {
     }
 
@@ -102,16 +156,28 @@ const MyCheckList = () => {
   }, [data, error]);
 
   return (
-    <div className="flex gap-[8px] gap-y-[10px]">
-      <CheckBlock emoji="🚬" content={smokeType} />
-      <CheckBlock emoji="🌙" content={lifePatternType} />
-
-      <CheckBlock emoji="🧹" content={cleanType} />
-      <CheckBlock emoji="😴" content={sleepGridingType} />
-
-      <CheckBlock emoji="🍺" content={drinkType} />
-      <CheckBlock emoji="🏠" content={homeType} />
-      <CheckBlock emoji="🗣️" content={callType} />
+    <div className="flex flex-col gap-[10px]">
+      <div className="flex gap-[8px]">
+        {smokeType == '비흡연자 선호' ? (
+          <CheckBlock emoji="🚭" content={smokeType} />
+        ) : (
+          <CheckBlock emoji="🚬" content={smokeType} />
+        )}{' '}
+        {lifePatternType == '아침형 인간' ? (
+          <CheckBlock emoji="☀️" content={lifePatternType} />
+        ) : (
+          <CheckBlock emoji="🌙" content={lifePatternType} />
+        )}
+        <CheckBlock emoji="🧽" content={cleanType} />
+      </div>
+      <div className="flex gap-[8px]">
+        <CheckBlock emoji="😴" content={sleepType} />
+        <CheckBlock emoji="🍺" content={drinkType} />
+        <CheckBlock emoji="🏠" content={homeType} />
+      </div>{' '}
+      <div className="flex gap-[8px]">
+        <CheckBlock emoji="🗣️" content={noiseType} />
+      </div>
     </div>
   );
 };
@@ -305,7 +371,7 @@ const MyPage = () => {
             </div>
             <div
               className="grow ml-[12px]  items-center flex text-base text-black font-medium align-start"
-              onClick={() => navigate('/checklist')}
+              onClick={() => setIsChecklistShow(true)}
             >
               내 체크리스트
             </div>
@@ -313,7 +379,11 @@ const MyPage = () => {
               {isChecklistShow ? <Up /> : <Down />}
             </div>
           </div>
-          {/* {isChecklistShow && ( */}
+          {isChecklistShow && (
+            <div className="w-full px-[18px]">
+              <MyCheckList />
+            </div>
+          )}
 
           {/* } */}
           <div className="pl-4  h-16 flex w-full items-center">

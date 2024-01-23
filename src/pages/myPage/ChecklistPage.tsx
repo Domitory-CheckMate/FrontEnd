@@ -17,6 +17,7 @@ const ChecklistPage = () => {
   const [drinkType, setDrinkType] = useState('');
   const [homeType, setHomeType] = useState('');
   const [noiseType, setNoiseType] = useState('');
+
   const [lifePatternType, setLifePatternType] = useState('');
   const [sleepType, setSleepType] = useState('');
   const [smokeType, setSmokeType] = useState('');
@@ -33,22 +34,82 @@ const ChecklistPage = () => {
 
       // data 객체 내에서 필요한 정보 추출
       const {
-        cleaningType,
+        cleanType,
         drinkType,
         homeType,
-        lifePatternType,
-        noiseType,
-        sleepType,
+        lifePatterType,
+        callType,
+        earPhoneType,
+        sleepGridingType,
+        sleepSnoreType,
+        sleepTalkingType,
+        sleepTurningType,
         smokeType,
       } = data.data.data;
       // state 업데이트
-      setCleanType(cleaningType);
+      setCleanType(cleanType);
       setDrinkType(drinkType);
       setHomeType(homeType);
-      setLifePatternType(lifePatternType);
-      setNoiseType(noiseType);
-      setSleepType(sleepType);
+      setLifePatternType(lifePatterType);
       setSmokeType(smokeType);
+
+      // 초기화
+      let sleepType = '';
+
+      // 각 값이 boolean일 때
+      if (
+        !sleepGridingType &&
+        !sleepSnoreType &&
+        !sleepTalkingType &&
+        !sleepTurningType
+      ) {
+        sleepType = '상관없음';
+      }
+
+      // 각 값이 문자열일 때
+      if (
+        typeof sleepGridingType === 'string' &&
+        sleepGridingType !== 'false'
+      ) {
+        sleepType += sleepGridingType;
+      }
+      if (typeof sleepSnoreType === 'string' && sleepSnoreType !== 'false') {
+        sleepType += (sleepType ? ', ' : '') + sleepSnoreType;
+      }
+      if (
+        typeof sleepTalkingType === 'string' &&
+        sleepTalkingType !== 'false'
+      ) {
+        sleepType += (sleepType ? ', ' : '') + sleepTalkingType;
+      }
+      if (
+        typeof sleepTurningType === 'string' &&
+        sleepTurningType !== 'false'
+      ) {
+        sleepType += (sleepType ? ', ' : '') + sleepTurningType;
+      }
+
+      // 결과 사용
+      setSleepType(sleepType);
+
+      var noiseCall;
+      if (callType === '1') {
+        noiseCall = '통화는 밖에서';
+      } else if (callType === '2') {
+        noiseCall = '전화는 짧게';
+      } else if (callType === '3') {
+        noiseCall = '통화는 자유롭게';
+      }
+
+      var noiseEarPhone;
+
+      if (earPhoneType === '1') {
+        noiseEarPhone = '이어폰 필수';
+      } else if (earPhoneType === '2') {
+        noiseEarPhone = '이어폰 상관 없이';
+      }
+
+      setNoiseType(noiseCall + ', ' + noiseEarPhone);
     }
 
     if (error) {
@@ -79,11 +140,19 @@ const ChecklistPage = () => {
         {!isEditMode ? (
           <div className="flex justify-start">
             <div>
-              <ChecklistBlock
-                text1={'홍길동님은'}
-                text2="🚭 비흡연자 선호"
-                text3="하며"
-              />
+              {smokeType === '비흡연자 선호' ? (
+                <ChecklistBlock
+                  text1={'홍길동님은'}
+                  text2={'🚭 ' + smokeType}
+                  text3="하며"
+                />
+              ) : (
+                <ChecklistBlock
+                  text1={'홍길동님은'}
+                  text2={'🚬  ' + smokeType}
+                  text3="하며"
+                />
+              )}
               <ChecklistBlock
                 text1={'생활패턴은'}
                 text2={'☀️ ' + lifePatternType}
@@ -108,16 +177,6 @@ const ChecklistPage = () => {
                 text1={'본가는'}
                 text2={'🏠 매주' + homeType}
                 text3="갈 예정이고,"
-              />
-              <ChecklistBlock
-                text1={'방 안에서는'}
-                text2={'🗣️ ' + noiseType}
-                text3="부탁"
-              />
-              <ChecklistBlock
-                text1={'방 안에서는'}
-                text2={'🗣️ ' + noiseType}
-                text3="부탁"
               />
               <ChecklistBlock
                 text1={'방 안에서는'}

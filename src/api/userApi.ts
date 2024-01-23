@@ -39,8 +39,8 @@ export const loginApi = async (email: string, password: string) => {
  * @param checklist
  *
  */
-export const editChecklistApi = async (checklist: checklistApiType) => {
-  return authAxios.patch('/checklist/my', { checklist }
+export const editChecklistApi = async (checklist: checklistApiType | undefined) => {
+  return authAxios.patch('/checkList/my', { checklist }
   )
 };
 
@@ -58,15 +58,15 @@ export const validateEmailForPwApi = async (email: string) => {
  *
  */
 export const getChecklistApi = async () => {
-  return authAxios.get('/checklist/my', {});
+  return authAxios.get('/checkList/my', {});
 };
 
 /**
  * @param checklist
  *
  */
-export const postChecklistApi = async (checklist: checklistApiType) => {
-  return authAxios.post('/checklist/new', { checklist });
+export const postChecklistApi = async (checklist: checklistApiType | undefined) => {
+  return authAxios.post('/checkList/new', { checklist });
 };
 
 /**
