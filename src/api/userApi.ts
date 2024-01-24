@@ -1,5 +1,5 @@
-import { joinInfoType } from '../data/type';
-import { checklistApiType } from '../data/type';
+import { articlePostType, checklistApiType, joinInfoType } from '../data/type';
+// import { checklistApiType } from '../data/type';
 import { baseAxios, authAxios } from './axiosInstance';
 
 /**
@@ -9,6 +9,16 @@ import { baseAxios, authAxios } from './axiosInstance';
  */
 export const validateEmailApi = async (email: string) => {
   return baseAxios.post('/member/email', { email: email });
+};
+
+/**
+ *
+ * @param univ
+ * @param searchText
+ * @returns 학과 검색 결과
+ */
+export const searchDepartmentApi = async (univ: string, searchText: string) => {
+  return baseAxios.get(`/department?univ=${univ}&searchText=${searchText}`);
 };
 
 /**
@@ -37,15 +47,27 @@ export const loginApi = async (email: string, password: string) => {
 /**
  *
  * @param checklist
+ * @returns 체크리스트 수정
  *
  */
-export const editChecklistApi = async (checklist: checklistApiType | undefined) => {
-  return authAxios.patch('/checkList/my', { checklist }
-  )
+export const editChecklistApi = async (checklist: checklistApiType) => {
+  return authAxios.patch('/checkList/my', {
+    callType: checklist.callType,
+    cleanType: checklist.cleanType,
+    drinkType: checklist.drinkType,
+    earPhoneType: checklist.earPhoneType,
+    homeType: checklist.homeType,
+    lifePatternType: checklist.lifePatternType,
+    sleepGrindingType: checklist.sleepGrindingType,
+    sleepSnoreType: checklist.sleepSnoreType,
+    sleepTalkingType: checklist.sleepTalkingType,
+    sleepTurningType: checklist.sleepTurningType,
+    smokeType: checklist.smokeType,
+  });
 };
 
-  /**
-  * @param email
+/**
+ * @param email
  * @returns 비밀번호 재설정 이메일 전송
  */
 export const validateEmailForPwApi = async (email: string) => {
@@ -63,12 +85,24 @@ export const getChecklistApi = async () => {
 
 /**
  * @param checklist
+ * @returns 체크리스트 작성
  *
  */
-export const postChecklistApi = async (checklist: checklistApiType | undefined) => {
-  return authAxios.post('/checkList/new', { checklist });
+export const postChecklistApi = async (checklist: checklistApiType) => {
+  return authAxios.post('/checkList/new', {
+    callType: checklist.callType,
+    cleanType: checklist.cleanType,
+    drinkType: checklist.drinkType,
+    earPhoneType: checklist.earPhoneType,
+    homeType: checklist.homeType,
+    lifePatternType: checklist.lifePatternType,
+    sleepGrindingType: checklist.sleepGrindingType,
+    sleepSnoreType: checklist.sleepSnoreType,
+    sleepTalkingType: checklist.sleepTalkingType,
+    sleepTurningType: checklist.sleepTurningType,
+    smokeType: checklist.smokeType,
+  });
 };
-
 /**
  *
  * @param profileImg
@@ -93,4 +127,64 @@ export const getMyInfoApi = async () => {
  */
 export const changePwApi = async (email: string, newPassword: string) => {
   return baseAxios.patch('/member/reset', { email, newPassword });
+};
+
+/**
+ *
+ * @param article
+ * @returns 게시글 작성
+ */
+export const postNewPostApi = async (article: articlePostType) => {
+  return authAxios.post('/post', { 
+    title: article.title,
+    content: article.content,
+    importantKey: article.importantKey,
+    similarityKey: article.similarityKey,
+    roomType: article.roomType,
+    dormitoryType: article.dormitoryType,
+    endDate: article.endDate,
+    checkList: {
+      callType: article.checkList.callType,
+      cleanType: article.checkList.cleanType,
+      drinkType: article.checkList.drinkType,
+      earPhoneType: article.checkList.earPhoneType,
+      homeType: article.checkList.homeType,
+      lifePatternType: article.checkList.lifePatternType,
+      sleepGrindingType: article.checkList.sleepGrindingType,
+      sleepSnoreType: article.checkList.sleepSnoreType,
+      sleepTalkingType: article.checkList.sleepTalkingType,
+      sleepTurningType: article.checkList.sleepTurningType,
+      smokeType: article.checkList.smokeType,
+    },
+   });
+};
+
+/**
+ *
+ * @param id,article
+ * @returns 게시글 수정
+ */
+export const patchPostApi = async (id:number, article: articlePostType) => {
+  return authAxios.patch(`/post/${id}`, { 
+    title: article.title,
+    content: article.content,
+    importantKey: article.importantKey,
+    similarityKey: article.similarityKey,
+    roomType: article.roomType,
+    dormitoryType: article.dormitoryType,
+    endDate: article.endDate,
+    checkList: {
+      callType: article.checkList.callType,
+      cleanType: article.checkList.cleanType,
+      drinkType: article.checkList.drinkType,
+      earPhoneType: article.checkList.earPhoneType,
+      homeType: article.checkList.homeType,
+      lifePatternType: article.checkList.lifePatternType,
+      sleepGrindingType: article.checkList.sleepGrindingType,
+      sleepSnoreType: article.checkList.sleepSnoreType,
+      sleepTalkingType: article.checkList.sleepTalkingType,
+      sleepTurningType: article.checkList.sleepTurningType,
+      smokeType: article.checkList.smokeType,
+    },
+   });
 };

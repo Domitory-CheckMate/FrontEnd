@@ -14,6 +14,11 @@ export type mbtiType = {
   fourth: string;
 };
 
+export type departmentType = {
+  department: string;
+  college: string;
+};
+
 export type articleStateType = '모집중' | '모집완료';
 
 export type userType = {
@@ -79,31 +84,32 @@ export type checklistType = {
 };
 
 // export type checklistApiType = {
-//   cleanType: 'RARELY'| 'SOMETIMES' | 'OFTEN' | 'USUALLY' | 'ALWAYS';
-//     drinkType:"NEVER"| "SOMETIMES" | "OFTEN" | "ALWAYS";
-//     homeType:"RARELY" | "SOMETIMES" | "OFTEN" | "ALWAYS";
-//     lifePatternType:"MORNING" | "EVENING";
-//     noiseType: "EARPHONE" | "OUTSIDE" | "SHORT" | "ANYWAY";
-// 		smokeType:"NONE" | "SMOKE";
-// 		sleepGridingType: "TRUE" | "FALSE";
-// 		sleepSnoreType: "TRUE" | "FALSE";
-// 		sleepTalkingType: "TRUE" | "FALSE";
-// 		sleepTurningType: "TRUE" | "FALSE";
+//   cleanType: string;
+//   drinkType: string;
+//   homeType: string;
+//   lifePatternType: string;
+//   callType: string;
+//   earPhoneType: string;
+//   smokeType: string;
+//   sleepGrindingType: string;
+//   sleepSnoreType: string;
+//   sleepTalkingType: string;
+//   sleepTurningType: string;
 // };
 
 export type checklistApiType = {
-    cleanType: 'RARELY'| 'SOMETIMES' | 'OFTEN' | 'USUALLY' | 'ALWAYS';
-      drinkType:"NEVER"| "SOMETIMES" | "OFTEN" | "ALWAYS";
-      homeType:"RARELY" | "SOMETIMES" | "OFTEN" | "ALWAYS";
-      lifePatternType:"MORNING" | "EVENING";
-      callType: "OUTSIDE" | "INSIDE" | "ANYWAY";
-      earPhoneType: "NEED" | "NOT_NEED";
-  		smokeType:"NONE" | "SMOKE";
-  		sleepGridingType: "TRUE" | "FALSE";
-  		sleepSnoreType: "TRUE" | "FALSE";
-  		sleepTalkingType: "TRUE" | "FALSE";
-  		sleepTurningType: "TRUE" | "FALSE";
-  };
+  cleanType: 'RARELY' | 'SOMETIMES' | 'OFTEN' | 'USUALLY' | 'ALWAYS';
+  drinkType: 'NEVER' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS';
+  homeType: 'RARELY' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS';
+  lifePatternType: 'MORNING' | 'EVENING';
+  callType: 'OUTSIDE' | 'INSIDE' | 'ANYWAY';
+  earPhoneType: 'NEED' | 'NOT_NEED';
+  smokeType: 'NONE' | 'SMOKE';
+  sleepGrindingType: 'TRUE' | 'FALSE';
+  sleepSnoreType: 'TRUE' | 'FALSE';
+  sleepTalkingType: 'TRUE' | 'FALSE';
+  sleepTurningType: 'TRUE' | 'FALSE';
+};
 
 export type sleepType = '코골이' | '이갈이' | '잠꼬대' | '뒤척임';
 
@@ -164,6 +170,21 @@ export const convertNumToOrder: Record<string, orderType> = {
   '4': '저장 많은 순',
 };
 
+export type genderType = '남자' | '여자';
+
+export const convertGenderToNum: Record<genderType, string> = {
+  남자: '1',
+  여자: '2',
+};
+
+export type dormitoryType = '1기숙사' | '2기숙사' | '3기숙사';
+
+export const convertDormitoryToNum: Record<dormitoryType, string> = {
+  '1기숙사': '1',
+  '2기숙사': '2',
+  '3기숙사': '3',
+};
+
 export type keywordCardType = {
   tag: string;
   title: string;
@@ -183,11 +204,27 @@ export type joinInfoType = {
   mbtiType: string;
 };
 
-
 // export type myInfoType = {
 //   profileImg: string;
 //   name: string;
 //   major: string;
-//   gender: "man" | "woman";
+//   gender: 'man' | 'woman';
 //   mbti: string;
 // };
+export interface msgItemType {
+  content: string;
+  isRead: boolean;
+  sendTime: string;
+  userId: number;
+}
+
+export interface articlePostType {
+  title: string;
+  content: string;
+  importantKey: string;
+  similarityKey: string;
+  roomType: string;
+  dormitoryType: string;
+  endDate: string;
+  checkList: checklistApiType;
+}

@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import ChecklistCheckBlock from './ChecklistCheckBlock';
 import ChecklistMultiCheckBlock from './ChecklistMultiCheckBlock';
 import { ReactComponent as Check } from '../../assets/icon/icon_check_primary.svg';
-import { useLocation } from 'react-router-dom';
 import { useMutation, useQuery } from 'react-query';
 import { editChecklistApi, getChecklistApi } from '../../api/userApi';
 import { postChecklistApi } from '../../api/userApi';
 import { CustomError, checklistApiType } from '../../data/type';
-import { sleep } from 'react-query/types/core/utils';
+import { useSetRecoilState } from 'recoil';
+import { myCheckListState } from '../../data/atoms';
 
 const CategorySelector = ({
   setEdit,
@@ -25,10 +25,10 @@ const CategorySelector = ({
 
   const [isFirst, setIsFirst] = useState(true);
 
-  const smokeType = ['NO', 'YES'];
-  const cleanType = ['RARELY', 'SOMETIMES', 'OFTEN', 'USUALLY', 'ALWAYS'];
+  const smokeType = ['SMOKE', 'NONE'];
+  const cleanType = ['ALWAYS', 'USUALLY', 'OFTEN', 'SOMETIMES', 'RARELY'];
   const drinkType = ['NEVER', 'SOMETIMES', 'OFTEN', 'ALWAYS'];
-  const homeType = ['RARELY', 'SOMETIMES', 'OFTEN', 'ALWAYS'];
+  const homeType = ['ALWAYS', 'OFTEN', 'SOMETIMES', 'RARELY'];
   const lifePatternType = ['MORNING', 'EVENING'];
   const callType = ['OUTSIDE', 'INSIDE', 'ANYWAY'];
   const earphoneType = ['NEED', 'NOT_NEED'];
@@ -43,12 +43,14 @@ const CategorySelector = ({
     '한달에 한 번',
   ];
   const drinkTypeKor = ['안마심', '1주에 2~3번', '1주에 4~5번', '매일'];
-  const homeTypeKor = ['매일', '1~2주에 한번', '1주에 한 번', '2주에 한 번'];
-  const earphoneTypeKor = ['이어폰 착용', '상관 없음'];
+  const homeTypeKor = ['매주', '1~2주에 한번', '1주에 한 번', '2주에 한 번'];
+  const earphoneTypeKor = ['이어폰 착용', '상관없음'];
   const callTypeKor = ['통화는 밖에서', '5분 이내는 안에서', '상관 없음'];
-  const sleepTypeKor = ['코골이', '이갈이', '잠꼬대', '뒤척임', '없음'];
+  // const sleepTypeKor = ['코골이', '이갈이', '잠꼬대', '뒤척임', '없음'];
 
   const [finalList, setFinalList] = useState<checklistApiType>();
+
+  const setList = useSetRecoilState(myCheckListState);
 
   const onHandleClickEdit = () => {
     if (
@@ -65,22 +67,23 @@ const CategorySelector = ({
         sleepingHabit[3] == 0 &&
         sleepingHabit[4] == 0)
     ) {
+      console.log('빈칸이 있습니다.');
     } else {
       if (isFirst) {
         tryChecklistCreate();
       } else {
+        console.log(finalList);
         tryChecklistEdit();
       }
     }
   };
 
   useEffect(() => {
-    const sleepGridingType = sleepingHabit[1] == 1 ? 'TRUE' : 'FALSE';
+    const sleepGrindingType = sleepingHabit[1] == 1 ? 'TRUE' : 'FALSE';
     const sleepSnoreType = sleepingHabit[0] == 1 ? 'TRUE' : 'FALSE';
     const sleepTalkingType = sleepingHabit[2] == 1 ? 'TRUE' : 'FALSE';
     const sleepTurningType = sleepingHabit[3] == 1 ? 'TRUE' : 'FALSE';
 
-    console.log(cleanType[cleaningFrequency]);
     const myCheckList: checklistApiType = {
       cleanType: cleanType[cleaningFrequency] as checklistApiType['cleanType'],
       drinkType: drinkType[drinkingFrequency] as checklistApiType['drinkType'],
@@ -91,8 +94,8 @@ const CategorySelector = ({
       callType: callType[phone] as checklistApiType['callType'],
       earPhoneType: earphoneType[earphone] as checklistApiType['earPhoneType'],
       smokeType: smokeType[smokingPreference] as checklistApiType['smokeType'],
-      sleepGridingType:
-        sleepGridingType as checklistApiType['sleepGridingType'],
+      sleepGrindingType:
+        sleepGrindingType as checklistApiType['sleepGrindingType'],
       sleepSnoreType: sleepSnoreType as checklistApiType['sleepSnoreType'],
       sleepTalkingType:
         sleepTalkingType as checklistApiType['sleepTalkingType'],
@@ -100,6 +103,7 @@ const CategorySelector = ({
         sleepTurningType as checklistApiType['sleepTurningType'],
     };
     setFinalList(myCheckList);
+    setList(myCheckList);
   }, [
     smokingPreference,
     lifestylePattern,
@@ -112,10 +116,9 @@ const CategorySelector = ({
   ]);
 
   const { data, error, isLoading } = useQuery('checklistData', getChecklistApi);
+  console.log(isLoading);
 
   useEffect(() => {
-    console.log('CategorySelector------------------------');
-
     if (data) {
       if (data.data.data == null) {
         setIsFirst(true);
@@ -133,7 +136,7 @@ const CategorySelector = ({
         lifePatternType,
         callType,
         earPhoneType,
-        sleepGridingType,
+        sleepGrindingType,
         sleepSnoreType,
         sleepTalkingType,
         sleepTurningType,
@@ -151,11 +154,11 @@ const CategorySelector = ({
       setSmokingPreference(smokeTypeKor.indexOf(smokeType));
       setSleepingHabit([
         sleepSnoreType == '코골이' ? 1 : 0,
-        sleepGridingType == '이갈이' ? 1 : 0,
+        sleepGrindingType == '이갈이' ? 1 : 0,
         sleepTalkingType == '잠꼬대' ? 1 : 0,
         sleepTurningType == '뒤척임' ? 1 : 0,
         sleepSnoreType == 'false' &&
-        sleepGridingType == 'false' &&
+        sleepGrindingType == 'false' &&
         sleepTalkingType == 'false' &&
         sleepTurningType == 'false'
           ? 1
@@ -175,10 +178,12 @@ const CategorySelector = ({
   }, [data, error, setEdit]);
 
   const { mutate: tryChecklistEdit } = useMutation(
-    () => editChecklistApi(finalList),
+    () => editChecklistApi(finalList as checklistApiType),
     {
       onSuccess: (data) => {
         console.log(data);
+        console.log(finalList);
+        setEdit(false);
       },
       onError: (error: unknown) => {
         console.log(error);
@@ -191,16 +196,20 @@ const CategorySelector = ({
   );
 
   const { mutate: tryChecklistCreate } = useMutation(
-    () => postChecklistApi(finalList),
+    () => postChecklistApi(finalList as checklistApiType),
     {
       onSuccess: (data) => {
         console.log(data);
+        setEdit(false);
       },
       onError: (error: unknown) => {
         console.log(error);
         const customErr = error as CustomError;
         if (customErr.response?.status === 500) {
           console.log('오류가 발생하였습니다.');
+        } else if (customErr.response?.status === 409) {
+          console.log('이미 체크리스트가 존재합니다.');
+          tryChecklistEdit();
         }
       },
     },
@@ -335,14 +344,14 @@ const CategorySelector = ({
         <ChecklistCheckBlock
           title={'이어폰 🎧'}
           option={['이어폰 착용', '상관 없음']}
-          selectedOption={phone}
-          onOptionChange={handlePhoneChange}
+          selectedOption={earphone}
+          onOptionChange={handleEarphoneChange}
         />
         <ChecklistCheckBlock
           title={'통화 ☎️'}
           option={['통화는 밖에서', '5분 이내는 안에서', '상관 없음']}
-          selectedOption={earphone}
-          onOptionChange={handleEarphoneChange}
+          selectedOption={phone}
+          onOptionChange={handlePhoneChange}
         />
       </div>
 

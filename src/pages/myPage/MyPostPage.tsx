@@ -3,25 +3,16 @@ import HeaderBar from '../../components/loginPage/HeaderBar';
 import OrderDropDown from '../../components/mainPage/OrderDropDown';
 // import { articleListDummy2 } from '../../data/dummy';
 // import ArticleItem from '../../components/mainPage/ArticleItem';
-import {
-  convertDormitoryToNum,
-  convertGenderToNum,
-  convertOrderToNum,
-  dormitoryType,
-  genderType,
-  orderType,
-} from '../../data/type';
+import { dormitoryType, genderType, orderType } from '../../data/type';
 // import { articleListType, convertOrderToNum, orderType } from '../../data/type';
 import { useInfiniteQuery } from 'react-query';
-import { getPostListApi } from '../../api/articleApi';
+import { getMyPostListApi } from '../../api/articleApi';
 import { useIntersectionObserver } from '../../data/infiniteScroll';
 import ArticleItem from '../../components/mainPage/ArticleItem';
 
-const MateMatchingPage = () => {
-  const [currentOrder, setCurrentOrder] = useState<orderType>('일치율 높은 순');
-  const [currentGender, setCurrentGender] = useState<genderType | null>(null);
-  const [currentDormitory, setCurrentDormitory] =
-    useState<dormitoryType | null>(null);
+const MyPostPage = () => {
+  const [currentOrder, setCurrentOrder] = useState<orderType>('등록일 순');
+
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
@@ -31,20 +22,11 @@ const MateMatchingPage = () => {
 
   const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQuery(
-      ['mateMatchingArticles', currentOrder, currentGender, currentDormitory],
+      ['MyArticles', currentOrder],
       ({ pageParam = 0 }) => {
-        return getPostListApi({
-          page: pageParam,
+        return getMyPostListApi({
+          page: 1,
           size: 10,
-          type: convertOrderToNum[currentOrder],
-          gender:
-            currentGender !== null
-              ? convertGenderToNum[currentGender]
-              : undefined,
-          dormitory:
-            currentDormitory !== null
-              ? convertDormitoryToNum[currentDormitory]
-              : undefined,
         })
           .then((res) => {
             console.log(res.data.data);
@@ -97,16 +79,8 @@ const MateMatchingPage = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-start">
-      <HeaderBar text="나와 딱 맞는 룸메이트" />
+      <HeaderBar text="모집글" />
       <div className="w-full grow flex flex-col items-center justify-start overflow-y-auto mt-2 scrollbar-hide">
-        <OrderDropDown
-          currentOrder={currentOrder}
-          handleOrderChange={handleChangeOrder}
-          currentGender={currentGender}
-          handleGenderChange={setCurrentGender}
-          currentDormitory={currentDormitory}
-          handleCurrentDormitoryChange={setCurrentDormitory}
-        />
         {isError || isLoading ? (
           <div className="w-full flex justify-center items-center text-grayScale3 py-6">
             {isError ? errorMessage : '로딩 중...'}
@@ -145,4 +119,4 @@ const MateMatchingPage = () => {
   );
 };
 
-export default MateMatchingPage;
+export default MyPostPage;

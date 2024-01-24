@@ -37,10 +37,10 @@ const ChecklistPage = () => {
         cleanType,
         drinkType,
         homeType,
-        lifePatterType,
+        lifePatternType,
         callType,
         earPhoneType,
-        sleepGridingType,
+        sleepGrindingType,
         sleepSnoreType,
         sleepTalkingType,
         sleepTurningType,
@@ -50,7 +50,7 @@ const ChecklistPage = () => {
       setCleanType(cleanType);
       setDrinkType(drinkType);
       setHomeType(homeType);
-      setLifePatternType(lifePatterType);
+      setLifePatternType(lifePatternType);
       setSmokeType(smokeType);
 
       // 초기화
@@ -58,7 +58,7 @@ const ChecklistPage = () => {
 
       // 각 값이 boolean일 때
       if (
-        !sleepGridingType &&
+        !lifePatternType &&
         !sleepSnoreType &&
         !sleepTalkingType &&
         !sleepTurningType
@@ -68,10 +68,10 @@ const ChecklistPage = () => {
 
       // 각 값이 문자열일 때
       if (
-        typeof sleepGridingType === 'string' &&
-        sleepGridingType !== 'false'
+        typeof sleepGrindingType === 'string' &&
+        sleepGrindingType !== 'false'
       ) {
-        sleepType += sleepGridingType;
+        sleepType += sleepGrindingType;
       }
       if (typeof sleepSnoreType === 'string' && sleepSnoreType !== 'false') {
         sleepType += (sleepType ? ', ' : '') + sleepSnoreType;
@@ -92,24 +92,7 @@ const ChecklistPage = () => {
       // 결과 사용
       setSleepType(sleepType);
 
-      var noiseCall;
-      if (callType === '1') {
-        noiseCall = '통화는 밖에서';
-      } else if (callType === '2') {
-        noiseCall = '전화는 짧게';
-      } else if (callType === '3') {
-        noiseCall = '통화는 자유롭게';
-      }
-
-      var noiseEarPhone;
-
-      if (earPhoneType === '1') {
-        noiseEarPhone = '이어폰 필수';
-      } else if (earPhoneType === '2') {
-        noiseEarPhone = '이어폰 상관 없이';
-      }
-
-      setNoiseType(noiseCall + ', ' + noiseEarPhone);
+      setNoiseType(callType + ', ' + earPhoneType);
     }
 
     if (error) {

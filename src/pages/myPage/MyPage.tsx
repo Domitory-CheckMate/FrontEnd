@@ -38,22 +38,19 @@ const CheckBlock = ({ emoji, content }: { emoji: string; content: string }) => {
 };
 
 const MyCheckList = () => {
-  const { data, error, isLoading } = useQuery(
-    'getChecklistInfo',
-    getChecklistApi,
-  );
+  const { data, error } = useQuery('getChecklistInfo', getChecklistApi);
   const [cleanType, setCleanType] = useState('');
   const [drinkType, setDrinkType] = useState('');
   const [homeType, setHomeType] = useState('');
   const [lifePatternType, setLifePatternType] = useState('');
   const [noiseType, setNoiseType] = useState('');
-  const [noiseCallType, setCallType] = useState('');
-  const [noiseEarPhoneType, setEarphoneType] = useState('');
+  // const [noiseCallType, setCallType] = useState('');
+  // const [noiseEarPhoneType, setEarphoneType] = useState('');
   const [smokeType, setSmokeType] = useState('');
-  const [sleepGridingType, setSleepGridingType] = useState('');
-  const [sleepSnoreType, setSleepSnoreType] = useState('');
-  const [sleepTalkingType, setSleepTalkingType] = useState('');
-  const [sleepTurningType, setSleepTurningType] = useState('');
+  // const [sleepGrindingType, setSleepGrindingType] = useState('');
+  // const [sleepSnoreType, setSleepSnoreType] = useState('');
+  // const [sleepTalkingType, setSleepTalkingType] = useState('');
+  // const [sleepTurningType, setSleepTurningType] = useState('');
   const [sleepType, setSleepType] = useState('');
 
   useEffect(() => {
@@ -66,10 +63,10 @@ const MyCheckList = () => {
         cleanType,
         drinkType,
         homeType,
-        lifePatterType,
+        lifePatternType,
         callType,
         earPhoneType,
-        sleepGridingType,
+        sleepGrindingType,
         sleepSnoreType,
         sleepTalkingType,
         sleepTurningType,
@@ -79,15 +76,17 @@ const MyCheckList = () => {
       setCleanType(cleanType);
       setDrinkType(drinkType);
       setHomeType(homeType);
-      setLifePatternType(lifePatterType);
+      setLifePatternType(lifePatternType);
       setSmokeType(smokeType);
+      // setCallType(callType);
+      // setEarphoneType(earPhoneType);
 
       // 초기화
       let sleepType = '';
 
       // 각 값이 boolean일 때
       if (
-        !sleepGridingType &&
+        !sleepGrindingType &&
         !sleepSnoreType &&
         !sleepTalkingType &&
         !sleepTurningType
@@ -97,10 +96,10 @@ const MyCheckList = () => {
 
       // 각 값이 문자열일 때
       if (
-        typeof sleepGridingType === 'string' &&
-        sleepGridingType !== 'false'
+        typeof sleepGrindingType === 'string' &&
+        sleepGrindingType !== 'false'
       ) {
-        sleepType += sleepGridingType;
+        sleepType += sleepGrindingType;
       }
       if (typeof sleepSnoreType === 'string' && sleepSnoreType !== 'false') {
         sleepType += (sleepType ? ', ' : '') + sleepSnoreType;
@@ -117,33 +116,14 @@ const MyCheckList = () => {
       ) {
         sleepType += (sleepType ? ', ' : '') + sleepTurningType;
       }
+      if (sleepType === '') sleepType = '잠버릇 없음';
 
       // 결과 사용
       setSleepType(sleepType);
 
-      var noiseCall;
-      if (callType === '1') {
-        noiseCall = '통화는 밖에서';
-      } else if (callType === '2') {
-        noiseCall = '전화는 짧게';
-      } else if (callType === '3') {
-        noiseCall = '통화는 자유롭게';
-      } else {
-        console.log(noiseCallType);
-      }
-
-      var noiseEarPhone;
-
-      if (earPhoneType === '1') {
-        noiseEarPhone = '이어폰 필수';
-      } else if (earPhoneType === '2') {
-        noiseEarPhone = '이어폰 상관 없이';
-      } else {
-        console.log(noiseEarPhoneType);
-      }
-
-      setNoiseType(noiseCall + ', ' + noiseEarPhone);
+      setNoiseType(callType + ', ' + earPhoneType);
     } else {
+      console.log('Data:', data);
     }
 
     if (error) {
@@ -295,7 +275,7 @@ const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-const MyPage = () => {
+const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
   const [showModal, setShowModal] = useState(false);
   const handleCloseModal = () => {
     setShowModal(false);
@@ -307,7 +287,7 @@ const MyPage = () => {
   const [major, setMajor] = useState<string>('소프트웨어학과');
   const [gender, setGender] = useState<string>('여자');
   const [mbti, setMbti] = useState<string>('ISFP');
-  const { data, error, isLoading } = useQuery('getMyInfo', getMyInfoApi);
+  const { data, error } = useQuery('getMyInfo', getMyInfoApi);
 
   useEffect(() => {
     if (data) {
@@ -392,7 +372,7 @@ const MyPage = () => {
             </div>
             <div
               className="grow ml-[12px] text-base text-black font-medium align-start"
-              onClick={() => navigate('/timeboard')}
+              onClick={() => navigate('/my-post')}
             >
               내 모집글{' '}
             </div>
@@ -422,7 +402,7 @@ const MyPage = () => {
         </div>
       </div>
 
-      <BottomNav state="user" />
+      <BottomNav state="user" notReadCnt={notReadCnt} />
       {showModal && <ChangeProfileModal onClose={handleCloseModal} />}
     </div>
   );
