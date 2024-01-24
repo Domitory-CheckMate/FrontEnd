@@ -11,7 +11,7 @@ const SenderMsgItem = ({
 }) => {
   return (
     <div className="w-full pl-[51px] pr-4 flex justify-end items-end gap-x-1">
-      <div className="h-full flex flex-col gap-y-1 justify-end items-end">
+      <div className="shrink-0 h-full flex flex-col gap-y-1 justify-end items-end">
         <div
           className={`text-[10px] ${
             isRead ? 'text-primary' : 'text-grayScale4'

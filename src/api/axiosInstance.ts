@@ -1,5 +1,10 @@
 import axios from 'axios';
-import { getAccessToken } from './manageLocalStorage';
+import {
+  getAccessToken,
+  getRefreshToken,
+  setAccessToken,
+  setRefreshToken,
+} from './manageLocalStorage';
 
 export const baseAxios = axios.create({
   baseURL: process.env.REACT_APP_API_URL,
@@ -28,4 +33,30 @@ authAxios.interceptors.request.use(
     return config;
   },
   (error) => Promise.reject(error),
+);
+
+authAxios.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+      const accessToken = getAccessToken();
+      const refreshToken = getRefreshToken();
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_URL}/member/reissue`,
+        {
+          accessToken: accessToken,
+          refreshToken: refreshToken,
+        },
+      );
+      if (res.status === 200) {
+        setAccessToken(res.data.accessToken);
+        setRefreshToken(res.data.refreshToken);
+        return authAxios(originalRequest);
+      }
+    }
+
+    return Promise.reject(error);
+  },
 );

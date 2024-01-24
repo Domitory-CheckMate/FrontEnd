@@ -31,7 +31,7 @@ import { socketRoomType } from './socket/responseType';
 import SearchPage from './pages/search/SearchPage';
 import MyScrapPage from './pages/main/MyScrapPage';
 import MajorSearchPage from './pages/join/MajorSearchPage';
-import ReportDetail from './components/chatPage/ReportDetail';
+import ReportDetail from './pages/report/ReportPage';
 
 function App() {
   const token: string = getAccessToken() || '';
@@ -50,6 +50,24 @@ function App() {
         } else if (data.messageType === 'NOT_READ_COUNT') {
           console.log('안 읽은 메세지 갯수 조회 데이터 성공 --> ', data.data);
           setNotReadCnt(data.data.notReadCount);
+        } else if (data.messageType === 'NEW_CHAT_NOTIFICATION') {
+          console.log('새로운 메세지 도착 ---> ', data.data);
+          setNotReadCnt((prev) => prev + 1);
+          setChatRoomList((prev) => {
+            const updatedChatRoomList = [...prev];
+            const idx = updatedChatRoomList.findIndex(
+              (chatRoom) => chatRoom.userInfo.userId === data.data.senderId,
+            );
+            if (idx !== -1) {
+              updatedChatRoomList[idx].lastChatInfo = {
+                content: data.data.content,
+                sendTime: data.data.sendTime,
+              };
+              updatedChatRoomList[idx].notReadCount += 1;
+            }
+            console.log('업데이트된 채팅방 리스트 ---> ', updatedChatRoomList);
+            return updatedChatRoomList;
+          });
         } else {
           console.log('예상되는 유저 구독 데이터가 아닙니다.');
         }
@@ -84,6 +102,16 @@ function App() {
       client.subscribe(`/queue/user/${myId}`, subscribeClientCallback);
       console.log('Connected: ' + frame);
       changeClient(client);
+    };
+
+    client.beforeConnect = () => {
+      console.log('소켓 연결 전');
+      changeClient(null);
+    };
+
+    client.onDisconnect = (frame) => {
+      console.log('Disconnected: ' + frame);
+      changeClient(null);
     };
 
     client.activate();
