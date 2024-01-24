@@ -33,12 +33,22 @@ const ChatRoomPage = ({ client }: { client: Client | null }) => {
   );
   const [msgItems, setMsgItems] = useState<msgItemType[]>([]);
   const [isOpenMenu, setIsOpenMenu] = useState<boolean>(false);
+  const [pageNumber, setPageNumber] = useState<number>(0);
+  const [hasNextPage, setHasNextPage] = useState<boolean | undefined>(
+    undefined,
+  );
+  const [isTopBoxVisible, setIsTopBoxVisible] = useState<boolean>(false);
+  const [autoDown, setAutoDown] = useState<boolean>(true);
+  const [savedScrollHeight, setSavedScrollHeight] = useState<number>(0);
+  const [isReconnection, setIsReconnection] = useState<boolean>(false);
+  const topBoxRef = useRef<HTMLDivElement | null>(null);
 
   const sendMessageHandler = (msg: string) => {
     if (msg.length <= 0 || client === null) return;
 
     console.log('메세지 전송 시도 --> ', msg);
     sendMessagePublish(client, token, msg);
+    setAutoDown(true);
   };
 
   const subscribeChatRoomCallback = (message: { body: string }) => {
@@ -48,17 +58,45 @@ const ChatRoomPage = ({ client }: { client: Client | null }) => {
         console.log('채팅방 구독 데이터 받음 --> ', data);
         if (data.messageType === 'ROOM_ENTER') {
           console.log('채팅방 입장 성공 --> ', data.data);
-          if (client !== null && token !== '' && receiverId !== '') {
-            getPrevChatPublish(client, token, Number(receiverId), 0);
+          if (
+            data.data.userId !== Number(myId) &&
+            data.data.userId === receiverId
+          ) {
+            setMsgItems((prevMsgItems) =>
+              prevMsgItems.map((msgItem) => ({
+                ...msgItem,
+                isRead: true,
+              })),
+            );
+          } else if (isReconnection) {
+            console.log('재접속만 함');
+            setIsReconnection(false);
+          } else {
+            console.log('처음 입장 후 이전 채팅 불러오기');
+            setAutoDown(true);
+            if (client !== null && token !== '' && receiverId !== '') {
+              getPrevChatPublish(client, token, Number(receiverId), pageNumber);
+            }
           }
         } else if (data.messageType === 'CHAT_LIST') {
           console.log('이전 채팅 불러오기 성공  --> ', data.data);
           if (data.data.requestUserId === Number(myId)) {
             setReceiverInfo(data.data.chatUserInfoDto);
-            setMsgItems(data.data.chatMessageList.reverse());
+            setMsgItems((prevMsgItems) => [
+              ...data.data.chatMessageList.reverse(),
+              ...prevMsgItems,
+            ]);
+            setPageNumber(data.data.pageNumber + 1);
+            setHasNextPage(data.data.hasNextPage ? true : undefined);
+          } else {
+            setMsgItems((prevMsgItems) => [
+              ...prevMsgItems,
+              ...data.data.chatMessageList.reverse(),
+            ]);
           }
         } else if (data.messageType === 'CHAT') {
           console.log('메세지 전송 성공 --> ', data.data);
+          setAutoDown(true);
           setMsgItems((prev) => [
             ...prev,
             {
@@ -80,6 +118,11 @@ const ChatRoomPage = ({ client }: { client: Client | null }) => {
   };
 
   useEffect(() => {
+    console.log('메세지 확인');
+    console.log(msgItems);
+  }, [msgItems]);
+
+  useEffect(() => {
     if (client === null || token === '' || myId === '' || receiverId === '')
       return;
 
@@ -94,16 +137,74 @@ const ChatRoomPage = ({ client }: { client: Client | null }) => {
 
     return () => {
       console.log('채팅방 퇴장 시도');
+      setIsTopBoxVisible(false);
+      setAutoDown(false);
+      setIsReconnection(true);
+      setSavedScrollHeight(chatContainerRef.current?.scrollHeight || 0);
       unSubscribeChatRoom(client, Number(myId), Number(receiverId));
     };
   }, [client, myId, token, params.receiverId]);
 
   useEffect(() => {
-    if (chatContainerRef.current !== null) {
+    if (client === null || chatContainerRef.current === null) return;
+
+    if (autoDown) {
+      console.log('자동 스크롤');
       chatContainerRef.current.scrollTop =
         chatContainerRef.current.scrollHeight;
+    } else if (savedScrollHeight !== 0) {
+      console.log('복원된 스크롤');
+      chatContainerRef.current.scrollTop =
+        chatContainerRef.current.scrollHeight - savedScrollHeight;
     }
-  }, [msgItems]);
+  }, [msgItems, autoDown]);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 0.5,
+    };
+
+    const handleIntersection = (entries: IntersectionObserverEntry[]) => {
+      if (isReconnection) return;
+
+      const target = entries[0];
+      setSavedScrollHeight(chatContainerRef.current?.scrollHeight || 0);
+      if (target.isIntersecting) {
+        console.log('topBox가 보이는 상태');
+        setIsTopBoxVisible(true);
+        setAutoDown(false);
+      } else {
+        console.log('topBox가 안 보이는 상태');
+        setIsTopBoxVisible(false);
+      }
+    };
+    const observer = new IntersectionObserver(handleIntersection, options);
+
+    if (topBoxRef.current) {
+      observer.observe(topBoxRef.current);
+    }
+
+    return () => {
+      if (topBoxRef.current) {
+        observer.unobserve(topBoxRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isTopBoxVisible && hasNextPage) {
+      console.log('탑박스 보여서 이전 채팅 불러오기');
+      getPrevChatHandler();
+    }
+  }, [isTopBoxVisible]);
+
+  const getPrevChatHandler = () => {
+    if (client !== null && token !== '' && receiverId !== '') {
+      getPrevChatPublish(client, token, Number(receiverId), pageNumber);
+    }
+  };
 
   const isShowProfileImg = (idx: number) => {
     if (idx === 0) return true;
@@ -148,7 +249,7 @@ const ChatRoomPage = ({ client }: { client: Client | null }) => {
     const prevSendTime = msgItems[index - 1].sendTime;
     if (!areDatesEqual(sendTime, prevSendTime)) {
       return (
-        <div className="text-center text-[12px] text-gray-500 mt-[10px]">
+        <div className="text-center text-xs text-grayScale4 mt-2.5">
           {new Date(sendTime).toLocaleDateString()}
         </div>
       );
@@ -194,6 +295,7 @@ const ChatRoomPage = ({ client }: { client: Client | null }) => {
         className="p-4 w-full grow flex flex-col items-center gap-y-3 overflow-auto scrollbar-hide"
         ref={chatContainerRef}
       >
+        <div className="pt-1" ref={topBoxRef} />
         {msgItems.map((msgItem, idx) => (
           <div
             key={idx}
@@ -218,7 +320,6 @@ const ChatRoomPage = ({ client }: { client: Client | null }) => {
           </div>
         ))}
       </div>
-
       <ChatInput sendHandler={sendMessageHandler} />
       <div
         className={`z-10 absolute bottom-0 w-full h-full bg-black/50 ${

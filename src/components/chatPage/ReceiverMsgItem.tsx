@@ -25,7 +25,7 @@ const ReceiverMsgItem = ({
       <div className="bg-grayScale1 text-black px-4 py-3 flex justify-start items-center text-wrap rounded-3xl rounded-tl-none">
         {content}
       </div>
-      <div className="h-full flex flex-col gap-y-1 justify-end items-start">
+      <div className="shrink-0 h-full flex flex-col gap-y-1 justify-end items-start">
         <div
           className={`text-[10px] ${
             isRead ? 'text-primary' : 'text-grayScale4'
