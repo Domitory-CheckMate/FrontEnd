@@ -82,6 +82,10 @@ function App() {
   };
 
   useEffect(() => {
+    console.log(process.env.REACT_APP_API_URL);
+  }, []);
+
+  useEffect(() => {
     if (token === '' || token === null) {
       return;
     }
