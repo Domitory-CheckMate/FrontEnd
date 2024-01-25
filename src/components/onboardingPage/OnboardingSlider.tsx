@@ -43,7 +43,7 @@ const OnboardingSlider = () => {
   };
 
   return (
-    <div className="w-full grow flex flex-col justify-start mb-[46px] gap-y-16">
+    <div className="w-full grow flex flex-col justify-start mb-10 gap-y-4">
       <div
         className="grow flex gap-x-20 overflow-hidden items-center"
         onClick={handleSlideNext}
