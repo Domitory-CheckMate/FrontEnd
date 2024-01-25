@@ -1,9 +1,8 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import HeaderBar from '../../components/loginPage/HeaderBar';
-import OrderDropDown from '../../components/mainPage/OrderDropDown';
 // import { articleListDummy2 } from '../../data/dummy';
 // import ArticleItem from '../../components/mainPage/ArticleItem';
-import { dormitoryType, genderType, orderType } from '../../data/type';
+import { orderType } from '../../data/type';
 // import { articleListType, convertOrderToNum, orderType } from '../../data/type';
 import { useInfiniteQuery } from 'react-query';
 import { getMyPostListApi } from '../../api/articleApi';
@@ -16,9 +15,13 @@ const MyPostPage = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
 
-  const handleChangeOrder = (order: orderType) => {
-    setCurrentOrder(order);
-  };
+  useEffect(() => {
+    setCurrentOrder('등록일 순');
+  }, []);
+
+  // const handleChangeOrder = (order: orderType) => {
+  //   setCurrentOrder(order);
+  // };
 
   const { data, isLoading, isFetching, hasNextPage, fetchNextPage } =
     useInfiniteQuery(
