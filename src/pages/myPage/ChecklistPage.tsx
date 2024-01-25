@@ -196,7 +196,7 @@ const ChecklistPage = () => {
           )
         ) : (
           <div className="flex flex-col justify-end h-full w-full">
-            <CategorySelector setEdit={setIsEditMode} />
+            <CategorySelector setEdit={setIsEditMode} type="EDIT" />
           </div>
         )}
       </div>
