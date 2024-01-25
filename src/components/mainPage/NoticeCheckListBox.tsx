@@ -7,7 +7,7 @@ const NoticeCheckListBox = () => {
 
   return (
     <div
-      className="flex items-center justify-between rounded-2xl bg-primary10 py-[15px] pl-4 pr-[21px] mb-[17px]"
+      className="flex items-center justify-between rounded-2xl bg-primary10 py-[15px] pl-4 pr-[21px] mb-[17px] cursor-pointer"
       onClick={() => navigate('/checklist/first')}
     >
       <div className="flex flex-col gap-y-[6px] items-start">
