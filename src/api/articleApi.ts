@@ -91,3 +91,22 @@ export const getPostApi = async ({id}: {id:string | undefined}) => {
 export const patchArticleStateApi = async ({id, postState}: {id:string | undefined, postState:string | undefined}) => {
   return authAxios.patch(`/post/state/${id}`,{postState});
 };
+
+/**
+ *
+ * @param postId
+ * @returns 스크랩
+ */
+export const postScrap = async (postId:number) => {
+  return authAxios.post(`/scrap`,{postId});
+};
+
+/**
+ *
+ * @param postId
+ * @returns 스크랩
+ */
+export const deleteScrap = async (postId:number) => {
+  return authAxios.delete(`/scrap/${postId}`,);
+};
+

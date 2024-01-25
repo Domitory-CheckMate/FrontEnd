@@ -77,6 +77,8 @@ export type getArticleDetailType = {
   mbti : string;
   isScrap: string;
   checkList: checklistApiType;
+  roomType: string;
+  dormitoryType: string;
 }
 
 
