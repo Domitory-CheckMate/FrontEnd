@@ -3,6 +3,9 @@ import { useState, useEffect } from 'react';
 import HeaderBar from '../../components/joinPage/HeaderBar';
 import CheckBox from '../../components/joinPage/CheckBox';
 import NextButton from '../../components/joinPage/NextButton';
+import { ReactComponent as Checked } from '../../assets/icon/icon_checkbox_checked.svg';
+import { ReactComponent as Unchecked } from '../../assets/icon/icon_checkbox_unchecked.svg';
+
 import { useNavigate } from 'react-router-dom';
 
 const JoinPage = () => {
@@ -67,10 +70,16 @@ const JoinPage = () => {
           서비스 이용약관에 동의해주세요.
         </div>
         <div
-          className="w-full flex mt-4 cursor-pointer"
+          className="w-full flex mt-4 cursor-pointer items-center h-[17px]"
           onClick={onAllCheckClick}
         >
-          <input className="mr-4" checked={isAllChecked} type="checkbox" />
+          <div className="flex items-center h-[17px] w-[15px] mr-[7px]">
+            {isAllChecked ? (
+              <Checked onClick={onAllCheckClick} />
+            ) : (
+              <Unchecked onClick={onAllCheckClick} />
+            )}
+          </div>{' '}
           <div className="grow font-bold text-sm">약관 전체 동의</div>
         </div>
         <CheckBox

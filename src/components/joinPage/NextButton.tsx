@@ -15,7 +15,7 @@ const NextButton = ({
         isCanBeNext
           ? 'bg-primary text-white'
           : 'bg-invalidGray text-invalidTextGray'
-      } text-[18px] absolute rounded-full bottom-[51px] left-4 right-4`}
+      } text-[18px] rounded-full mb-[51px] w-full py-[16px]`}
       onClick={onClick}
     >
       {text}

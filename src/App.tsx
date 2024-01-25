@@ -23,7 +23,6 @@ import {
 } from './socket/socketClient';
 import { Client } from '@stomp/stompjs';
 import WritePage from './pages/write/WritePage';
-import KeywordPage from './pages/write/KeywordPage';
 import ChatPage from './pages/chat/ChatPage';
 import ChatRoomPage from './pages/chat/ChatRoomPage';
 import { getAccessToken, getMemberId } from './api/manageLocalStorage';
@@ -32,6 +31,9 @@ import SearchPage from './pages/search/SearchPage';
 import MyScrapPage from './pages/main/MyScrapPage';
 import MajorSearchPage from './pages/join/MajorSearchPage';
 import ReportDetail from './pages/report/ReportPage';
+import { RecoilRoot } from 'recoil';
+import MyPostPage from './pages/myPage/MyPostPage';
+import SettingsPage from './pages/myPage/Settings';
 
 function App() {
   const token: string = getAccessToken() || '';
@@ -176,42 +178,45 @@ function App() {
   }, []);
 
   return (
-    <Router>
-      <Routes>
-        <Route path="/" element={<SplashPage />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/login/pw" element={<FindPwPage />} />
-        <Route path="/join" element={<JoinPage />} />
-        <Route path="/join/detail" element={<JoinDetailPage />} />
-        <Route path="/join/major" element={<MajorSearchPage />} />
-        <Route path="/join/info" element={<JoinInfoPage />} />
-        <Route path="/join/mbti" element={<OnboardingPage2 />} />
-        <Route path="/join/completed" element={<JoinCompletedPage />} />
-        <Route path="/onboarding" element={<OnboardingPage />} />
-        <Route path="/main" element={<MainPage notReadCnt={notReadCnt} />} />
-        <Route path="/main/keyword" element={<KeywordMatchingPage />} />
-        <Route path="/main/mate" element={<MateMatchingPage />} />
-        <Route path="/article/:id" element={<ArticlePage />} />
-        <Route path="/my-page" element={<MyPage notReadCnt={notReadCnt} />} />
-        <Route path="/my/scrap" element={<MyScrapPage />} />
-        <Route path="/membership" element={<MembershipPage />} />
-        <Route path="/checklist" element={<ChecklistPage />} />
-        <Route path="/write" element={<WritePage />} />
-        <Route path="/keyword" element={<KeywordPage />} />
-        <Route
-          path="/chat"
-          element={
-            <ChatPage chatRoomList={chatRoomList} notReadCnt={notReadCnt} />
-          }
-        />
-        <Route
-          path="/chat/:receiverId"
-          element={<ChatRoomPage client={client} />}
-        />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/report" element={<ReportDetail />} />
-      </Routes>
-    </Router>
+    <RecoilRoot>
+      <Router>
+        <Routes>
+          <Route path="/" element={<SplashPage />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/login/pw" element={<FindPwPage />} />
+          <Route path="/join" element={<JoinPage />} />
+          <Route path="/join/detail" element={<JoinDetailPage />} />
+          <Route path="/join/major" element={<MajorSearchPage />} />
+          <Route path="/join/info" element={<JoinInfoPage />} />
+          <Route path="/join/mbti" element={<OnboardingPage2 />} />
+          <Route path="/join/completed" element={<JoinCompletedPage />} />
+          <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="/main" element={<MainPage notReadCnt={notReadCnt} />} />
+          <Route path="/main/keyword" element={<KeywordMatchingPage />} />
+          <Route path="/main/mate" element={<MateMatchingPage />} />
+          <Route path="/article/:id" element={<ArticlePage />} />
+          <Route path="/my-page" element={<MyPage notReadCnt={notReadCnt} />} />
+          <Route path="/my-post" element={<MyPostPage />} />
+          <Route path="/my/scrap" element={<MyScrapPage />} />
+          <Route path="/membership" element={<MembershipPage />} />
+          <Route path="/checklist" element={<ChecklistPage />} />
+          <Route path="/write" element={<WritePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route
+            path="/chat"
+            element={
+              <ChatPage chatRoomList={chatRoomList} notReadCnt={notReadCnt} />
+            }
+          />
+          <Route
+            path="/chat/:receiverId"
+            element={<ChatRoomPage client={client} />}
+          />
+          <Route path="/search" element={<SearchPage />} />
+          <Route path="/report" element={<ReportDetail />} />
+        </Routes>
+      </Router>
+    </RecoilRoot>
   );
 }
 

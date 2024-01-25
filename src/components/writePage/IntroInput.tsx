@@ -1,11 +1,17 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, ChangeEvent } from 'react';
 
-const IntroInput = ({ intro }: { intro: string }) => {
+interface IntroInputProps {
+  intro: string;
+  onIntroChange: (newIntro: string) => void;
+}
+
+const IntroInput: React.FC<IntroInputProps> = ({ intro, onIntroChange }) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
   const [text, setText] = useState('');
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.currentTarget.value);
+    onIntroChange(e.currentTarget.value);
     // textarea 높이 조절
     if (textareaRef && textareaRef.current) {
       textareaRef.current.style.height = '0px';

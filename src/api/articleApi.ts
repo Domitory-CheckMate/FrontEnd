@@ -47,6 +47,17 @@ export const getPostListApi = async ({
   return authAxios.get(queryString);
 };
 
+export const getMyPostListApi = async ({size, page}: {
+  size: number;
+  page: number;
+}): Promise<AxiosResponse<PostListResponse>> => {
+  const queryString =
+    `/post/my?size=${size}&page=${page}`;
+  console.log(queryString);
+
+  return authAxios.get(queryString);
+};
+
 /**
  *
  * @param page 페이지
@@ -61,4 +72,22 @@ export const getMyScrapListApi = async ({
   size: number;
 }): Promise<AxiosResponse<PostListResponse>> => {
   return authAxios.get(`/scrap?page=${page}&size=${size}`);
+};
+
+/**
+ *
+ * @param id
+ * @returns 게시글 조회
+ */
+export const getPostApi = async ({id}: {id:string | undefined}) => {
+  return authAxios.get(`/post/${id}`);
+};
+
+/**
+ *
+ * @param postState
+ * @returns 게시글 상태 수정
+ */
+export const patchArticleStateApi = async ({id, postState}: {id:string | undefined, postState:string | undefined}) => {
+  return authAxios.patch(`/post/state/${id}`,{postState});
 };

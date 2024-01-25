@@ -32,11 +32,11 @@ const ChecklistCheckBlock = ({
 }: {
   title: string;
   option: string[];
-  selectedOption: string;
-  onOptionChange: (selectedOption: string) => void;
+  selectedOption: number;
+  onOptionChange: (selectedOption: number) => void;
   subtitle?: string;
 }) => {
-  const handleOptionClick = (selected: string) => {
+  const handleOptionClick = (selected: number) => {
     onOptionChange(selected);
   };
 
@@ -53,8 +53,8 @@ const ChecklistCheckBlock = ({
           <Option
             key={index}
             text={text}
-            checked={selectedOption === text}
-            onClick={() => handleOptionClick(text)}
+            checked={selectedOption === index}
+            onClick={() => handleOptionClick(index)}
           />
         ))}
       </div>

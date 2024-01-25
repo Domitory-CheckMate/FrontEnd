@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 
-const RoomTypeInput = () => {
+interface RoomTypeInputProps {
+  onRoomTypeChange: (newRoomType: string) => void;
+}
+
+const RoomTypeInput: React.FC<RoomTypeInputProps> = ({ onRoomTypeChange }) => {
   const [roomType, setRoomType] = useState(-1);
 
   const handleRoomTypeChange = (selectedOption: number) => {
     setRoomType(selectedOption);
+    if (selectedOption == 0) onRoomTypeChange('1');
+    if (selectedOption == 1) onRoomTypeChange('2');
   };
 
   return (
