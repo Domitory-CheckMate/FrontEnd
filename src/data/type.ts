@@ -74,11 +74,10 @@ export type getArticleDetailType = {
   major: string;
   profile: string;
   gender: string;
-  mbti : string;
+  mbti: string;
   isScrap: string;
   checkList: checklistApiType;
-}
-
+};
 
 export type checklistType = {
   smoke: '흡연자 선호' | '비흡연자 선호';

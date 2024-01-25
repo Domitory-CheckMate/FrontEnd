@@ -115,6 +115,10 @@ const ChecklistPage = () => {
     }
   }, [isEditMode, refetch]);
 
+  if (isLoading) {
+    return <div>로딩 중...</div>;
+  }
+
   return (
     <div className="w-full h-full flex flex-col">
       <div className="flex justify-between items-center w-full px-4 mt-[65px] relative mb-[48px]">

@@ -44,6 +44,7 @@ const SettingsPage = () => {
 
   const { mutate: tryWithdraw } = useMutation(() => withdraw(), {
     onSuccess: (data) => {
+      console.log(data);
       setIsWithdrawOpen(false);
       navigate('/onboarding');
       console.log('탈퇴 성공');

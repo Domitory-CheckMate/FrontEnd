@@ -188,9 +188,9 @@ const ChangeProfileModal = ({
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [profileIndex, setProfileIndex] = useState<number>(0);
 
-  const handleCloseModal = () => {
-    onClose();
-  };
+  // const handleCloseModal = () => {
+  //   onClose();
+  // };
 
   useEffect(() => {
     setModalBottom(() => {

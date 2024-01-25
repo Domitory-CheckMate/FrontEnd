@@ -3,19 +3,17 @@ import { ReactComponent as Pin } from '../../assets/icon/icon_pin.svg';
 import { ReactComponent as Calendar } from '../../assets/icon/icon_calendar.svg';
 import { ReactComponent as Bookmark } from '../../assets/icon/icon_bookmark_black.svg';
 import ArticleHeaderBar from '../../components/articlePage/ArticleHeaderBar';
-import { articleDetailDummy } from '../../data/dummy';
 import ChecklistTag from '../../components/articlePage/ChecklistTag';
 import Divider from '../../components/mainPage/Divider';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { useState } from 'react';
-import { checklistApiType, getArticleDetailType } from '../../data/type';
+import { getArticleDetailType } from '../../data/type';
 import { getPostApi, patchArticleStateApi } from '../../api/articleApi';
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { memberIdState } from '../../data/atoms';
 import { useMutation } from 'react-query';
-import { CustomError } from '../../data/type';
 
 const ArticlePage = () => {
   const { id } = useParams();
@@ -31,7 +29,7 @@ const ArticlePage = () => {
     getPostApi({ id }),
   );
 
-  var sleepType: string[] = [];
+  const sleepType: string[] = [];
 
   const { mutate: tryChangeArticleState } = useMutation(
     async () => {
@@ -92,6 +90,8 @@ const ArticlePage = () => {
       console.log('error : ', error);
     }
   }, [data, error]);
+
+  if (isLoading) return <div>로딩중...</div>;
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
