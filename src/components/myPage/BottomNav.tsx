@@ -36,7 +36,7 @@ const BottomNav = ({
         >
           {state === 'chat' ? <ChatSelect /> : <Chat />}
           {notReadCnt > 0 && (
-            <div className="absolute -top-[7px] -right-[8px] w-[18px] h-[18px] bg-primary rounded-full flex justify-center items-center text-white text-2.5">
+            <div className="absolute -top-[7px] -right-[8px] w-[18px] h-[18px] bg-primary rounded-full flex justify-center items-center text-white text-[10px] leading-[7px]">
               {notReadCnt}
             </div>
           )}
