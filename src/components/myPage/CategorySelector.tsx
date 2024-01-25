@@ -8,12 +8,16 @@ import { postChecklistApi } from '../../api/userApi';
 import { CustomError, checklistApiType } from '../../data/type';
 import { useSetRecoilState } from 'recoil';
 import { myCheckListState } from '../../data/atoms';
+import { useNavigate } from 'react-router-dom';
 
 const CategorySelector = ({
+  type,
   setEdit,
 }: {
+  type: 'POST' | 'EDIT';
   setEdit: React.Dispatch<React.SetStateAction<boolean>>;
 }) => {
+  const navigate = useNavigate();
   const [smokingPreference, setSmokingPreference] = useState(-1);
   const [lifestylePattern, setLifestylePattern] = useState(-1);
   const [cleaningFrequency, setCleaningFrequency] = useState(-1);
@@ -171,6 +175,7 @@ const CategorySelector = ({
         console.log(data);
         console.log(finalList);
         setEdit(false);
+        navigate(-1);
       },
       onError: (error: unknown) => {
         console.log(error);
@@ -188,6 +193,7 @@ const CategorySelector = ({
       onSuccess: (data) => {
         console.log(data);
         setEdit(false);
+        navigate(-1);
       },
       onError: (error: unknown) => {
         console.log(error);
@@ -348,7 +354,7 @@ const CategorySelector = ({
           className="w-full h-[50px]  bg-primary text-white rounded-[27px]"
         >
           {' '}
-          수정 완료
+          {type === 'POST' ? '등록하기' : '수정 완료'}
         </button>
       </div>
     </div>

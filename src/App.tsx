@@ -34,6 +34,7 @@ import ReportDetail from './pages/report/ReportPage';
 import { RecoilRoot } from 'recoil';
 import MyPostPage from './pages/myPage/MyPostPage';
 import SettingsPage from './pages/myPage/Settings';
+import FirstChecklistPage from './pages/main/FirstChecklistPage';
 
 function App() {
   const token: string = getAccessToken() || '';
@@ -195,6 +196,7 @@ function App() {
           <Route path="/join/mbti" element={<OnboardingPage2 />} />
           <Route path="/join/completed" element={<JoinCompletedPage />} />
           <Route path="/onboarding" element={<OnboardingPage />} />
+          <Route path="checklist/first" element={<FirstChecklistPage />} />
           <Route path="/main" element={<MainPage notReadCnt={notReadCnt} />} />
           <Route path="/main/keyword" element={<KeywordMatchingPage />} />
           <Route path="/main/mate" element={<MateMatchingPage />} />
