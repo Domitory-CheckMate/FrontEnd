@@ -8,7 +8,7 @@ const ArticleItem = ({ article }: { article: articleListType }) => {
   const navigate = useNavigate();
 
   const articleClickHandler = (id: number) => {
-    navigate(`/article/${id}`);
+    navigate(`/article/${id}`, { state: { article: article } });
   };
 
   return (

@@ -22,10 +22,12 @@ const ChecklistPage = () => {
   const [sleepType, setSleepType] = useState('');
   const [smokeType, setSmokeType] = useState('');
 
-  const { data, error, isLoading } = useQuery(
+  const { data, error, isLoading, refetch } = useQuery(
     'getChecklistInfo',
     getChecklistApi,
   );
+
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
     if (data) {
@@ -91,18 +93,27 @@ const ChecklistPage = () => {
 
       // 결과 사용
       setSleepType(sleepType);
+      setIsError(false);
 
       setNoiseType(callType + ', ' + earPhoneType);
     }
 
     if (error) {
       console.error('Error:', error);
+      setIsError(true);
       const customErr = error as CustomError;
       if (customErr.response?.status === 500) {
         console.log('오류가 발생하였습니다.');
       }
     }
-  }, [data, error, isEditMode]);
+  }, [data, error]);
+
+  useEffect(() => {
+    if (!isEditMode) {
+      // isEditMode가 true일 때 데이터를 다시 불러옴
+      refetch();
+    }
+  }, [isEditMode, refetch]);
 
   return (
     <div className="w-full h-full flex flex-col">
@@ -121,56 +132,64 @@ const ChecklistPage = () => {
       </div>
       <div className="grow-1 w-full scrollbar-hide overflow-y-auto ">
         {!isEditMode ? (
-          <div className="flex justify-start">
-            <div>
-              {smokeType === '비흡연자 선호' ? (
-                <ChecklistBlock
-                  text1={'홍길동님은'}
-                  text2={'🚭 ' + smokeType}
-                  text3="하며"
-                />
-              ) : (
-                <ChecklistBlock
-                  text1={'홍길동님은'}
-                  text2={'🚬  ' + smokeType}
-                  text3="하며"
-                />
-              )}
-              <ChecklistBlock
-                text1={'생활패턴은'}
-                text2={'☀️ ' + lifePatternType}
-                text3="이에요"
-              />
-              <ChecklistBlock
-                text1={'청소는'}
-                text2={'🧽 ' + cleanType}
-                text3="이 적당하다 생각"
-              />
-              <ChecklistBlock
-                text1={'하고, 잠버릇은'}
-                text2={'😴 ' + sleepType}
-                text3="가 있어요."
-              />
-              <ChecklistBlock
-                text1={'음주는'}
-                text2={'🍺️ ' + drinkType}
-                text3="편이고,"
-              />
-              <ChecklistBlock
-                text1={'본가는'}
-                text2={'🏠 매주' + homeType}
-                text3="갈 예정이고,"
-              />
-              <ChecklistBlock
-                text1={'방 안에서는'}
-                text2={'🗣️ ' + noiseType}
-                text3="부탁"
-              />
-              <p className="text-lg w-full font-normal text-center flex px-4 py-1.5 items-center text-black">
-                드려요.
-              </p>
+          isError ? (
+            <div className="w-full flex justify-center items-center text-grayScale3 py-6">
+              {isError
+                ? '아직 체크리스트가 없다면 추가해주세요!.'
+                : '로딩 중...'}
             </div>
-          </div>
+          ) : (
+            <div className="flex justify-start">
+              <div>
+                {smokeType === '비흡연자 선호' ? (
+                  <ChecklistBlock
+                    text1={'홍길동님은'}
+                    text2={'🚭 ' + smokeType}
+                    text3="하며"
+                  />
+                ) : (
+                  <ChecklistBlock
+                    text1={'홍길동님은'}
+                    text2={'🚬  ' + smokeType}
+                    text3="하며"
+                  />
+                )}
+                <ChecklistBlock
+                  text1={'생활패턴은'}
+                  text2={'☀️ ' + lifePatternType}
+                  text3="이에요"
+                />
+                <ChecklistBlock
+                  text1={'청소는'}
+                  text2={'🧽 ' + cleanType}
+                  text3="이 적당하다 생각"
+                />
+                <ChecklistBlock
+                  text1={'하고, 잠버릇은'}
+                  text2={'😴 ' + sleepType}
+                  text3="가 있어요."
+                />
+                <ChecklistBlock
+                  text1={'음주는'}
+                  text2={'🍺️ ' + drinkType}
+                  text3="편이고,"
+                />
+                <ChecklistBlock
+                  text1={'본가는'}
+                  text2={'🏠 ' + homeType}
+                  text3="갈 예정이고,"
+                />
+                <ChecklistBlock
+                  text1={'방 안에서는'}
+                  text2={'🗣️ ' + noiseType}
+                  text3="부탁"
+                />
+                <p className="text-lg w-full font-normal text-center flex px-4 py-1.5 items-center text-black">
+                  드려요.
+                </p>
+              </div>
+            </div>
+          )
         ) : (
           <div className="flex flex-col justify-end h-full w-full">
             <CategorySelector setEdit={setIsEditMode} />

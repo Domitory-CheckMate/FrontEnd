@@ -67,10 +67,8 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
   ];
 
   useEffect(() => {
-    onKeywordChange(
-      initialKeywordsCode[initialKeywords.indexOf(keyword.keyword)],
-    );
-    onMatchChange(initialMatchCode[initialMatch.indexOf(keyword.match)]);
+    onKeywordChange(keyword.keyword);
+    onMatchChange(keyword.match);
   }, [keyword]);
 
   return (
@@ -86,8 +84,12 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
       </div>
 
       <div className="flex flex-wrap gap-[7px] mt-[13px]">
-        {keyword.keyword !== '' && <Keyword string={keyword.keyword} />}
-        {keyword.match !== '' && <Keyword string={keyword.match} />}
+        {keyword.keyword !== '' && (
+          <Keyword string={initialKeywords[parseInt(keyword.keyword) - 1]} />
+        )}
+        {keyword.match !== '' && (
+          <Keyword string={initialMatch[parseInt(keyword.match) - 1]} />
+        )}
       </div>
       {show && <KeywordPage onClose={handleShow} />}
     </div>

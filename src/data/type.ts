@@ -68,6 +68,18 @@ export type articleDetailType = {
   user: userType;
 };
 
+export type getArticleDetailType = {
+  memberId: number;
+  name: string;
+  major: string;
+  profile: string;
+  gender: string;
+  mbti : string;
+  isScrap: string;
+  checkList: checklistApiType;
+}
+
+
 export type checklistType = {
   smoke: '흡연자 선호' | '비흡연자 선호';
   pattern: '아침형 인간' | '저녁형 인간';
@@ -83,33 +95,33 @@ export type checklistType = {
   noise: noiseType[];
 };
 
-// export type checklistApiType = {
-//   cleanType: string;
-//   drinkType: string;
-//   homeType: string;
-//   lifePatternType: string;
-//   callType: string;
-//   earPhoneType: string;
-//   smokeType: string;
-//   sleepGrindingType: string;
-//   sleepSnoreType: string;
-//   sleepTalkingType: string;
-//   sleepTurningType: string;
-// };
-
 export type checklistApiType = {
-  cleanType: 'RARELY' | 'SOMETIMES' | 'OFTEN' | 'USUALLY' | 'ALWAYS';
-  drinkType: 'NEVER' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS';
-  homeType: 'RARELY' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS';
-  lifePatternType: 'MORNING' | 'EVENING';
-  callType: 'OUTSIDE' | 'INSIDE' | 'ANYWAY';
-  earPhoneType: 'NEED' | 'NOT_NEED';
-  smokeType: 'NONE' | 'SMOKE';
-  sleepGrindingType: 'TRUE' | 'FALSE';
-  sleepSnoreType: 'TRUE' | 'FALSE';
-  sleepTalkingType: 'TRUE' | 'FALSE';
-  sleepTurningType: 'TRUE' | 'FALSE';
+  cleanType: string;
+  drinkType: string;
+  homeType: string;
+  lifePatternType: string;
+  callType: string;
+  earPhoneType: string;
+  smokeType: string;
+  sleepGrindingType: string;
+  sleepSnoreType: string;
+  sleepTalkingType: string;
+  sleepTurningType: string;
 };
+
+// export type checklistApiType = {
+//   cleanType: 'RARELY' | 'SOMETIMES' | 'OFTEN' | 'USUALLY' | 'ALWAYS';
+//   drinkType: 'NEVER' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS';
+//   homeType: 'RARELY' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS';
+//   lifePatternType: 'MORNING' | 'EVENING';
+//   callType: 'OUTSIDE' | 'INSIDE' | 'ANYWAY';
+//   earPhoneType: 'NEED' | 'NOT_NEED';
+//   smokeType: 'NONE' | 'SMOKE';
+//   sleepGrindingType: 'TRUE' | 'FALSE';
+//   sleepSnoreType: 'TRUE' | 'FALSE';
+//   sleepTalkingType: 'TRUE' | 'FALSE';
+//   sleepTurningType: 'TRUE' | 'FALSE';
+// };
 
 export type sleepType = '코골이' | '이갈이' | '잠꼬대' | '뒤척임';
 

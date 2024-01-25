@@ -33,6 +33,7 @@ import MajorSearchPage from './pages/join/MajorSearchPage';
 import ReportDetail from './components/chatPage/ReportDetail';
 import { RecoilRoot } from 'recoil';
 import MyPostPage from './pages/myPage/MyPostPage';
+import SettingsPage from './pages/myPage/Settings';
 
 function App() {
   const token: string = getAccessToken() || '';
@@ -172,6 +173,7 @@ function App() {
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/checklist" element={<ChecklistPage />} />
           <Route path="/write" element={<WritePage />} />
+          <Route path="/settings" element={<SettingsPage />} />
           <Route
             path="/chat"
             element={

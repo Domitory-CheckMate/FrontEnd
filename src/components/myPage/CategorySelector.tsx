@@ -25,27 +25,19 @@ const CategorySelector = ({
 
   const [isFirst, setIsFirst] = useState(true);
 
-  const smokeType = ['SMOKE', 'NONE'];
-  const cleanType = ['ALWAYS', 'USUALLY', 'OFTEN', 'SOMETIMES', 'RARELY'];
-  const drinkType = ['NEVER', 'SOMETIMES', 'OFTEN', 'ALWAYS'];
-  const homeType = ['ALWAYS', 'OFTEN', 'SOMETIMES', 'RARELY'];
-  const lifePatternType = ['MORNING', 'EVENING'];
-  const callType = ['OUTSIDE', 'INSIDE', 'ANYWAY'];
-  const earphoneType = ['NEED', 'NOT_NEED'];
-
   const smokeTypeKor = ['흡연자 선호', '비흡연자 선호'];
   const lifePatternTypeKor = ['아침형 인간', '저녁형 인간'];
   const cleanTypeKor = [
-    '매일매일',
-    '1주일에 3~4번',
-    '1주에 한 번',
+    '1달에 한번',
     '2주에 1번',
-    '한달에 한 번',
+    '1주에 1번',
+    '1주에 3~4번',
+    '매일매일',
   ];
   const drinkTypeKor = ['안마심', '1주에 2~3번', '1주에 4~5번', '매일'];
-  const homeTypeKor = ['매주', '1~2주에 한번', '1주에 한 번', '2주에 한 번'];
-  const earphoneTypeKor = ['이어폰 착용', '상관없음'];
+  const homeTypeKor = ['가끔', '달에 1번', '1~2주에 한번', '매주'];
   const callTypeKor = ['통화는 밖에서', '5분 이내는 안에서', '상관 없음'];
+  const earphoneTypeKor = ['이어폰 필수', '상관없음'];
   // const sleepTypeKor = ['코골이', '이갈이', '잠꼬대', '뒤척임', '없음'];
 
   const [finalList, setFinalList] = useState<checklistApiType>();
@@ -79,28 +71,23 @@ const CategorySelector = ({
   };
 
   useEffect(() => {
-    const sleepGrindingType = sleepingHabit[1] == 1 ? 'TRUE' : 'FALSE';
-    const sleepSnoreType = sleepingHabit[0] == 1 ? 'TRUE' : 'FALSE';
-    const sleepTalkingType = sleepingHabit[2] == 1 ? 'TRUE' : 'FALSE';
-    const sleepTurningType = sleepingHabit[3] == 1 ? 'TRUE' : 'FALSE';
+    const sleepGrindingType = sleepingHabit[1] == 0 ? '2' : '1';
+    const sleepSnoreType = sleepingHabit[0] == 0 ? '2' : '1';
+    const sleepTalkingType = sleepingHabit[2] == 0 ? '2' : '1';
+    const sleepTurningType = sleepingHabit[3] == 0 ? '2' : '1';
 
     const myCheckList: checklistApiType = {
-      cleanType: cleanType[cleaningFrequency] as checklistApiType['cleanType'],
-      drinkType: drinkType[drinkingFrequency] as checklistApiType['drinkType'],
-      homeType: homeType[hometown] as checklistApiType['homeType'],
-      lifePatternType: lifePatternType[
-        lifestylePattern
-      ] as checklistApiType['lifePatternType'],
-      callType: callType[phone] as checklistApiType['callType'],
-      earPhoneType: earphoneType[earphone] as checklistApiType['earPhoneType'],
-      smokeType: smokeType[smokingPreference] as checklistApiType['smokeType'],
-      sleepGrindingType:
-        sleepGrindingType as checklistApiType['sleepGrindingType'],
-      sleepSnoreType: sleepSnoreType as checklistApiType['sleepSnoreType'],
-      sleepTalkingType:
-        sleepTalkingType as checklistApiType['sleepTalkingType'],
-      sleepTurningType:
-        sleepTurningType as checklistApiType['sleepTurningType'],
+      cleanType: `${cleaningFrequency + 1}`,
+      drinkType: `${drinkingFrequency + 1}`,
+      homeType: `${hometown + 1}`,
+      lifePatternType: `${lifestylePattern + 1}`,
+      callType: `${phone + 1}`,
+      earPhoneType: `${earphone + 1}`,
+      smokeType: `${smokingPreference + 1}`,
+      sleepGrindingType: `${sleepGrindingType}`,
+      sleepSnoreType: `${sleepSnoreType}`,
+      sleepTalkingType: `${sleepTalkingType}`,
+      sleepTurningType: `${sleepTurningType}`,
     };
     setFinalList(myCheckList);
     setList(myCheckList);
@@ -337,7 +324,7 @@ const CategorySelector = ({
         />
         <ChecklistCheckBlock
           title={'본가 가는 주기 🏠'}
-          option={['매주', '1~2주에 1번', '달에 1번', '가끔']}
+          option={homeTypeKor}
           selectedOption={hometown}
           onOptionChange={handleHometownChange}
         />

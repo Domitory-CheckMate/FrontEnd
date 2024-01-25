@@ -62,12 +62,6 @@ const WritePage = () => {
     setDormitoryType(newDormitoryType);
   };
   useEffect(() => {
-    console.log(title);
-    console.log(intro);
-    console.log(keyword);
-    console.log(callCheck);
-    console.log(period);
-    console.log(roomType);
     const myArticle: articlePostType = {
       title: title,
       content: intro,

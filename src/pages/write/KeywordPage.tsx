@@ -38,16 +38,27 @@ const KeywordPage = ({ onClose }: { onClose: () => void }) => {
   });
 
   const handleSave = () => {
-    setContent(selectedItem);
-    console.log(content);
-    onClose();
+    if (!selectedItem.keyword || !selectedItem.match) {
+      alert('키워드와 일치율을 모두 선택해주세요');
+    } else {
+      setContent(selectedItem);
+      console.log(content);
+      onClose();
+    }
   };
 
   const handleItemClick = (type: string, value: string) => {
-    setSelectedItem((prev) => ({
-      ...prev,
-      [type]: value,
-    }));
+    if (type === 'keyword') {
+      setSelectedItem((prev) => ({
+        ...prev,
+        [type]: `${initialKeywords.indexOf(value) + 1}`,
+      }));
+    } else {
+      setSelectedItem((prev) => ({
+        ...prev,
+        [type]: `${initialMatch.indexOf(value) + 1}`,
+      }));
+    }
   };
 
   return (
@@ -69,12 +80,12 @@ const KeywordPage = ({ onClose }: { onClose: () => void }) => {
           가장 중요하게 생각하는 키워드
         </div>
         <div className="flex flex-wrap gap-[8px] mt-[18px]">
-          {initialKeywords.map((keyword) => (
+          {initialKeywords.map((keyword, index) => (
             <CheckKeyword
               key={keyword}
               string={keyword}
               onClick={() => handleItemClick('keyword', keyword)}
-              isActive={selectedItem.keyword === keyword}
+              isActive={selectedItem.keyword === `${index + 1}`}
             />
           ))}
         </div>
@@ -83,12 +94,12 @@ const KeywordPage = ({ onClose }: { onClose: () => void }) => {
           체크리스트 일치율
         </div>
         <div className="flex flex-wrap gap-[8px] mt-[18px]">
-          {initialMatch.map((match) => (
+          {initialMatch.map((match, index) => (
             <CheckKeyword
               key={match}
               string={match}
               onClick={() => handleItemClick('match', match)}
-              isActive={selectedItem.match === match}
+              isActive={selectedItem.match === `${index + 1}`}
             />
           ))}
         </div>

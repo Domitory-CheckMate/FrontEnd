@@ -11,9 +11,9 @@ const DormitoryTypeInput: React.FC<DormitoryTypeInputProps> = ({
 
   const handleDormitoryTypeChange = (selectedOption: number) => {
     setDormitoryType(selectedOption);
-    if (selectedOption == 0) onDormitoryTypeChange('FIRST');
-    if (selectedOption == 1) onDormitoryTypeChange('SECOND');
-    if (selectedOption == 2) onDormitoryTypeChange('THIRD');
+    if (selectedOption == 0) onDormitoryTypeChange('1');
+    if (selectedOption == 1) onDormitoryTypeChange('2');
+    if (selectedOption == 2) onDormitoryTypeChange('3');
   };
 
   return (

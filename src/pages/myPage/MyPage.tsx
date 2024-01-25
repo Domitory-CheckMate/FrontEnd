@@ -52,6 +52,8 @@ const MyCheckList = () => {
   // const [sleepTalkingType, setSleepTalkingType] = useState('');
   // const [sleepTurningType, setSleepTurningType] = useState('');
   const [sleepType, setSleepType] = useState('');
+  const [isError, setIsError] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (data) {
@@ -128,6 +130,7 @@ const MyCheckList = () => {
 
     if (error) {
       console.error('Error:', error);
+      setIsError(true);
       const customErr = error as CustomError;
       if (customErr.response?.status === 500) {
         console.log('오류가 발생하였습니다.');
@@ -137,33 +140,50 @@ const MyCheckList = () => {
 
   return (
     <div className="flex flex-col gap-[10px]">
-      <div className="flex gap-[8px]">
-        {smokeType == '비흡연자 선호' ? (
-          <CheckBlock emoji="🚭" content={smokeType} />
-        ) : (
-          <CheckBlock emoji="🚬" content={smokeType} />
-        )}{' '}
-        {lifePatternType == '아침형 인간' ? (
-          <CheckBlock emoji="☀️" content={lifePatternType} />
-        ) : (
-          <CheckBlock emoji="🌙" content={lifePatternType} />
-        )}
-        <CheckBlock emoji="🧽" content={cleanType} />
-      </div>
-      <div className="flex gap-[8px]">
-        <CheckBlock emoji="😴" content={sleepType} />
-        <CheckBlock emoji="🍺" content={drinkType} />
-        <CheckBlock emoji="🏠" content={homeType} />
-      </div>{' '}
-      <div className="flex gap-[8px]">
-        <CheckBlock emoji="🗣️" content={noiseType} />
-      </div>
+      {isError ? (
+        <div
+          className="w-full flex justify-center items-center text-grayScale3 py-6"
+          onClick={() => navigate('/checklist')}
+        >
+          {isError ? '아직 체크리스트가 없다면 추가해주세요!.' : '로딩 중...'}
+        </div>
+      ) : (
+        <>
+          <div className="flex gap-[8px]">
+            {smokeType == '비흡연자 선호' ? (
+              <CheckBlock emoji="🚭" content={smokeType} />
+            ) : (
+              <CheckBlock emoji="🚬" content={smokeType} />
+            )}{' '}
+            {lifePatternType == '아침형 인간' ? (
+              <CheckBlock emoji="☀️" content={lifePatternType} />
+            ) : (
+              <CheckBlock emoji="🌙" content={lifePatternType} />
+            )}
+            <CheckBlock emoji="🧽" content={cleanType} />
+          </div>
+          <div className="flex gap-[8px]">
+            <CheckBlock emoji="😴" content={sleepType} />
+            <CheckBlock emoji="🍺" content={drinkType} />
+            <CheckBlock emoji="🏠" content={homeType} />
+          </div>{' '}
+          <div className="flex gap-[8px]">
+            <CheckBlock emoji="🗣️" content={noiseType} />
+          </div>
+        </>
+      )}
     </div>
   );
 };
 
 // 모달 컴포넌트
-const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
+const ChangeProfileModal = ({
+  open,
+  onClose,
+}: {
+  open: boolean;
+  onClose: () => void;
+}) => {
   const [modalBottom, setModalBottom] = useState<string>('[-352px]');
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [profileIndex, setProfileIndex] = useState<number>(0);
@@ -209,69 +229,75 @@ const ChangeProfileModal = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div
-      className={`fixed bottom-0 left-0 right-0 top-0 flex items-end justify-center z-50`}
-    >
+    <>
       <div
-        className="absolute bg-modalBackground w-full h-full"
-        onClick={handleCloseModal}
-      ></div>
+        className={`w-full max-w-[450px] h-full bg-black opacity-50 fixed left-0 right-0 bottom-0 mx-auto z-5 ${
+          open ? 'block' : 'hidden'
+        }`}
+        onClick={onClose}
+      />
       <div
-        className={`relative w-full h-[352px] font-semibold text-lg text-center flex-col justify-center bg-white rounded-[28px] pb-[93px] px-[16px] pt-[13px] text-black z-50 transition-all duration-500 ease-in-out bottom-${modalBottom}`}
+        className={`z-10 w-full max-w-[450px] pb-[37px] rounded-t-3xl fixed bottom-0 left-0 right-0 mx-auto box-border bg-white transition-transform transform ${
+          open ? 'translate-y-0' : 'translate-y-full'
+        }`}
       >
-        <div className="w-full flex justify-center items-center">
-          <ModalLine />
-        </div>
-
-        <div className="mt-[31px] bg-transparent text-black flex justify-center text-lg ">
-          프로필 캐릭터 바꾸기
-        </div>
-        <div className="flex justify-evenly mt-[27px] grow">
-          <div
-            className={`rounded-[28px] border-[1px] w-[73px] h-[73px] bg-[#FDD678] flex items-center justify-center  ${
-              profileIndex === 0
-                ? 'border-primary'
-                : 'opacity-70 border-transparent'
-            }`}
-            onClick={() => setProfileIndex(0)}
-          >
-            <div className=" flex items-enter justify-center">
-              <Profile0 />
-            </div>
-          </div>
-          <div
-            className={`rounded-[28px] border-[1px] w-[73px] h-[73px] bg-[#99A2E9] flex items-center justify-center ${
-              profileIndex === 1
-                ? 'border-[#FDD678]'
-                : 'opacity-70 border-transparent'
-            }`}
-            onClick={() => setProfileIndex(1)}
-          >
-            <div className=" flex items-enter justify-center">
-              <Profile1 />
-            </div>
-          </div>
-          <div
-            className={`rounded-[28px] border-[1px] w-[73px] h-[73px] bg-primary  flex items-center justify-center ${
-              profileIndex === 2
-                ? 'border-[#99A2E9]'
-                : 'opacity-70 border-transparent'
-            }`}
-            onClick={() => setProfileIndex(2)}
-          >
-            <div className=" flex items-center justify-center">
-              <Profile2 />
-            </div>
-          </div>
-        </div>
-        <button
-          onClick={changeProfile}
-          className="w-full h-[54px] mt-8 bg-primary text-white rounded-[27px]"
+        <div
+          className={`relative w-full h-[352px] font-semibold text-lg text-center flex-col justify-center bg-white rounded-[28px] pb-[93px] px-[16px] pt-[13px] text-black z-50 transition-all duration-500 ease-in-out bottom-${modalBottom}`}
         >
-          확인
-        </button>
+          <div className="w-full flex justify-center items-center">
+            <ModalLine />
+          </div>
+
+          <div className="mt-[31px] bg-transparent text-black flex justify-center text-lg ">
+            프로필 캐릭터 바꾸기
+          </div>
+          <div className="flex justify-evenly mt-[27px] grow">
+            <div
+              className={`rounded-[28px] border-[1px] w-[73px] h-[73px] bg-[#FDD678] flex items-center justify-center  ${
+                profileIndex === 0
+                  ? 'border-primary'
+                  : 'opacity-70 border-transparent'
+              }`}
+              onClick={() => setProfileIndex(0)}
+            >
+              <div className=" flex items-enter justify-center">
+                <Profile0 />
+              </div>
+            </div>
+            <div
+              className={`rounded-[28px] border-[1px] w-[73px] h-[73px] bg-[#99A2E9] flex items-center justify-center ${
+                profileIndex === 1
+                  ? 'border-[#FDD678]'
+                  : 'opacity-70 border-transparent'
+              }`}
+              onClick={() => setProfileIndex(1)}
+            >
+              <div className=" flex items-enter justify-center">
+                <Profile1 />
+              </div>
+            </div>
+            <div
+              className={`rounded-[28px] border-[1px] w-[73px] h-[73px] bg-primary  flex items-center justify-center ${
+                profileIndex === 2
+                  ? 'border-[#99A2E9]'
+                  : 'opacity-70 border-transparent'
+              }`}
+              onClick={() => setProfileIndex(2)}
+            >
+              <div className=" flex items-center justify-center">
+                <Profile2 />
+              </div>
+            </div>
+          </div>
+          <button
+            onClick={changeProfile}
+            className="w-full h-[54px] mt-8 bg-primary text-white rounded-[27px]"
+          >
+            확인
+          </button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
@@ -287,7 +313,12 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
   const [major, setMajor] = useState<string>('소프트웨어학과');
   const [gender, setGender] = useState<string>('여자');
   const [mbti, setMbti] = useState<string>('ISFP');
-  const { data, error } = useQuery('getMyInfo', getMyInfoApi);
+  const { data, error, isLoading, refetch } = useQuery(
+    'getMyInfo',
+    getMyInfoApi,
+  );
+  const [isChecklistShow, setIsChecklistShow] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   useEffect(() => {
     if (data) {
@@ -306,6 +337,7 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
 
     if (error) {
       console.error('Error:', error);
+      setIsError(true);
       const customErr = error as CustomError;
       if (customErr.response?.status === 500) {
         console.log('오류가 발생하였습니다.');
@@ -313,7 +345,11 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
     }
   }, [data, error, showModal]);
 
-  const [isChecklistShow, setIsChecklistShow] = useState<boolean>(false);
+  useEffect(() => {
+    if (!showModal) {
+      refetch();
+    }
+  }, [showModal, refetch]);
 
   return (
     <div className="w-full h-full flex flex-col items-center">
@@ -323,23 +359,32 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
             <Settings />
           </div>
         </div>
-        <div className="p-4 flex mt-[0px] w-full justify-start gap-x-[24px]">
-          <div
-            className="rounded-[28px] bg-[#FDD678]
-        "
-            onClick={() => setShowModal(true)}
-          >
-            <div className="w-[73px] h-[73px]">
-              <img src={profileImg}></img>
+        {isError || isLoading ? (
+          <div className="w-full flex justify-center items-center text-grayScale3 py-6">
+            {isError ? '오류가 발생했습니다.' : '로딩 중...'}
+          </div>
+        ) : data ? (
+          <div className="p-4 flex mt-[0px] w-full justify-start gap-x-[24px]">
+            <div
+              className="rounded-[28px] bg-[#FDD678]"
+              onClick={() => setShowModal(true)}
+            >
+              <div className="w-[73px] h-[73px]">
+                <img src={profileImg}></img>
+              </div>
+            </div>
+            <div className="flex-col flex gap-y-[7px] mt-[4px]">
+              <div className="text-black text-[24px] font-bold">{name}</div>
+              <div className="rounded-[27px] px-[14px] py-[6px] flex items-center gap-x-[6px] align-center bg-primary text-white text-xs">
+                {major}・{gender}・{mbti}
+              </div>
             </div>
           </div>
-          <div className="flex-col flex gap-y-[7px] mt-[4px]">
-            <div className="text-black text-[24px] font-bold">{name}</div>
-            <div className="rounded-[27px] px-[14px] py-[6px] flex items-center gap-x-[6px] align-center bg-primary text-white text-xs">
-              {major}・{gender}・{mbti}
-            </div>
+        ) : (
+          <div className="w-full flex justify-center items-center text-grayScale3 whitespace-preline">
+            {`에러가 발생하였습니다.\n잠시 후 다시 시도해주세요.`}
           </div>
-        </div>
+        )}
 
         <div className="mt-[0px] border-t border-[#F7F7F7] py-4 flex-col w-full">
           <div
@@ -394,7 +439,10 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
             <div>공지사항</div>
             <SmallNext />
           </div>{' '}
-          <div className="flex justify-between items-center text-[14px] font-normal border-b-[1px] border-[#f7f7f7] py-[23px] cursor-pointer">
+          <div
+            className="flex justify-between items-center text-[14px] font-normal border-b-[1px] border-[#f7f7f7] py-[23px] cursor-pointer"
+            onClick={() => navigate('/settings')}
+          >
             <div>설정</div>
             <SmallNext />
           </div>
@@ -403,7 +451,9 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
       </div>
 
       <BottomNav state="user" notReadCnt={notReadCnt} />
-      {showModal && <ChangeProfileModal onClose={handleCloseModal} />}
+      {showModal && (
+        <ChangeProfileModal open={showModal} onClose={handleCloseModal} />
+      )}
     </div>
   );
 };

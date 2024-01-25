@@ -19,3 +19,8 @@ export const myCheckListState = atom<checklistApiType>({
     key: 'myCheckList',
     default: undefined,
 });
+
+export const memberIdState = atom<number>({
+    key: 'id',
+    default: 0,
+});

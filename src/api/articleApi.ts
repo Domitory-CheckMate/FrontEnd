@@ -73,3 +73,21 @@ export const getMyScrapListApi = async ({
 }): Promise<AxiosResponse<PostListResponse>> => {
   return authAxios.get(`/scrap?page=${page}&size=${size}`);
 };
+
+/**
+ *
+ * @param id
+ * @returns 게시글 조회
+ */
+export const getPostApi = async ({id}: {id:string | undefined}) => {
+  return authAxios.get(`/post/${id}`);
+};
+
+/**
+ *
+ * @param postState
+ * @returns 게시글 상태 수정
+ */
+export const patchArticleStateApi = async ({id, postState}: {id:string | undefined, postState:string | undefined}) => {
+  return authAxios.patch(`/post/state/${id}`,{postState});
+};

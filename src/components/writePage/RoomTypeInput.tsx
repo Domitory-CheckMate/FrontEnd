@@ -9,8 +9,8 @@ const RoomTypeInput: React.FC<RoomTypeInputProps> = ({ onRoomTypeChange }) => {
 
   const handleRoomTypeChange = (selectedOption: number) => {
     setRoomType(selectedOption);
-    if (selectedOption == 0) onRoomTypeChange('TWO');
-    if (selectedOption == 1) onRoomTypeChange('FOUR');
+    if (selectedOption == 0) onRoomTypeChange('1');
+    if (selectedOption == 1) onRoomTypeChange('2');
   };
 
   return (

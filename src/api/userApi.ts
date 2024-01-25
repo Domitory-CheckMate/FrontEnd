@@ -130,12 +130,26 @@ export const changePwApi = async (email: string, newPassword: string) => {
 };
 
 /**
+ * @returns 로그아웃
+ */
+export const logOut = async () => {
+  return authAxios.post('/member/signout', {});
+};
+
+/**
+ * @returns 탈퇴
+ */
+export const withdraw = async () => {
+  return authAxios.patch('/member/withdraw', {});
+};
+
+/**
  *
  * @param article
  * @returns 게시글 작성
  */
 export const postNewPostApi = async (article: articlePostType) => {
-  return authAxios.post('/post', { 
+  return authAxios.post('/post', {
     title: article.title,
     content: article.content,
     importantKey: article.importantKey,
@@ -156,7 +170,7 @@ export const postNewPostApi = async (article: articlePostType) => {
       sleepTurningType: article.checkList.sleepTurningType,
       smokeType: article.checkList.smokeType,
     },
-   });
+  });
 };
 
 /**
@@ -164,8 +178,8 @@ export const postNewPostApi = async (article: articlePostType) => {
  * @param id,article
  * @returns 게시글 수정
  */
-export const patchPostApi = async (id:number, article: articlePostType) => {
-  return authAxios.patch(`/post/${id}`, { 
+export const patchPostApi = async (id: number, article: articlePostType) => {
+  return authAxios.patch(`/post/${id}`, {
     title: article.title,
     content: article.content,
     importantKey: article.importantKey,
@@ -186,5 +200,5 @@ export const patchPostApi = async (id:number, article: articlePostType) => {
       sleepTurningType: article.checkList.sleepTurningType,
       smokeType: article.checkList.smokeType,
     },
-   });
+  });
 };

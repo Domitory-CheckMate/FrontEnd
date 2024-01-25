@@ -122,27 +122,19 @@ const MyCheckList = ({
   const [sleepTalkingTypeApi, setSleepTalkingTypeApi] = useState('');
   const [sleepTurningTypeApi, setSleepTurningTypeApi] = useState('');
 
-  const smokeTypeArray = ['SMOKE', 'NONE'];
-  const cleanTypeArray = ['ALWAYS', 'USUALLY', 'OFTEN', 'SOMETIMES', 'RARELY'];
-  const drinkTypeArray = ['NEVER', 'SOMETIMES', 'OFTEN', 'ALWAYS'];
-  const homeTypeArray = ['ALWAYS', 'OFTEN', 'SOMETIMES', 'RARELY'];
-  const lifePatternTypeArray = ['MORNING', 'EVENING'];
-  const callTypeArray = ['OUTSIDE', 'INSIDE', 'ANYWAY'];
-  const earphoneTypeArray = ['NEED', 'NOT_NEED'];
-
   const smokeTypeKor = ['흡연자 선호', '비흡연자 선호'];
   const lifePatternTypeKor = ['아침형 인간', '저녁형 인간'];
   const cleanTypeKor = [
-    '매일매일',
-    '1주일에 3~4번',
-    '1주에 한 번',
+    '1달에 한번',
     '2주에 1번',
-    '한달에 한 번',
+    '1주에 1번',
+    '1주에 3~4번',
+    '매일매일',
   ];
   const drinkTypeKor = ['안마심', '1주에 2~3번', '1주에 4~5번', '매일'];
-  const homeTypeKor = ['매주', '1~2주에 한번', '1주에 한 번', '2주에 한 번'];
-  const earphoneTypeKor = ['이어폰 착용', '상관없음'];
-  const callTypeKor = ['통화는 밖에서', '5분 이내는 안에서', '상관 없음'];
+  const homeTypeKor = ['가끔', '달에 1번', '1~2주에 한번', '매주'];
+  const callTypeKor = ['통화는 밖에서', '5분 이내는 안에서', '상관없음'];
+  const earphoneTypeKor = ['이어폰 필수', '상관없음'];
   // const sleepTypeKor = ['코골이', '이갈이', '잠꼬대', '뒤척임', '없음'];
 
   useEffect(() => {
@@ -212,26 +204,21 @@ const MyCheckList = ({
 
       setNoiseType(callType + ', ' + earPhoneType);
 
-      console.log('Data:', data.data.data);
-      console.log('cleanType: ', cleanType);
-
       // API CAll을 위한 state 업데이트
-      setCleanTypeApi(cleanTypeArray[cleanTypeKor.indexOf(cleanType)]);
-      setDrinkTypeApi(drinkTypeArray[drinkTypeKor.indexOf(drinkType)]);
-      setHomeTypeApi(homeTypeArray[homeTypeKor.indexOf(homeType)]);
+      setCleanTypeApi(`${cleanTypeKor.indexOf(cleanType) + 1}`);
+      setDrinkTypeApi(`${drinkTypeKor.indexOf(drinkType) + 1}`);
+      setHomeTypeApi(`${homeTypeKor.indexOf(homeType) + 1}`);
       setLifePatternTypeApi(
-        lifePatternTypeArray[lifePatternTypeKor.indexOf(lifePatternType)],
+        `${lifePatternTypeKor.indexOf(lifePatternType) + 1}`,
       );
-      setCallTypeApi(callTypeArray[callTypeKor.indexOf(callType)]);
-      setEarphoneTypeApi(
-        earphoneTypeArray[earphoneTypeKor.indexOf(earPhoneType)],
-      );
+      setCallTypeApi(`${callTypeKor.indexOf(callType) + 1}`);
+      setEarphoneTypeApi(`${earphoneTypeKor.indexOf(earPhoneType) + 1}`);
 
-      setSmokeTypeApi(smokeTypeArray[smokeTypeKor.indexOf(smokeType)]);
-      setSleepGrindingTypeApi(sleepGrindingType == '이갈이' ? 'TRUE' : 'FALSE');
-      setSleepSnoreTypeApi(sleepSnoreType == '코골이' ? 'TRUE' : 'FALSE');
-      setSleepTalkingTypeApi(sleepTalkingType == '잠꼬대' ? 'TRUE' : 'FALSE');
-      setSleepTurningTypeApi(sleepTurningType == '뒤척임' ? 'TRUE' : 'FALSE');
+      setSmokeTypeApi(`${smokeTypeKor.indexOf(smokeType) + 1}`);
+      setSleepGrindingTypeApi(sleepGrindingType == '이갈이' ? '1' : '2');
+      setSleepSnoreTypeApi(sleepSnoreType == '코골이' ? '1' : '2');
+      setSleepTalkingTypeApi(sleepTalkingType == '잠꼬대' ? '1' : '2');
+      setSleepTurningTypeApi(sleepTurningType == '뒤척임' ? '1' : '2');
     } else {
       console.log('Data is undefined');
     }
@@ -247,27 +234,22 @@ const MyCheckList = ({
 
   useEffect(() => {
     const myCheckList: checklistApiType = {
-      cleanType: cleanTypeApi as checklistApiType['cleanType'],
-      drinkType: drinkTypeApi as checklistApiType['drinkType'],
-      homeType: homeTypeApi as checklistApiType['homeType'],
-      lifePatternType:
-        lifePatternTypeApi as checklistApiType['lifePatternType'],
-      callType: callTypeApi as checklistApiType['callType'],
-      earPhoneType: earPhoneTypeApi as checklistApiType['earPhoneType'],
-      smokeType: smokeTypeApi as checklistApiType['smokeType'],
-      sleepGrindingType:
-        sleepGrindingTypeApi as checklistApiType['sleepGrindingType'],
-      sleepSnoreType: sleepSnoreTypeApi as checklistApiType['sleepSnoreType'],
-      sleepTalkingType:
-        sleepTalkingTypeApi as checklistApiType['sleepTalkingType'],
-      sleepTurningType:
-        sleepTurningTypeApi as checklistApiType['sleepTurningType'],
+      cleanType: cleanTypeApi,
+      drinkType: drinkTypeApi,
+      homeType: homeTypeApi,
+      lifePatternType: lifePatternTypeApi,
+      callType: callTypeApi,
+      earPhoneType: earPhoneTypeApi,
+      smokeType: smokeTypeApi,
+      sleepGrindingType: sleepGrindingTypeApi,
+      sleepSnoreType: sleepSnoreTypeApi,
+      sleepTalkingType: sleepTalkingTypeApi,
+      sleepTurningType: sleepTurningTypeApi,
     };
 
     setFinalList(myCheckList);
     setChecklist(myCheckList);
     onCallCheckList(myCheckList);
-    console.log(myCheckList);
   }, [
     cleanTypeApi,
     drinkTypeApi,
@@ -284,6 +266,7 @@ const MyCheckList = ({
 
   useEffect(() => {
     onCallCheckList(finalList as checklistApiType);
+    console.log(finalList);
   }, [finalList]);
 
   return (
