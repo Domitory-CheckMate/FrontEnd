@@ -13,7 +13,7 @@ const OnboardingPage = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center bg-[#FFF6F3]">
+    <div className="w-full h-full flex flex-col items-center bg-[#FFF6F3] overflow-hidden">
       <OnboardingSlider />
       <div className="w-full px-4 flex flex-col items-center">
         <CompleteButton

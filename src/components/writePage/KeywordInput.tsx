@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { ReactComponent as Plus } from '../../assets/icon/icon_plus_gray.svg';
 import Keyword from './Keyword';
-import { useNavigate } from 'react-router-dom';
 import KeywordPage from '../../pages/write/KeywordPage';
 import { useRecoilValue } from 'recoil';
 import { keywordState } from '../../data/atoms';
@@ -32,15 +31,15 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
     '애주가 1순위',
   ];
 
-  const initialKeywordsCode = [
-    'CLEAN',
-    'NON_SMOKE',
-    'SMOKER',
-    'MORNING',
-    'EVENING',
-    'SLEEP',
-    'DRINK',
-  ];
+  // const initialKeywordsCode = [
+  //   'CLEAN',
+  //   'NON_SMOKE',
+  //   'SMOKER',
+  //   'MORNING',
+  //   'EVENING',
+  //   'SLEEP',
+  //   'DRINK',
+  // ];
   const initialMatch = [
     '100% 이상',
     '90% 이상',
@@ -53,18 +52,18 @@ const KeywordInput: React.FC<KeywordInputProps> = ({
     '20% 이상',
     '10% 이상',
   ];
-  const initialMatchCode = [
-    'HUNDRED',
-    'NINETY',
-    'EIGHTY',
-    'SEVENTY',
-    'SIXTY',
-    'FIFTY',
-    'FORTY',
-    'THIRTY',
-    'TWENTY',
-    'TEN',
-  ];
+  // const initialMatchCode = [
+  //   'HUNDRED',
+  //   'NINETY',
+  //   'EIGHTY',
+  //   'SEVENTY',
+  //   'SIXTY',
+  //   'FIFTY',
+  //   'FORTY',
+  //   'THIRTY',
+  //   'TWENTY',
+  //   'TEN',
+  // ];
 
   useEffect(() => {
     onKeywordChange(keyword.keyword);

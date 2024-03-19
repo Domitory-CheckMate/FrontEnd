@@ -10,23 +10,19 @@ import Divider from '../../components/mainPage/Divider';
 import { useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { useState } from 'react';
-import {
-  checklistApiType,
-  getArticleDetailType,
-  articlePostType,
-} from '../../data/type';
+import { getArticleDetailType, articlePostType } from '../../data/type';
 import {
   getPostApi,
   patchArticleStateApi,
   postScrap,
   deleteScrap,
 } from '../../api/articleApi';
+
 import { useLocation } from 'react-router-dom';
 import { useRecoilValue } from 'recoil';
 import { memberIdState } from '../../data/atoms';
 import { useMutation } from 'react-query';
 // import { CustomError } from '../../data/type';
-
 const ArticlePage = () => {
   const { id } = useParams();
   console.log('게시글 아이디 : ', id);
@@ -43,7 +39,7 @@ const ArticlePage = () => {
     getPostApi({ id }),
   );
 
-  var sleepType: string[] = [];
+  const sleepType: string[] = [];
 
   const { mutate: tryChangeArticleState } = useMutation(
     async () => {
@@ -152,6 +148,8 @@ const ArticlePage = () => {
     }
   }, [data, error]);
 
+  // if (isLoading) return <div>로딩중...</div>;
+
   return (
     <div className="w-full h-full flex flex-col items-center justify-center">
       {article && (
@@ -247,7 +245,7 @@ const ArticlePage = () => {
           </div>
           <div className="w-full h-[89px] shrink-0 flex items-center px-4 justify-center border-t border-solid border-buttonContainerBorder">
             <div className="w-full flex items-center justify-center gap-x-[22px]">
-              {article.memberId != myMemberId && (
+              {article.memberId == myMemberId && (
                 <div
                   className="grow flex items-center justify-center py-[13px] bg-primary rounded-full text-white text-sm font-semibold cursor-pointer"
                   onClick={handleChangeArticleState}
@@ -255,7 +253,7 @@ const ArticlePage = () => {
                   {state === 'RECRUITING' ? '모집완료' : '모집중'}
                 </div>
               )}
-              {article.memberId == myMemberId && (
+              {article.memberId != myMemberId && (
                 <>
                   {article.isScrap == 'false' ? (
                     <Bookmark
