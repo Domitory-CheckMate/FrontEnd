@@ -292,7 +292,7 @@ const JoinInfoPage = () => {
   return (
     <div className="w-full h-full flex flex-col items-center">
       <HeaderBar text="회원가입" />
-      <div className="w-full px-4 flex flex-col gap-y-[16px] mt-10 text-sm">
+      <div className="w-full px-4 grow flex flex-col gap-y-[16px] mt-10 text-sm">
         <div className="flex flex-col">
           <div className="font-semibold text-sm">이름</div>
           <input
@@ -507,7 +507,7 @@ const JoinInfoPage = () => {
         </div>
       )}
       <NextButton
-        text="다음"
+        text="회원가입"
         isCanBeNext={isCanBeNext}
         onClick={() =>
           navigate('/join/mbti', { state: { joinInfo: joinInfo } })

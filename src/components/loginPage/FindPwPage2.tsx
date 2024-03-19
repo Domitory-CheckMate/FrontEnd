@@ -100,7 +100,7 @@ const FindPwPage2 = ({
               </div>
             </div>
             <div className="w-full h border border-solid border-dividerGray" />
-            <div className="flex gap-x-2 items-center mt-[10px] text-[#CBCBCC]">
+            <div className="flex gap-x-2 items-center mt-[10px] text-sm text-[#CBCBCC]">
               <div
                 className={
                   'flex gap-x-0.5 items-center' +
@@ -165,7 +165,7 @@ const FindPwPage2 = ({
               </div>
             </div>
             <div className="w-full h border border-solid border-dividerGray" />
-            <div className="flex gap-x-2 items-center mt-[10px]">
+            <div className="flex gap-x-2 items-center text-sm mt-[10px]">
               <div
                 className={
                   'flex gap-x-0.5 items-center' +
