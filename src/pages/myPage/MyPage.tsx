@@ -8,6 +8,7 @@ import { ReactComponent as Settings } from '../../assets/icon/icon_settings.svg'
 import { ReactComponent as Profile0 } from '../../assets/illust/character_blue.svg';
 import { ReactComponent as Profile1 } from '../../assets/illust/character_red.svg';
 import { ReactComponent as Profile2 } from '../../assets/illust/character_yellow.svg';
+import { ReactComponent as Pen } from '../../assets/icon/icon_pen.svg';
 import { ReactComponent as SmallNext } from '../../assets/icon/icon_next_small.svg';
 import { ReactComponent as Up } from '../../assets/icon/icon_up_mypage.svg';
 import { ReactComponent as Edit } from '../../assets/icon/icon_edit.svg';
@@ -52,7 +53,7 @@ const MyCheckList = () => {
   // const [sleepTalkingType, setSleepTalkingType] = useState('');
   // const [sleepTurningType, setSleepTurningType] = useState('');
   const [sleepType, setSleepType] = useState('');
-  const [isError, setIsError] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(true);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -136,7 +137,7 @@ const MyCheckList = () => {
         console.log('오류가 발생하였습니다.');
       }
     }
-  }, [data, error]);
+  }, [data]);
 
   return (
     <div className="flex flex-col gap-[10px]">
@@ -242,7 +243,7 @@ const ChangeProfileModal = ({
         }`}
       >
         <div
-          className={`relative w-full h-[352px] font-semibold text-lg text-center flex-col justify-center bg-white rounded-[28px] pb-[93px] px-[16px] pt-[13px] text-black z-50 transition-all duration-500 ease-in-out bottom-${modalBottom}`}
+          className={` w-full h-[352px] font-semibold text-lg text-center flex-col justify-center bg-white rounded-[28px] pb-[93px] px-[16px] pt-[13px] text-black z-50 transition-all duration-500 ease-in-out bottom-${modalBottom}`}
         >
           <div className="w-full flex justify-center items-center">
             <ModalLine />
@@ -369,8 +370,11 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
               className="rounded-[28px] bg-[#FDD678]"
               onClick={() => setShowModal(true)}
             >
-              <div className="w-[73px] h-[73px]">
+              <div className="relative w-[73px] h-[73px]">
                 <img src={profileImg}></img>
+                <div className="absolute bottom-0 right-0 rounded-full bg-black h-[17px] w-[17px] flex justify-center items-center">
+                  <Pen />
+                </div>
               </div>
             </div>
             <div className="flex-col flex gap-y-[7px] mt-[4px]">
@@ -426,7 +430,7 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
         </div>
         <div className="w-full p-[6px] bg-[#F7F7F7]"> </div>
 
-        <div className="p-4 grid grid-cols-1 pt-[32px] w-full grow text-base text-black font-semibold">
+        <div className="p-4 grid grid-cols-1 pt-[0px] w-full grow text-base text-black font-semibold">
           <div className="flex justify-between items-center text-[14px] font-normal border-b-[1px] border-[#f7f7f7] py-[23px] cursor-pointer">
             <div>내 정보 관리</div>
             <SmallNext />
@@ -451,9 +455,7 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
       </div>
 
       <BottomNav state="user" notReadCnt={notReadCnt} />
-      {showModal && (
-        <ChangeProfileModal open={showModal} onClose={handleCloseModal} />
-      )}
+      <ChangeProfileModal open={showModal} onClose={handleCloseModal} />
     </div>
   );
 };
