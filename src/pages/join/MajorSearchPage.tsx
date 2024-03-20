@@ -10,7 +10,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 const MajorSearchPage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const { joinInfo } = state;
+  const { joinInfo, pwCheck } = state;
+  console.log(joinInfo);
+  console.log(pwCheck);
   const [major, setMajor] = useState<string>(joinInfo.major);
   const [searchText, setSearchText] = useState<string>(joinInfo.major);
   const [searchResults, setSearchResults] = useState<departmentType[]>([]);
@@ -101,7 +103,9 @@ const MajorSearchPage = () => {
         text="등록"
         isOkToClick={major !== ''}
         onClick={() => {
-          navigate('/join/info', { state: { joinInfo: joinInfo } });
+          navigate('/join/info', {
+            state: { joinInfo: joinInfo, pwCheck: pwCheck },
+          });
         }}
       />
     </div>

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import HeaderBar from '../../components/joinPage/HeaderBar';
+import HeaderBar from '../../components/loginPage/HeaderBar';
 import NextButton from '../../components/joinPage/NextButton';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ReactComponent as Check } from '../../assets/icon/icon_check_gray.svg';
@@ -49,6 +49,8 @@ const JoinInfoPage = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const defaultJoinInfo = state.joinInfo;
+  const defaultPwCheck = state.pwCheck;
+  console.log(defaultPwCheck);
   const [joinInfo, setJoinInfo] = useState<joinInfoType>({
     email: defaultJoinInfo.email,
     password: defaultJoinInfo.password,
@@ -58,6 +60,8 @@ const JoinInfoPage = () => {
     genderType: defaultJoinInfo.genderType,
     mbtiType: defaultJoinInfo.mbtiType,
   });
+
+  console.log(joinInfo);
   const [name, setName] = useState<string>(defaultJoinInfo.name);
   const [email, setEmail] = useState<string>(defaultJoinInfo.email);
   const [gender, setGender] = useState<'MAN' | 'WOMAN'>(
@@ -70,9 +74,9 @@ const JoinInfoPage = () => {
   const [emailComment, setEmailComment] = useState<string>(
     emailContentArray[0],
   );
-
   const [password, setPassword] = useState<string>(defaultJoinInfo.password);
-  const [confirmedPassword, setConfirmedPassword] = useState<string>('');
+  const [confirmedPassword, setConfirmedPassword] =
+    useState<string>(defaultPwCheck);
   const [isNameValid, setIsNameValid] = useState<boolean>(false);
   const [isEmailValid, setIsEmailValid] = useState<boolean>(false);
   const [isPasswordValid, setIsPasswordValid] = useState<boolean>(false);
@@ -437,7 +441,12 @@ const JoinInfoPage = () => {
           <div
             className="w-full flex items-center border-b border-grayScale3 cursor-pointer"
             onClick={() =>
-              navigate('/join/major', { state: { joinInfo: joinInfo } })
+              navigate('/join/major', {
+                state: {
+                  joinInfo: joinInfo,
+                  pwCheck: confirmedPassword,
+                },
+              })
             }
           >
             <div
@@ -450,9 +459,9 @@ const JoinInfoPage = () => {
             <Search className="flex items-center justify-center mr-2 cursor-pointer" />
           </div>
         </div>
-        <div className="flex justify-between items-center">
+        <div className="flex justify-between items-top">
           <div className="font-semibold text-sm ">성별</div>
-          <div className="flex gap-x-[23px] items-center">
+          <div className="flex gap-x-[23px] mt-[4px] items-center">
             <div
               className="flex items-center gap-x-[11px] text-semibold text-black cursor-pointer"
               onClick={() => setGender('MAN')}
@@ -510,7 +519,9 @@ const JoinInfoPage = () => {
         text="회원가입"
         isCanBeNext={isCanBeNext}
         onClick={() =>
-          navigate('/join/mbti', { state: { joinInfo: joinInfo } })
+          navigate('/join/mbti', {
+            state: { joinInfo: joinInfo },
+          })
         }
       />
       {showFailModal && <AuthCheckModal onClose={handleCloseModal} />}
