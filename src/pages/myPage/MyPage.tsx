@@ -57,8 +57,9 @@ const MyCheckList = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    console.log(data);
     if (data) {
-      console.log('Data:', data);
+      console.log('Data:', data.data.data);
       // 여기에서 데이터 처리 로직을 추가할 수 있습니다.
 
       // data 객체 내에서 필요한 정보 추출
@@ -125,6 +126,7 @@ const MyCheckList = () => {
       setSleepType(sleepType);
 
       setNoiseType(callType + ', ' + earPhoneType);
+      setIsError(false);
     } else {
       console.log('Data:', data);
     }

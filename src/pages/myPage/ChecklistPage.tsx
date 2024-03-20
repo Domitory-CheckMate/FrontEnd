@@ -27,7 +27,7 @@ const ChecklistPage = () => {
     getChecklistApi,
   );
 
-  const [isError, setIsError] = useState(false);
+  const [isError, setIsError] = useState(true);
 
   useEffect(() => {
     if (data) {
@@ -115,9 +115,9 @@ const ChecklistPage = () => {
     }
   }, [isEditMode, refetch]);
 
-  if (isLoading) {
-    return <div>로딩 중...</div>;
-  }
+  // if (isLoading) {
+  //   return <div>로딩 중...</div>;
+  // }
 
   return (
     <div className="w-full h-full flex flex-col">
