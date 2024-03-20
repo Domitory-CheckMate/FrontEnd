@@ -12,7 +12,7 @@ import {
 } from '../../api/manageLocalStorage';
 import { CustomError } from '../../data/type';
 import { useSetRecoilState } from 'recoil';
-import { memberIdState } from '../../data/atoms';
+import { memberIdState, myEmailState } from '../../data/atoms';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -23,6 +23,7 @@ const LoginPage = () => {
   const [errorMessage, setErrorMessage] = useState<string>('');
 
   const setRecoilMemberId = useSetRecoilState(memberIdState);
+  const setRecoilMyEmail = useSetRecoilState(myEmailState);
 
   useEffect(() => {
     if (isError) {
@@ -35,6 +36,7 @@ const LoginPage = () => {
       console.log(data);
       setMemberId(data.data.data.memberId.toString());
       setRecoilMemberId(data.data.data.memberId);
+      setRecoilMyEmail(data.data.data.email);
 
       setAccessToken(data.data.data.accessToken);
       setRefreshToken(data.data.data.refreshToken);
