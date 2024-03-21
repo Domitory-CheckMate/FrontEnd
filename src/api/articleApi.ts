@@ -99,3 +99,22 @@ export const patchArticleStateApi = async ({
 }) => {
   return authAxios.patch(`/post/state/${id}`, { postState });
 };
+
+/**
+ *
+ * @param postId
+ * @returns 스크랩
+ */
+export const postScrap = async (postId:number) => {
+  return authAxios.post(`/scrap`,{postId});
+};
+
+/**
+ *
+ * @param postId
+ * @returns 스크랩
+ */
+export const deleteScrap = async (postId:number) => {
+  return authAxios.delete(`/scrap/${postId}`,);
+};
+

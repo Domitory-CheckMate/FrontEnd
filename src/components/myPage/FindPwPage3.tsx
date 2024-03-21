@@ -1,19 +1,16 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CompleteButton from './CompleteButton';
+import CompleteButton from '../loginPage/CompleteButton';
 import { ReactComponent as CheckGray } from '../../assets/icon/icon_check_gray.svg';
 import { ReactComponent as CheckPrimary } from '../../assets/icon/icon_check_primary.svg';
 import { useMutation } from 'react-query';
 import { changePwApi } from '../../api/userApi';
 import { CustomError } from '../../data/type';
+import { myEmailState } from '../../data/atoms';
+import { useRecoilValue } from 'recoil';
+import NextButton from '../joinPage/NextButton';
 
-const FindPwPage2 = ({
-  handleNextStep,
-  email,
-}: {
-  handleNextStep: (step: number) => void;
-  email: string;
-}) => {
+const FindPwPage3 = ({}: {}) => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');
@@ -22,6 +19,8 @@ const FindPwPage2 = ({
     useState(false);
   const [isError, setIsError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const myEmail = useRecoilValue(myEmailState);
 
   const hasUppercase = /[A-Z]/.test(password);
   const hasLowercase = /[a-z]/.test(password);
@@ -49,13 +48,12 @@ const FindPwPage2 = ({
   };
 
   const { mutate: tryChangePw } = useMutation(
-    () => changePwApi(email, password),
+    () => changePwApi(myEmail, password),
     {
       onSuccess: (data) => {
         console.log(data);
         console.log('비밀번호 변경 성공');
-        navigate('/login');
-        handleNextStep(1);
+        navigate('-1');
       },
       onError: (error: unknown) => {
         console.log(error);
@@ -77,10 +75,10 @@ const FindPwPage2 = ({
   return (
     <>
       <div className="grow w-full px-4 flex flex-col items-start mt-[35px] whitespace-pre-line">
-        <div className="w-full flex text-[20px] leading-8 ">{`체크메이트의\n비밀번호를 재설정합니다.`}</div>
-        <div className="w-full flex flex-col mt-7">
-          <div>비밀번호</div>
-          <div className="w-full flex flex-col items-start">
+        <div className="w-full flex flex-col mt-7 mb-[46px]">
+          <div className="w-full flex flex-col items-start mb-[41px]">
+            <div>새 비밀번호</div>
+
             <div className="flex w-full items-center gap-x-10">
               <input
                 type={isPasswordVisible ? 'text' : 'password'}
@@ -142,6 +140,8 @@ const FindPwPage2 = ({
             </div>
           </div>
           <div className="w-full flex flex-col items-start">
+            <div>새 비밀번호 확인</div>
+
             <div className="flex w-full items-center gap-x-10">
               <input
                 type={isPasswordConfirmVisible ? 'text' : 'password'}
@@ -183,16 +183,15 @@ const FindPwPage2 = ({
             </div>
           )}
         </div>
-      </div>
-      <div className="w-full flex items-center">
-        <CompleteButton
-          text="확인"
+
+        <NextButton
+          text="비밀번호 변경"
           onClick={nextStepHandler}
-          isAble={isPasswordValid && isPasswordConfirmValid}
+          isCanBeNext={isPasswordValid && isPasswordConfirmValid}
         />
       </div>
     </>
   );
 };
 
-export default FindPwPage2;
+export default FindPwPage3;

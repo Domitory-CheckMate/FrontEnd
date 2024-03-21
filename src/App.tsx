@@ -9,6 +9,7 @@ import JoinDetailPage from './pages/join/JoinDetailPage';
 import JoinInfoPage from './pages/join/JoinInfoPage';
 import JoinCompletedPage from './pages/join/JoinCompletedPage';
 import MyPage from './pages/myPage/MyPage';
+import ChangePwPage from './pages/myPage/ChangePwPage';
 import MembershipPage from './pages/myPage/MembershipPage';
 import ChecklistPage from './pages/myPage/ChecklistPage';
 import MainPage from './pages/main/MainPage';
@@ -202,6 +203,8 @@ function App() {
           <Route path="/main/mate" element={<MateMatchingPage />} />
           <Route path="/article/:id" element={<ArticlePage />} />
           <Route path="/my-page" element={<MyPage notReadCnt={notReadCnt} />} />
+          <Route path="/my-page/pw" element={<ChangePwPage />} />
+
           <Route path="/my-post" element={<MyPostPage />} />
           <Route path="/my/scrap" element={<MyScrapPage />} />
           <Route path="/membership" element={<MembershipPage />} />

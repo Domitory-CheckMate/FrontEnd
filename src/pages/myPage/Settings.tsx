@@ -65,7 +65,12 @@ const SettingsPage = () => {
         <div>알림 설정</div>
         <SmallNext />
       </div>
-      <div className="flex justify-between items-center text-[14px] font-normal border-b-[1px] border-[#f7f7f7] py-[23px] cursor-pointer">
+      <div
+        className="flex justify-between items-center text-[14px] font-normal border-b-[1px] border-[#f7f7f7] py-[23px] cursor-pointer"
+        onClick={() => {
+          navigate('/my-page/pw');
+        }}
+      >
         <div>비밀번호 변경</div>
         <SmallNext />
       </div>{' '}

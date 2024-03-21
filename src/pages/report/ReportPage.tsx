@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import HeaderBar from '../../components/loginPage/HeaderBar';
 import CompleteButton from '../join/CompleteButton';
-import { postReportChatApi } from '../../api/reportApi';
+import { postReportChatApi, postReportPostApi } from '../../api/reportApi';
 import { useLocation } from 'react-router-dom';
 import CompleteReportBtn from '../../components/reportPage/CompleteReportBtn';
 import FailReportBtn from '../../components/reportPage/FailReportBtn';
@@ -24,6 +24,18 @@ const ReportDetail = () => {
   const sendReport = () => {
     if (reportReason.length <= 0) return;
     if (reportCase === 'POST') {
+      postReportPostApi(reportTarget, reportReason)
+        .then((res) => {
+          console.log('게시글 신고 요청 성공 --> ', res);
+          setReportComplete(true);
+          setReportFail(false);
+        })
+        .catch((err) => {
+          console.error('게시글 신고 요청 실패 --> ', err);
+          setReportComplete(false);
+          setReportFail(true);
+          setErrorMessage(err.response?.data.message);
+        });
       // 게시글 신고
     } else {
       // 채팅방 신고

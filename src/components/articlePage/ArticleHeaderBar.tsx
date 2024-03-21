@@ -4,10 +4,21 @@ import { ReactComponent as Back } from '../../assets/icon/icon_prev.svg';
 import { ReactComponent as Share } from '../../assets/icon/icon_share.svg';
 import { ReactComponent as More } from '../../assets/icon/icon_more_vertical.svg';
 import { useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { memberIdState } from '../../data/atoms';
+import { articlePostType } from '../../data/type';
 
-const ArticleHeaderBar = ({ id }: { id: string | undefined }) => {
+const ArticleHeaderBar = ({
+  id,
+  article,
+}: {
+  id: string | undefined;
+  article: articlePostType | undefined;
+}) => {
   const navigate = useNavigate();
   const [isOpenMenu, setIsOpenMenu] = React.useState(false);
+
+  const [memberId, setMemberId] = useRecoilState(memberIdState);
 
   return (
     <div className="w-full h-[90px] flex justify-between items-end pb-[15px]">
@@ -39,23 +50,39 @@ const ArticleHeaderBar = ({ id }: { id: string | undefined }) => {
           className={`w-full flex justify-center items-center rounded-[14px] bg-white`}
           onClick={() => setIsOpenMenu(false)}
         >
-          <div
-            className="w-full flex justify-center items-center py-3 border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
-            onClick={() => {
-              navigate('/report', {
-                state: {
-                  postId: id,
-                  reason: 'cc',
-                },
-              });
-            }}
-          >
-            신고
-          </div>
+          {`${memberId}` === id ? (
+            <div
+              className="w-full flex justify-center items-center py-3 border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
+              onClick={() => {
+                navigate('/report', {
+                  state: {
+                    reportCase: 'POST',
+                    reportTarget: id,
+                  },
+                });
+              }}
+            >
+              신고
+            </div>
+          ) : (
+            <div
+              className="w-full flex justify-center items-center py-3 border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
+              onClick={() => {
+                navigate('/modify', {
+                  state: {
+                    postId: id,
+                    article: article,
+                  },
+                });
+              }}
+            >
+              게시글 수정
+            </div>
+          )}
         </div>
         <div
           className={`w-full mb-[38px] py-3 flex justify-center items-center rounded-[14px] bg-white cursor-pointer`}
-          onClick={() => setIsOpenMenu(true)}
+          onClick={() => setIsOpenMenu(false)}
         >
           취소
         </div>

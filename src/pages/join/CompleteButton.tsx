@@ -11,7 +11,7 @@ const CompleteButton = ({
 }) => {
   return (
     <div
-      className="shrink-0 w-full h-[118px] flex justify-center items-start px-4 pt-[13px] cursor-pointer"
+      className="shrink-0 w-full mb-[51px] flex justify-center items-start pt-[13px] cursor-pointer"
       onClick={onClick}
     >
       <div

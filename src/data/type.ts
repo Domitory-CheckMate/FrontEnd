@@ -77,7 +77,10 @@ export type getArticleDetailType = {
   mbti: string;
   isScrap: string;
   checkList: checklistApiType;
-};
+  roomType: string;
+  dormitoryType: string;
+}
+
 
 export type checklistType = {
   smoke: '흡연자 선호' | '비흡연자 선호';

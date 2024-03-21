@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import HeaderBar from '../../components/joinPage/HeaderBar';
+import HeaderBar from '../../components/loginPage/HeaderBar';
 import CheckBox from '../../components/joinPage/CheckBox';
 import NextButton from '../../components/joinPage/NextButton';
 import { ReactComponent as Checked } from '../../assets/icon/icon_checkbox_checked.svg';

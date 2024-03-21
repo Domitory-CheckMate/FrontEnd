@@ -21,6 +21,11 @@ export const myCheckListState = atom<checklistApiType>({
 });
 
 export const memberIdState = atom<number>({
-  key: 'id',
-  default: 0,
+    key: 'id',
+    default: 0,
+});
+
+export const myEmailState = atom<string>({
+  key: 'email',
+  default: '',
 });

@@ -46,6 +46,8 @@ const OnboardingPage2 = () => {
   const { mutate: tryJoin } = useMutation(() => joinApi(finalJoin), {
     onSuccess: (data) => {
       console.log(data);
+      console.log(data.data.data);
+
       setMemberId(data.data.data.memberId.toString());
       setMemberName(data.data.data.name);
       setAccessToken(data.data.data.accessToken);
