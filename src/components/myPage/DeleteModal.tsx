@@ -1,10 +1,16 @@
-const DeleteModal = ({ onClose }: { onClose: () => void }) => {
+const DeleteArticlesModal = ({
+  onClose,
+  postIds,
+}: {
+  onClose: () => void;
+  postIds: number[];
+}) => {
   const handleCloseModal = () => {
     onClose();
   };
 
   const handleDelete = () => {
-    console.log('handleDelete');
+    console.log('handleDelete-posts', postIds);
     onClose();
   };
   return (
@@ -15,9 +21,9 @@ const DeleteModal = ({ onClose }: { onClose: () => void }) => {
       ></div>
       <div className="relative mx-4 w-96 font-normal text-base text-center flex-col justify-center bg-white rounded-[27px] pb-[21px] px-[22px] pt-[27px] text-black z-50">
         <div className="bg-transparent text-black font-bold flex justify-center text-lg mb-[13px]">
-          이 게시물을 삭제하기{' '}
+          선택한 글이 모두 삭제됩니다.{' '}
         </div>
-        <div>선택하신 게시물을 삭제하시겠습니까?</div>
+        <div>정말 모두 삭제하시겠습니까?</div>
         <div className="flex gap-[5px] justify-between">
           <button
             onClick={onClose}
@@ -37,4 +43,4 @@ const DeleteModal = ({ onClose }: { onClose: () => void }) => {
   );
 };
 
-export default DeleteModal;
+export default DeleteArticlesModal;

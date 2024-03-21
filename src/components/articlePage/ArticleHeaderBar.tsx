@@ -37,8 +37,8 @@ const ArticleHeaderBar = ({
   });
 
   return (
-    <div className="w-full h-[90px] flex justify-between items-top pb-[15px]">
-      <div className="shrink-0 h-[90px] flex justify-between items-end w-full px-4 pb-3">
+    <div className="w-full flex justify-between items-top pb-[15px]">
+      <div className="shrink-0 flex justify-between items-center mt-[65px] w-full px-4 pb-0">
         <div className="flex items-center gap-x-4">
           <Back className="cursor-pointer" onClick={() => navigate(-1)} />
           <Home className="cursor-pointer" onClick={() => navigate('/main')} />

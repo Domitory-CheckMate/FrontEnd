@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ReactComponent as Close } from '../../assets/icon/icon_close.svg';
+import { ReactComponent as Prev } from '../../assets/icon/icon_prev.svg';
 import {
   convertArticleKeywordToNum,
   convertMatchToNum,
@@ -126,13 +126,13 @@ const ModifyPage = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-between p-4">
+    <div className="w-full h-full flex flex-col justify-between px-4">
       <div className="flex justify-between items-center w-full mt-[65px] relative mb-[48px]">
-        <div className="w-1/3"></div>
-        <div className="text-[18px] font-bold">룸메이트 모집</div>
-        <div className="w-1/3 flex justify-end">
-          <Close className="cursor-pointer" onClick={() => navigate(-1)} />{' '}
+        <div className="w-1/3 flex justify-start">
+          <Prev className="cursor-pointer" onClick={() => navigate(-1)} />{' '}
         </div>
+        <div className="text-[18px] font-bold">룸메이트 모집</div>
+        <div className="w-1/3"></div>
       </div>
       <div className="grow-1 w-full scrollbar-hide overflow-y-auto ">
         <div className="grid gap-y-[25px]">

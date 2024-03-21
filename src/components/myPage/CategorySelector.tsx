@@ -258,7 +258,7 @@ const CategorySelector = ({
           <div className="flex w-full gap-x-[8px]">
             <div className="text-start">{'청소 중요도 🧽'}</div>
           </div>
-          <div className="flex w-[340px] justify-between items-center px-[7px]  mt-[15px]">
+          <div className="flex w-[350px] justify-between items-center px-[7px]  mt-[15px]">
             <div
               className={`rounded-full w-[24px] h-[24px] border-[1px] flex items-center justify-center ${
                 cleaningFrequency == 0
@@ -312,6 +312,48 @@ const CategorySelector = ({
               onClick={() => setCleaningFrequency(4)}
             >
               {cleaningFrequency == 4 ? <Check /> : null}
+            </div>
+          </div>
+          <div className="flex w-[360px] justify-between items-center px-[0px]  mt-[15px]">
+            <div
+              className={`text-[12px] grow-1 ${
+                cleaningFrequency == 0 ? 'text-black' : 'text-grayScale3'
+              }`}
+            >
+              {' '}
+              매일매일
+            </div>
+            <div
+              className={`text-[12px] grow-1 ${
+                cleaningFrequency == 1 ? 'text-black' : 'text-grayScale3'
+              }`}
+            >
+              {' '}
+              1주에 3~4번
+            </div>
+            <div
+              className={`text-[12px] grow-1 ${
+                cleaningFrequency == 2 ? 'text-black' : 'text-grayScale3'
+              }`}
+            >
+              {' '}
+              1주에 한 번
+            </div>
+            <div
+              className={`text-[12px] grow-1 ${
+                cleaningFrequency == 3 ? 'text-black' : 'text-grayScale3'
+              }`}
+            >
+              {' '}
+              2주에 한 번
+            </div>
+            <div
+              className={`text-[12px] grow-1 ${
+                cleaningFrequency == 4 ? 'text-black' : 'text-grayScale3'
+              }`}
+            >
+              {' '}
+              한달에 한 번
             </div>
           </div>
         </div>
