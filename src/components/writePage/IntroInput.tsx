@@ -3,11 +3,16 @@ import React, { useState, useRef } from 'react';
 interface IntroInputProps {
   intro: string;
   onIntroChange: (newIntro: string) => void;
+  defaultValue?: string | null;
 }
 
-const IntroInput: React.FC<IntroInputProps> = ({ intro, onIntroChange }) => {
+const IntroInput: React.FC<IntroInputProps> = ({
+  intro,
+  onIntroChange,
+  defaultValue,
+}) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
-  const [text, setText] = useState('');
+  const [text, setText] = useState(defaultValue ? defaultValue : '');
 
   const onChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.currentTarget.value);

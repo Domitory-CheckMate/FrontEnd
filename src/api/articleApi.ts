@@ -105,8 +105,8 @@ export const patchArticleStateApi = async ({
  * @param postId
  * @returns 스크랩
  */
-export const postScrap = async (postId:number) => {
-  return authAxios.post(`/scrap`,{postId});
+export const postScrap = async (postId: number) => {
+  return authAxios.post(`/scrap`, { postId });
 };
 
 /**
@@ -114,7 +114,6 @@ export const postScrap = async (postId:number) => {
  * @param postId
  * @returns 스크랩
  */
-export const deleteScrap = async (postId:number) => {
-  return authAxios.delete(`/scrap/${postId}`,);
+export const deleteScrap = async (postId: number) => {
+  return authAxios.delete(`/scrap/${postId}`);
 };
-

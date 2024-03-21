@@ -62,8 +62,6 @@ const WritePage = () => {
     setDormitoryType(newDormitoryType);
   };
   useEffect(() => {
-    // prev 어케하지
-
     setFinalArticle((prev) => {
       return {
         ...prev,

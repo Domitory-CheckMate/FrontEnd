@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import CompleteButton from '../loginPage/CompleteButton';
 import { ReactComponent as CheckGray } from '../../assets/icon/icon_check_gray.svg';
 import { ReactComponent as CheckPrimary } from '../../assets/icon/icon_check_primary.svg';
 import { useMutation } from 'react-query';
@@ -10,7 +9,7 @@ import { myEmailState } from '../../data/atoms';
 import { useRecoilValue } from 'recoil';
 import NextButton from '../joinPage/NextButton';
 
-const FindPwPage3 = ({}: {}) => {
+const FindPwPage3 = () => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
   const [passwordConfirm, setPasswordConfirm] = useState('');

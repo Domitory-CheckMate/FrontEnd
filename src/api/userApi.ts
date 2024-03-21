@@ -178,7 +178,8 @@ export const postNewPostApi = async (article: articlePostType) => {
  * @param id,article
  * @returns 게시글 수정
  */
-export const patchPostApi = async (id: number, article: articlePostType) => {
+export const patchPostApi = async (id: string, article: articlePostType) => {
+  console.log(article, 'article');
   return authAxios.patch(`/post/${id}`, {
     title: article.title,
     content: article.content,

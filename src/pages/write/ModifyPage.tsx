@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ReactComponent as Close } from '../../assets/icon/icon_close.svg';
+import {
+  convertArticleKeywordToNum,
+  convertMatchToNum,
+  convertDormitoryToNum,
+  convertRoomToNum,
+  dormitoryType,
+} from '../../data/type';
 
 import TitleInput from '../../components/writePage/TitleInput';
 import IntroInput from '../../components/writePage/IntroInput';
@@ -22,19 +29,26 @@ const ModifyPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const originalArticle = location.state.article;
-  const postId = originalArticle.postId;
+  const postId = location.state.postId;
 
   const [title, setTitle] = useState(originalArticle.title);
   const [intro, setIntro] = useState(originalArticle.content);
-  const [keyword, setKeyword] = useState(originalArticle.importantKey);
-  const [match, setMatch] = useState(originalArticle.similarityKey);
+  const [keyword, setKeyword] = useState(
+    convertArticleKeywordToNum[originalArticle.importantKey],
+  );
+  const [match, setMatch] = useState(
+    convertMatchToNum[originalArticle.similarityKey],
+  );
   const [callCheck, setCallCheck] = useState<checklistApiType>(
     originalArticle.checkList,
   );
   const [period, setPeriod] = useState(originalArticle.endDate);
-  const [roomType, setRoomType] = useState(originalArticle.roomType);
+
+  const [roomType, setRoomType] = useState(
+    convertRoomToNum[originalArticle.roomType],
+  );
   const [dormitoryType, setDormitoryType] = useState(
-    originalArticle.dormitoryType,
+    convertDormitoryToNum[originalArticle.dormitoryType as dormitoryType],
   );
 
   const [finalArticle, setFinalArticle] = useState<articlePostType>();
@@ -61,6 +75,7 @@ const ModifyPage = () => {
 
   const handlePeriodChange = (newPeriod: string) => {
     setPeriod(newPeriod);
+    console.log(newPeriod);
   };
 
   const handleRoomTypeChange = (newRoomType: string) => {
@@ -71,18 +86,20 @@ const ModifyPage = () => {
     setDormitoryType(newDormitoryType);
   };
   useEffect(() => {
-    const myArticle: articlePostType = {
-      title: title,
-      content: intro,
-      importantKey: keyword,
-      similarityKey: match,
-      roomType: roomType,
-      dormitoryType: dormitoryType,
-      endDate: period,
-      checkList: callCheck as checklistApiType,
-    };
-    setFinalArticle(myArticle);
-  }, [title, intro, keyword, callCheck, period, roomType]);
+    setFinalArticle((prev) => {
+      return {
+        ...prev,
+        title: title,
+        content: intro,
+        importantKey: keyword,
+        similarityKey: match,
+        roomType: roomType,
+        dormitoryType: dormitoryType,
+        endDate: period,
+        checkList: callCheck as checklistApiType,
+      };
+    });
+  }, [title, intro, keyword, callCheck, period, roomType, dormitoryType]);
 
   const { mutate: tryPatchArticle } = useMutation(
     () => patchPostApi(postId, finalArticle as articlePostType),
@@ -101,7 +118,7 @@ const ModifyPage = () => {
     },
   );
 
-  const handlePost = () => {
+  const handlePostModify = () => {
     // 여기에 게시글 등록 로직을 작성합니다.
     console.log('게시글 수정');
     console.log(finalArticle);
@@ -119,29 +136,49 @@ const ModifyPage = () => {
       </div>
       <div className="grow-1 w-full scrollbar-hide overflow-y-auto ">
         <div className="grid gap-y-[25px]">
-          <TitleInput title="제목" onTitleChange={handleTitleChange} />
-          <IntroInput intro="한줄소개" onIntroChange={handleIntroChange} />
+          <TitleInput
+            title="제목"
+            onTitleChange={handleTitleChange}
+            defaultValue={title}
+          />
+          <IntroInput
+            intro="한줄소개"
+            onIntroChange={handleIntroChange}
+            defaultValue={intro}
+          />
           <KeywordInput
             title="키워드"
             onKeywordChange={handleKeywordChange}
             onMatchChange={handleMatchChange}
+            defaultKeyword={keyword}
+            defaultMatch={match}
           />
-          <CallCheckList onCallCheckChange={handleCallCheckChange} />
-          <PeriodInput onPeriodChange={handlePeriodChange} />
+          <CallCheckList
+            onCallCheckChange={handleCallCheckChange}
+            defaultBool={true}
+          />
+          <PeriodInput
+            onPeriodChange={handlePeriodChange}
+            defaultValue={period}
+          />
           <DormitoryTypeInput
             onDormitoryTypeChange={handleDormitoryTypeChange}
+            defaultDormitoryType={dormitoryType}
           />
-          <RoomTypeInput onRoomTypeChange={handleRoomTypeChange} />
+          <RoomTypeInput
+            onRoomTypeChange={handleRoomTypeChange}
+            defaultRoomType={roomType}
+          />
         </div>
       </div>
 
       <div className="bg-white pt-[11px] pb-[29px]">
         <button
           className="w-full h-[50px]  bg-primary text-white rounded-[27px]"
-          onClick={handlePost}
+          onClick={handlePostModify}
         >
           {' '}
-          등록하기
+          수정완료
         </button>
       </div>
     </div>

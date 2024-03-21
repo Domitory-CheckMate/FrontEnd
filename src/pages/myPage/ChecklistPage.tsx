@@ -22,7 +22,7 @@ const ChecklistPage = () => {
   const [sleepType, setSleepType] = useState('');
   const [smokeType, setSmokeType] = useState('');
 
-  const { data, error, isLoading, refetch } = useQuery(
+  const { data, error, refetch } = useQuery(
     'getChecklistInfo',
     getChecklistApi,
   );

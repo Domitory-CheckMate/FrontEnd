@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 interface DormitoryTypeInputProps {
   onDormitoryTypeChange: (newDormitoryType: string) => void;
+  defaultDormitoryType?: string;
 }
 
 const DormitoryTypeInput: React.FC<DormitoryTypeInputProps> = ({
   onDormitoryTypeChange,
+  defaultDormitoryType,
 }) => {
   const [DormitoryType, setDormitoryType] = useState(-1);
 
@@ -15,6 +17,14 @@ const DormitoryTypeInput: React.FC<DormitoryTypeInputProps> = ({
     if (selectedOption == 1) onDormitoryTypeChange('2');
     if (selectedOption == 2) onDormitoryTypeChange('3');
   };
+
+  useEffect(() => {
+    if (defaultDormitoryType != undefined) {
+      if (defaultDormitoryType == '1') setDormitoryType(0);
+      if (defaultDormitoryType == '2') setDormitoryType(1);
+      if (defaultDormitoryType == '3') setDormitoryType(2);
+    }
+  }, []);
 
   return (
     <div className="flex-col ">

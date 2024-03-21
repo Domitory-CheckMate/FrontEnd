@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ReactComponent as Home } from '../../assets/icon/icon_home_line.svg';
 import { ReactComponent as Back } from '../../assets/icon/icon_prev.svg';
 import { ReactComponent as Share } from '../../assets/icon/icon_share.svg';
@@ -9,24 +9,32 @@ import { memberIdState } from '../../data/atoms';
 import { articlePostType } from '../../data/type';
 import { useState } from 'react';
 import DislikeModal from './DislikeModal';
+import DeleteModal from './DeleteModal';
 
 const ArticleHeaderBar = ({
-  id,
+  postId,
+  userId,
   article,
 }: {
-  id: string | undefined;
+  postId: string | undefined;
+  userId: number | undefined;
   article: articlePostType | undefined;
 }) => {
   const navigate = useNavigate();
   const [isOpenMenu, setIsOpenMenu] = React.useState(false);
-
-  const [memberId, setMemberId] = useRecoilState(memberIdState);
-
+  const [memberId] = useRecoilState(memberIdState);
   const [showDislikeModal, setShowDislikeModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const handleDislikeModal = () => {
     setShowDislikeModal(!showDislikeModal);
   };
+  const handleDeleteModal = () => {
+    setShowDeleteModal(!showDeleteModal);
+  };
+  useEffect(() => {
+    '다시렌더링';
+  });
 
   return (
     <div className="w-full h-[90px] flex justify-between items-top pb-[15px]">
@@ -58,14 +66,14 @@ const ArticleHeaderBar = ({
           className={`w-full flex flex-col justify-center items-center text-sm rounded-[14px] bg-white mb-[10px]`}
           onClick={() => setIsOpenMenu(false)}
         >
-          {`${memberId}` != id ? (
+          {memberId != userId ? (
             <div
               className="w-full flex justify-center items-center py-3 border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
               onClick={() => {
                 navigate('/report', {
                   state: {
                     reportCase: 'POST',
-                    reportTarget: id,
+                    reportTarget: postId,
                   },
                 });
               }}
@@ -78,7 +86,7 @@ const ArticleHeaderBar = ({
               onClick={() => {
                 navigate('/modify', {
                   state: {
-                    postId: id,
+                    postId: postId,
                     article: article,
                   },
                 });
@@ -87,7 +95,7 @@ const ArticleHeaderBar = ({
               게시글 수정
             </div>
           )}
-          {`${memberId}` != id ? (
+          {memberId != userId ? (
             <div
               className="w-full flex justify-center items-center py-3 border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
               onClick={handleDislikeModal}
@@ -96,15 +104,8 @@ const ArticleHeaderBar = ({
             </div>
           ) : (
             <div
-              className="w-full flex justify-center items-center py-3 border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
-              onClick={() => {
-                navigate('/modify', {
-                  state: {
-                    postId: id,
-                    article: article,
-                  },
-                });
-              }}
+              className="w-full flex justify-center items-center py-3 text-primary border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
+              onClick={handleDeleteModal}
             >
               삭제
             </div>
@@ -118,6 +119,7 @@ const ArticleHeaderBar = ({
         </div>
       </div>
       {showDislikeModal && <DislikeModal onClose={handleDislikeModal} />}
+      {showDeleteModal && <DeleteModal onClose={handleDeleteModal} />}
     </div>
   );
 };
