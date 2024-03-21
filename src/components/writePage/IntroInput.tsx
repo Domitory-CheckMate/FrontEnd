@@ -25,12 +25,13 @@ const IntroInput: React.FC<IntroInputProps> = ({ intro, onIntroChange }) => {
         <div className="text-start font-bold text-base text-black">{intro}</div>
       </div>
       <div className="flex">
-        <div className="flex w-full mt-[13px] text-sm font-normal px-[14px] py-[12px] border-[#999] border-[1px] rounded-[10px]">
+        <div className="flex w-full h-auto mt-[13px] text-sm font-normal px-[14px] py-[12px] border-[#999] border-[1px] rounded-[10px]">
           <textarea
             ref={textareaRef}
             value={text}
+            style={{ height: '20px' }}
             onChange={onChange}
-            className="w-full h-auto text-black placeholder-#999 focus:outline-none resize-none"
+            className="w-full text-black placeholder-#999 focus:outline-none resize-none"
             placeholder="자신을 한 줄로 소개해주세요."
           />
         </div>

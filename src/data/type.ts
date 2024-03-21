@@ -75,7 +75,7 @@ export type getArticleDetailType = {
   profile: string;
   gender: string;
   mbti: string;
-  isScrap: string;
+  isScrap: boolean;
   checkList: checklistApiType;
   roomType: string;
   dormitoryType: string;

@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { memberIdState } from '../../data/atoms';
 import { articlePostType } from '../../data/type';
+import { useState } from 'react';
+import DislikeModal from './DislikeModal';
 
 const ArticleHeaderBar = ({
   id,
@@ -20,9 +22,15 @@ const ArticleHeaderBar = ({
 
   const [memberId, setMemberId] = useRecoilState(memberIdState);
 
+  const [showDislikeModal, setShowDislikeModal] = useState(false);
+
+  const handleDislikeModal = () => {
+    setShowDislikeModal(!showDislikeModal);
+  };
+
   return (
-    <div className="w-full h-[90px] flex justify-between items-end pb-[15px]">
-      <div className="w-full flex justify-between items-center px-4 ">
+    <div className="w-full h-[90px] flex justify-between items-top pb-[15px]">
+      <div className="shrink-0 h-[90px] flex justify-between items-end w-full px-4 pb-3">
         <div className="flex items-center gap-x-4">
           <Back className="cursor-pointer" onClick={() => navigate(-1)} />
           <Home className="cursor-pointer" onClick={() => navigate('/main')} />
@@ -36,21 +44,21 @@ const ArticleHeaderBar = ({
         </div>
       </div>
       <div
-        className={`z-10 absolute bottom-0 w-full h-full bg-black/50 ${
+        className={`w-full max-w-[450px] h-full bg-black opacity-50 fixed left-0 right-0 bottom-0 mx-auto z-5 ${
           isOpenMenu ? 'block' : 'hidden'
         }`}
         onClick={() => setIsOpenMenu(false)}
       />
       <div
-        className={`z-10 absolute bottom-0 w-full transition-transform transform flex flex-col justify-end items-center px-4 gap-y-2.5 text-sm ${
+        className={`z-10 w-full max-w-[450px] pb-[38px] px-[16px] fixed bottom-0 left-0 right-0 mx-auto box-border bg-transparent transition-transform transform ${
           isOpenMenu ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
         <div
-          className={`w-full flex justify-center items-center rounded-[14px] bg-white`}
+          className={`w-full flex flex-col justify-center items-center text-sm rounded-[14px] bg-white mb-[10px]`}
           onClick={() => setIsOpenMenu(false)}
         >
-          {`${memberId}` === id ? (
+          {`${memberId}` != id ? (
             <div
               className="w-full flex justify-center items-center py-3 border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
               onClick={() => {
@@ -79,14 +87,37 @@ const ArticleHeaderBar = ({
               게시글 수정
             </div>
           )}
+          {`${memberId}` != id ? (
+            <div
+              className="w-full flex justify-center items-center py-3 border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
+              onClick={handleDislikeModal}
+            >
+              이 사용자의 글 보지 않기
+            </div>
+          ) : (
+            <div
+              className="w-full flex justify-center items-center py-3 border-b border-solid border-grayScale2 last:border-b-0 cursor-pointer"
+              onClick={() => {
+                navigate('/modify', {
+                  state: {
+                    postId: id,
+                    article: article,
+                  },
+                });
+              }}
+            >
+              삭제
+            </div>
+          )}
         </div>
         <div
-          className={`w-full mb-[38px] py-3 flex justify-center items-center rounded-[14px] bg-white cursor-pointer`}
+          className={`w-full py-3 flex justify-center text-sm items-center rounded-[14px] bg-white cursor-pointer`}
           onClick={() => setIsOpenMenu(false)}
         >
           취소
         </div>
       </div>
+      {showDislikeModal && <DislikeModal onClose={handleDislikeModal} />}
     </div>
   );
 };
