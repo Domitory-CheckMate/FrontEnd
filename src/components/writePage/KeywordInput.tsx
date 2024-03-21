@@ -2,25 +2,38 @@ import React, { useEffect } from 'react';
 import { ReactComponent as Plus } from '../../assets/icon/icon_plus_gray.svg';
 import Keyword from './Keyword';
 import KeywordPage from '../../pages/write/KeywordPage';
-import { useRecoilValue } from 'recoil';
+import { useRecoilValue, useSetRecoilState } from 'recoil';
 import { keywordState } from '../../data/atoms';
 
 interface KeywordInputProps {
   title: string;
   onKeywordChange: (newKeywordType: string) => void;
   onMatchChange: (newMatchType: string) => void;
+  defaultKeyword?: string;
+  defaultMatch?: string;
 }
 
 const KeywordInput: React.FC<KeywordInputProps> = ({
   title,
   onKeywordChange,
   onMatchChange,
+  defaultKeyword,
+  defaultMatch,
 }) => {
   const keyword = useRecoilValue(keywordState);
   const [show, setShow] = React.useState(false);
   const handleShow = () => {
     setShow(false);
   };
+  const setContent = useSetRecoilState(keywordState);
+
+  useEffect(() => {
+    console.log(defaultKeyword, defaultMatch);
+    console.log(keyword);
+    if (defaultKeyword != undefined && defaultMatch != undefined)
+      setContent({ keyword: defaultKeyword, match: defaultMatch });
+  }, []);
+
   const initialKeywords = [
     '청결 1순위',
     '비흡연자 1순위',

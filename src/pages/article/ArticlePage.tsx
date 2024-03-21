@@ -35,11 +35,15 @@ const ArticlePage = () => {
 
   const [originalArticle, setOriginalArticle] = useState<articlePostType>();
 
+  const handleChat = () => {
+    console.log('채팅하기');
+  };
+
   const { data, error, refetch } = useQuery('postData', () =>
     getPostApi({ id }),
   );
 
-  const sleepType: string[] = [];
+  const [sleepType, setSleepType] = useState<string>('');
 
   const { mutate: tryChangeArticleState } = useMutation(
     async () => {
@@ -69,6 +73,7 @@ const ArticlePage = () => {
       onSuccess: (data) => {
         console.log(data);
         // 성공 시 실행할 코드
+        console.log('북마크 등록');
         refetch();
       },
       onError: (error) => {
@@ -87,6 +92,7 @@ const ArticlePage = () => {
       onSuccess: (data) => {
         console.log(data);
         // 성공 시 실행할 코드
+        console.log('북마크 해제');
         refetch();
       },
       onError: (error) => {
@@ -117,6 +123,7 @@ const ArticlePage = () => {
   useEffect(() => {
     if (data) {
       console.log('data : ', data.data.data);
+      console.log(myMemberId);
       setArticle(data.data.data);
       setOriginalArticle({
         title: topArticle.title,
@@ -128,20 +135,29 @@ const ArticlePage = () => {
         endDate: calculateRemainingDaysForArticle(topArticle.remainDate),
         checkList: data.data.data.checkList,
       });
+      const dataSleepType: string[] = [];
+
       if (data.data.data.checkList.sleepGrindingType == '이갈이') {
-        sleepType.push(data.data.data.checkList.sleepGrindingType);
+        dataSleepType.push(data.data.data.checkList.sleepGrindingType);
       }
 
       if (data.data.data.checkList.sleepSnoreType == '코골이') {
-        sleepType.push(data.data.data.checkList.sleepSnoreType);
+        dataSleepType.push(data.data.data.checkList.sleepSnoreType);
       }
 
       if (data.data.data.checkList.sleepTalkingType == '잠꼬대') {
-        sleepType.push(data.data.data.checkList.sleepTalkingType);
+        console.log('잠꼬대');
+        dataSleepType.push(data.data.data.checkList.sleepTalkingType);
       }
 
       if (data.data.data.checkList.sleepTurningType == '뒤척임') {
-        sleepType.push(data.data.data.checkList.sleepTurningType);
+        dataSleepType.push(data.data.data.checkList.sleepTurningType);
+      }
+
+      if (dataSleepType.length == 0) {
+        setSleepType('없음');
+      } else {
+        setSleepType(dataSleepType.join(', '));
       }
     } else {
       console.log('error : ', error);
@@ -154,100 +170,115 @@ const ArticlePage = () => {
     <div className="w-full h-full flex flex-col items-center justify-center">
       {article && (
         <>
-          <div className="w-full flex flex-col bg-keywordBg">
-            <ArticleHeaderBar id={id} article={originalArticle} />
-            <div className="w-full flex flex-col items-center px-4 pt-2.5 pb-6">
-              <div className="flex items-center justify-center bg-primary rounded-full text-white text-[10px] px-4 py-1">
-                {topArticle.postState === '모집완료'
-                  ? topArticle.postState
-                  : topArticle.remainDate < 0
-                  ? '기간만료'
-                  : topArticle.postState}
-              </div>
-              <div className="text-lg font-semibold mt-2.5">
-                {topArticle.title}
-              </div>
-              <div className="w-full flex flex-col items-start p-4 gap-y-2.5 mt-[27px] rounded-xl bg-white">
-                <div className="flex items-center gap-x-2.5 text-xs">
-                  <Calendar />
-                  <div>{calculateRemainingDays(topArticle.remainDate)}</div>
+          <div className="w-full flex flex-col grow">
+            <div className="w-full flex flex-col bg-keywordBg">
+              <ArticleHeaderBar
+                postId={id}
+                userId={article.memberId}
+                article={originalArticle}
+              />
+              <div className="w-full flex flex-col items-center px-4 pt-2.5 pb-6">
+                <div className="flex items-center justify-center bg-primary rounded-full text-white text-[10px] px-4 py-1">
+                  {topArticle.postState === '모집완료'
+                    ? topArticle.postState
+                    : topArticle.remainDate < 0
+                    ? '기간만료'
+                    : topArticle.postState}
                 </div>
-                <div className="flex items-center gap-x-2.5 text-xs">
-                  <Pin />
-                  <div>나의 체크리스트와 {topArticle.accuracy}% 일치</div>
+                <div className="text-lg font-semibold mt-2.5">
+                  {topArticle.title}
+                </div>
+                <div className="w-full flex flex-col items-start p-4 gap-y-2.5 mt-[27px] rounded-xl bg-white">
+                  <div className="flex items-center gap-x-2.5 text-xs">
+                    <Calendar />
+                    <div>{calculateRemainingDays(topArticle.remainDate)}</div>
+                  </div>
+                  <div className="flex items-center gap-x-2.5 text-xs">
+                    <Pin />
+                    <div>나의 체크리스트와 {topArticle.accuracy}% 일치</div>
+                  </div>
+                </div>
+                <div className="w-full flex items-center px-[18px] py-2.5 mt-2.5 rounded-xl bg-white">
+                  <img
+                    className="w-[26px] h-[26px] rounded-full"
+                    src={article.profile}
+                  />
+                  <div className="text-xs font-semibold ml-[7px] mr-2.5">
+                    {article.name}
+                  </div>
+                  <div className="border border-solid border-primary text-primary text-[9px] py-1 px-3.5 rounded-full">
+                    {`${article.major}・${
+                      article.gender
+                    }・${article.mbti.toUpperCase()}`}
+                  </div>
                 </div>
               </div>
-              <div className="w-full flex items-center px-[18px] py-2.5 mt-2.5 rounded-xl bg-white">
-                <img
-                  className="w-[26px] h-[26px] rounded-full"
-                  src={article.profile}
-                />
-                <div className="text-xs font-semibold ml-[7px] mr-2.5">
-                  {article.name}
+            </div>
+            <div className="w-full flex flex-col items-center overflow-y-auto scrollbar-hide">
+              <div className="w-full px-4 pt-[30px] pb-[22px] flex flex-col items-start gap-y-[9px]">
+                <div className="text-sm font-semibold">한줄소개</div>
+                <div className="w-full whitespace-pre-line text-[12px] leading-[21px] text-textGray4">
+                  {topArticle.content}
                 </div>
-                <div className="border border-solid border-primary text-primary text-[9px] py-1 px-3.5 rounded-full">
-                  {`${article.major}・${
-                    article.gender
-                  }・${article.mbti.toUpperCase()}`}
+              </div>
+              <Divider />
+              <div className="w-full px-4 pt-[17px] pb-[22px] flex flex-col items-start gap-y-[14px]">
+                <div className="text-sm font-semibold">키워드</div>
+                <div className="w-full flex flex-wrap justify-start items-center gap-[7px] ">
+                  <div className="px-4 py-1.5 flex items-center justify-center rounded-full bg-primaryBg text-primary text-xs">
+                    {topArticle.importantKey}
+                  </div>
+
+                  <div className="px-4 py-1.5 flex items-center justify-center rounded-full bg-primaryBg text-primary text-xs">
+                    {topArticle.similarityKey}
+                  </div>
+                </div>
+              </div>
+              <Divider />
+              <div className="w-full px-4 pt-4 pb-[26px] flex flex-col items-start gap-y-[14px]">
+                <div className="text-sm font-semibold">체크리스트</div>
+                <div className="w-full flex flex-wrap justify-start items-center gap-x-2 gap-y-2.5 ">
+                  {article.checkList.smokeType === '비흡연자 선호' && (
+                    <ChecklistTag
+                      emoji="🚭"
+                      text={article.checkList.smokeType}
+                    />
+                  )}
+                  {article.checkList.smokeType === '흡연자 선호' && (
+                    <ChecklistTag
+                      emoji="🚬"
+                      text={article.checkList.smokeType}
+                    />
+                  )}
+
+                  <ChecklistTag
+                    emoji="☀️"
+                    text={article.checkList.lifePatternType}
+                  />
+                  <ChecklistTag emoji="🧽" text={article.checkList.cleanType} />
+                  <ChecklistTag emoji="😴" text={sleepType} />
+                  <ChecklistTag
+                    emoji="🍺️"
+                    text={article.checkList.drinkType}
+                  />
+                  <ChecklistTag emoji="🏠" text={article.checkList.homeType} />
+                  <ChecklistTag
+                    emoji="🗣️"
+                    text={
+                      article.checkList.callType +
+                      ', ' +
+                      article.checkList.earPhoneType
+                    }
+                  />
                 </div>
               </div>
             </div>
           </div>
-          <div className="w-full flex flex-col items-center overflow-y-auto scrollbar-hide">
-            <div className="w-full px-4 pt-[30px] pb-[22px] flex flex-col items-start gap-y-[9px]">
-              <div className="text-sm font-semibold">한줄소개</div>
-              <div className="w-full whitespace-pre-line text-[12px] leading-[21px] text-textGray4">
-                {topArticle.content}
-              </div>
-            </div>
-            <Divider />
-            <div className="w-full px-4 pt-[17px] pb-[22px] flex flex-col items-start gap-y-[14px]">
-              <div className="text-sm font-semibold">키워드</div>
-              <div className="w-full flex flex-wrap justify-start items-center gap-[7px] ">
-                <div className="px-4 py-1.5 flex items-center justify-center rounded-full bg-primaryBg text-primary text-xs">
-                  {topArticle.importantKey}
-                </div>
-
-                <div className="px-4 py-1.5 flex items-center justify-center rounded-full bg-primaryBg text-primary text-xs">
-                  {topArticle.similarityKey}
-                </div>
-              </div>
-            </div>
-            <Divider />
-            <div className="w-full px-4 pt-4 pb-[26px] flex flex-col items-start gap-y-[14px]">
-              <div className="text-sm font-semibold">체크리스트</div>
-              <div className="w-full flex flex-wrap justify-start items-center gap-x-2 gap-y-2.5 ">
-                {article.checkList.smokeType === '비흡연자 선호' && (
-                  <ChecklistTag emoji="🚭" text={article.checkList.smokeType} />
-                )}
-                {article.checkList.smokeType === '흡연자 선호' && (
-                  <ChecklistTag emoji="🚬" text={article.checkList.smokeType} />
-                )}
-
-                <ChecklistTag
-                  emoji="☀️"
-                  text={article.checkList.lifePatternType}
-                />
-                <ChecklistTag emoji="🧽" text={article.checkList.cleanType} />
-                <ChecklistTag emoji="😴" text={sleepType.join(', ')} />
-                <ChecklistTag emoji="🍺️" text={article.checkList.drinkType} />
-                <ChecklistTag emoji="🏠" text={article.checkList.homeType} />
-                <ChecklistTag
-                  emoji="🗣️"
-                  text={
-                    article.checkList.callType +
-                    ', ' +
-                    article.checkList.earPhoneType
-                  }
-                />
-              </div>
-            </div>
-          </div>
-          <div className="w-full h-[89px] shrink-0 flex items-center px-4 justify-center border-t border-solid border-buttonContainerBorder">
-            <div className="w-full flex items-center justify-center gap-x-[22px]">
+          <div className="w-full h-[97px] shrink-0 flex items-top px-4 justify-center pt-[10px] border-t border-solid border-buttonContainerBorder">
+            <div className="w-full h-[41px] justify-center flex items-center gap-x-[22px]">
               {article.memberId == myMemberId && (
                 <div
-                  className="grow flex items-center justify-center py-[13px] bg-primary rounded-full text-white text-sm font-semibold cursor-pointer"
+                  className="flex grow  py-[13px] items-center justify-center bg-primary rounded-full text-white text-sm font-semibold cursor-pointer"
                   onClick={handleChangeArticleState}
                 >
                   {state === 'RECRUITING' ? '모집완료' : '모집중'}
@@ -255,18 +286,21 @@ const ArticlePage = () => {
               )}
               {article.memberId != myMemberId && (
                 <>
-                  {article.isScrap == 'false' ? (
+                  {article.isScrap == false ? (
                     <Bookmark
-                      className={' cursor-pointer'}
+                      className={' cursor-pointer h-[18px] w-[15px]'}
                       onClick={() => tryScarp()}
                     />
                   ) : (
                     <BookmarkFill
-                      className={' cursor-pointer'}
+                      className={' cursor-pointer h-[18px] w-[15px]'}
                       onClick={() => tryDeleteScarp()}
                     />
                   )}
-                  <div className="grow flex items-center justify-center py-[13px] bg-primary rounded-full text-white text-sm font-semibold cursor-pointer">
+                  <div
+                    className="flex grow items-center justify-center py-[13px] bg-primary rounded-full text-white text-sm font-semibold cursor-pointer"
+                    onClick={handleChat}
+                  >
                     채팅하기
                   </div>
                 </>
@@ -278,6 +312,8 @@ const ArticlePage = () => {
     </div>
   );
 };
+
+// 모달 컴포넌트
 
 function calculateRemainingDays(remainDate: number) {
   // 현재 날짜를 가져옴
@@ -313,9 +349,7 @@ function calculateRemainingDaysForArticle(remainDate: number) {
   const month = futureDate.getMonth() + 1; // getMonth()의 반환값은 0부터 시작하므로 +1
   const day = futureDate.getDate();
 
-  const returnData = `${year}-${(month + 1).toString().padStart(2, '0')}-${(
-    month + 1
-  )
+  const returnData = `${year}-${month.toString().padStart(2, '0')}-${day
     .toString()
     .padStart(2, '0')}`;
 

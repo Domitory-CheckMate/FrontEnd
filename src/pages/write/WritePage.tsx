@@ -62,18 +62,24 @@ const WritePage = () => {
     setDormitoryType(newDormitoryType);
   };
   useEffect(() => {
-    const myArticle: articlePostType = {
-      title: title,
-      content: intro,
-      importantKey: keyword,
-      similarityKey: match,
-      roomType: roomType,
-      dormitoryType: dormitoryType,
-      endDate: period,
-      checkList: callCheck as checklistApiType,
-    };
-    setFinalArticle(myArticle);
-  }, [title, intro, keyword, callCheck, period, roomType]);
+    setFinalArticle((prev) => {
+      return {
+        ...prev,
+        title: title,
+        content: intro,
+        importantKey: keyword,
+        similarityKey: match,
+        roomType: roomType,
+        dormitoryType: dormitoryType,
+        endDate: period,
+        checkList: callCheck as checklistApiType,
+      };
+    });
+  }, [title, intro, keyword, callCheck, period, roomType, dormitoryType]);
+
+  useEffect(() => {
+    console.log(finalArticle);
+  }, [finalArticle]);
 
   const { mutate: tryPostArticle } = useMutation(
     () => postNewPostApi(finalArticle as articlePostType),
@@ -100,7 +106,7 @@ const WritePage = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col justify-between p-4">
+    <div className="w-full h-full flex flex-col justify-between px-4">
       <div className="flex justify-between items-center w-full mt-[65px] relative mb-[48px]">
         <div className="w-1/3"></div>
         <div className="text-[18px] font-bold">룸메이트 모집</div>

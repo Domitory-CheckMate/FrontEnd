@@ -62,46 +62,48 @@ const KeywordPage = ({ onClose }: { onClose: () => void }) => {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 top-0  w-full h-full bg-white flex flex-col justify-start px-4">
-      <div className="flex justify-between items-center w-full mt-[65px] relative mb-[48px]">
-        <div className="w-1/3">
-          <Prev className="cursor-pointer" onClick={onClose} />
+    <div className="fixed top-0 left-0 w-full h-full bg-white flex justify-center items-center z-50">
+      <div className="absolute bg-white w-96 h-full">
+        <div className="flex justify-between items-center w-96 mt-[65px] relative mb-[48px]">
+          <div className="w-1/3">
+            <Prev className="cursor-pointer" onClick={onClose} />
+          </div>
+          <div className="text-[18px] font-bold">키워드</div>
+          <div
+            className="w-1/3 flex justify-end text-[18px] font-bold text-primary cursor-pointer"
+            onClick={handleSave}
+          >
+            등록
+          </div>
         </div>
-        <div className="text-[18px] font-bold">키워드</div>
-        <div
-          className="w-1/3 flex justify-end text-[18px] font-bold text-primary cursor-pointer"
-          onClick={handleSave}
-        >
-          등록
-        </div>
-      </div>
-      <div className="flex flex-col justify-start">
-        <div className="text-black text-base font-normal">
-          가장 중요하게 생각하는 키워드
-        </div>
-        <div className="flex flex-wrap gap-[8px] mt-[18px]">
-          {initialKeywords.map((keyword, index) => (
-            <CheckKeyword
-              key={keyword}
-              string={keyword}
-              onClick={() => handleItemClick('keyword', keyword)}
-              isActive={selectedItem.keyword === `${index + 1}`}
-            />
-          ))}
-        </div>
+        <div className="flex flex-col justify-start">
+          <div className="text-black text-base font-normal">
+            가장 중요하게 생각하는 키워드
+          </div>
+          <div className="flex flex-wrap gap-[8px] mt-[18px]">
+            {initialKeywords.map((keyword, index) => (
+              <CheckKeyword
+                key={keyword}
+                string={keyword}
+                onClick={() => handleItemClick('keyword', keyword)}
+                isActive={selectedItem.keyword === `${index + 1}`}
+              />
+            ))}
+          </div>
 
-        <div className="text-black text-base font-normal mt-[35px]">
-          체크리스트 일치율
-        </div>
-        <div className="flex flex-wrap gap-[8px] mt-[18px]">
-          {initialMatch.map((match, index) => (
-            <CheckKeyword
-              key={match}
-              string={match}
-              onClick={() => handleItemClick('match', match)}
-              isActive={selectedItem.match === `${index + 1}`}
-            />
-          ))}
+          <div className="text-black text-base font-normal mt-[35px]">
+            체크리스트 일치율
+          </div>
+          <div className="flex flex-wrap gap-[8px] mt-[18px]">
+            {initialMatch.map((match, index) => (
+              <CheckKeyword
+                key={match}
+                string={match}
+                onClick={() => handleItemClick('match', match)}
+                isActive={selectedItem.match === `${index + 1}`}
+              />
+            ))}
+          </div>
         </div>
       </div>
     </div>

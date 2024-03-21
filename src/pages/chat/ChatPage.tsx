@@ -21,7 +21,7 @@ const ChatPage = ({
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-start px-4">
+    <div className="w-full h-full flex flex-col items-center justify-start">
       <div className="shrink-0 w-full flex justify-center items-center pt-14 pb-7 relative">
         {/* <div className="w-1/3"></div> */}
         <div className="text-[18px] font-bold">채팅</div>

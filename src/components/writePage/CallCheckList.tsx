@@ -8,9 +8,13 @@ import { myCheckListState } from '../../data/atoms';
 
 interface CallCheckListProps {
   onCallCheckChange: (newCheckList: checklistApiType) => void;
+  defaultBool?: boolean;
 }
 
-const CallCheckList: React.FC<CallCheckListProps> = ({ onCallCheckChange }) => {
+const CallCheckList: React.FC<CallCheckListProps> = ({
+  onCallCheckChange,
+  defaultBool,
+}) => {
   // const checkList = [
   //   '🚭 비흡연자 선호',
   //   '️️☀️ 아침형 인간',
@@ -23,7 +27,9 @@ const CallCheckList: React.FC<CallCheckListProps> = ({ onCallCheckChange }) => {
 
   // 리코일 값 부르기
   const myCheckList = useRecoilValue(myCheckListState);
-  const [callCheckList, setCallCheckList] = useState(false);
+  const [callCheckList, setCallCheckList] = useState(
+    defaultBool ? defaultBool : false,
+  );
   const [callCheck, setCallCheck] = useState<checklistApiType>();
 
   const handleCallCheckListChange = () => {

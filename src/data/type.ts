@@ -75,12 +75,11 @@ export type getArticleDetailType = {
   profile: string;
   gender: string;
   mbti: string;
-  isScrap: string;
+  isScrap: boolean;
   checkList: checklistApiType;
   roomType: string;
   dormitoryType: string;
-}
-
+};
 
 export type checklistType = {
   smoke: '흡연자 선호' | '비흡연자 선호';
@@ -197,6 +196,33 @@ export const convertDormitoryToNum: Record<dormitoryType, string> = {
   '1기숙사': '1',
   '2기숙사': '2',
   '3기숙사': '3',
+};
+
+export const convertArticleKeywordToNum: Record<string, string> = {
+  청결: '1',
+  비흡연자: '2',
+  흡연자: '3',
+  아침형인간: '4',
+  저녁형인간: '5',
+  잠버릇: '6',
+  애주가: '7',
+};
+
+export const convertMatchToNum: Record<string, string> = {
+  '100%': '1',
+  '90%': '2',
+  '80%': '3',
+  '70%': '4',
+  '60%': '5',
+  '50%': '6',
+  '40%': '7',
+  '30%': '8',
+  '20%': '9',
+  '10%': '10',
+};
+export const convertRoomToNum: Record<string, string> = {
+  '2인실': '1',
+  '4인실': '2',
 };
 
 export type keywordCardType = {

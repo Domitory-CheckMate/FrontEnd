@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import FindPwPage3 from '../../components/myPage/FindPwPage3';
 import { ReactComponent as Prev } from '../../assets/icon/icon_prev.svg';
 import { ReactComponent as Home } from '../../assets/icon/icon_home_line.svg';
@@ -6,8 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 const ChangePwPage = () => {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
-  const [findPwLevel, setFindPwLevel] = useState(2); // 1, 2
 
   return (
     <div className="w-full h-full flex flex-col items-center relative">

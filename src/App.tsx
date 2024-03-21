@@ -36,6 +36,7 @@ import { RecoilRoot } from 'recoil';
 import MyPostPage from './pages/myPage/MyPostPage';
 import SettingsPage from './pages/myPage/Settings';
 import FirstChecklistPage from './pages/main/FirstChecklistPage';
+import ModifyPage from './pages/write/ModifyPage';
 
 function App() {
   const token: string = getAccessToken() || '';
@@ -210,6 +211,7 @@ function App() {
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/checklist" element={<ChecklistPage />} />
           <Route path="/write" element={<WritePage />} />
+          <Route path="/modify" element={<ModifyPage />} />
           <Route path="/settings" element={<SettingsPage />} />
           <Route
             path="/chat"
