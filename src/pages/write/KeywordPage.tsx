@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { ReactComponent as Prev } from '../../assets/icon/icon_prev.svg';
 import CheckKeyword from '../../components/writePage/CheckKeyword';
 import { useSetRecoilState, useRecoilValue } from 'recoil';
@@ -32,16 +32,10 @@ const KeywordPage = ({ onClose }: { onClose: () => void }) => {
   const setContent = useSetRecoilState(keywordState);
   const content = useRecoilValue(keywordState);
 
-  const [selectedItem, setSelectedItem] = useState({
-    keyword: '',
-    match: '',
-  });
-
   const handleSave = () => {
-    if (!selectedItem.keyword || !selectedItem.match) {
+    if (!content.keyword || !content.match) {
       alert('키워드와 일치율을 모두 선택해주세요');
     } else {
-      setContent(selectedItem);
       console.log(content);
       onClose();
     }
@@ -49,12 +43,12 @@ const KeywordPage = ({ onClose }: { onClose: () => void }) => {
 
   const handleItemClick = (type: string, value: string) => {
     if (type === 'keyword') {
-      setSelectedItem((prev) => ({
+      setContent((prev) => ({
         ...prev,
         [type]: `${initialKeywords.indexOf(value) + 1}`,
       }));
     } else {
-      setSelectedItem((prev) => ({
+      setContent((prev) => ({
         ...prev,
         [type]: `${initialMatch.indexOf(value) + 1}`,
       }));
@@ -86,7 +80,7 @@ const KeywordPage = ({ onClose }: { onClose: () => void }) => {
                 key={keyword}
                 string={keyword}
                 onClick={() => handleItemClick('keyword', keyword)}
-                isActive={selectedItem.keyword === `${index + 1}`}
+                isActive={content.keyword === `${index + 1}`}
               />
             ))}
           </div>
@@ -100,7 +94,7 @@ const KeywordPage = ({ onClose }: { onClose: () => void }) => {
                 key={match}
                 string={match}
                 onClick={() => handleItemClick('match', match)}
-                isActive={selectedItem.match === `${index + 1}`}
+                isActive={content.match === `${index + 1}`}
               />
             ))}
           </div>

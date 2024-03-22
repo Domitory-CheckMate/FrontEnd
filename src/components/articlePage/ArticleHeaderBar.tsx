@@ -32,6 +32,10 @@ const ArticleHeaderBar = ({
   const handleDeleteModal = () => {
     setShowDeleteModal(!showDeleteModal);
   };
+  const deleteDone = () => {
+    setShowDeleteModal(false);
+    navigate(-1);
+  };
   useEffect(() => {
     '다시렌더링';
   });
@@ -119,7 +123,9 @@ const ArticleHeaderBar = ({
         </div>
       </div>
       {showDislikeModal && <DislikeModal onClose={handleDislikeModal} />}
-      {showDeleteModal && <DeleteModal onClose={handleDeleteModal} />}
+      {showDeleteModal && (
+        <DeleteModal onClose={deleteDone} postId={postId as string} />
+      )}
     </div>
   );
 };
