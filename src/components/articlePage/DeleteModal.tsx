@@ -1,12 +1,37 @@
-const DeleteModal = ({ onClose }: { onClose: () => void }) => {
+import React from 'react';
+import { useMutation } from 'react-query';
+import { deletePost } from '../../api/articleApi';
+
+const DeleteModal = ({
+  onClose,
+  postId,
+}: {
+  onClose: () => void;
+  postId: string;
+}) => {
   const handleCloseModal = () => {
     onClose();
   };
 
-  const handleDelete = () => {
-    console.log('handleDelete');
-    onClose();
-  };
+  const { mutate: tryDeletePost } = useMutation(
+    async () => {
+      // 비동기 작업을 수행하는 함수 내에서 API 호출
+      const data = await deletePost(parseFloat(postId));
+      return data; // 반환된 데이터를 반환
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        // 성공 시 실행할 코드
+        console.log('게시물 삭제');
+        onClose();
+      },
+      onError: (error) => {
+        console.error(error);
+        // 에러 시 실행할 코드
+      },
+    },
+  );
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-transparent flex justify-center items-center z-50">
       <div
@@ -26,7 +51,7 @@ const DeleteModal = ({ onClose }: { onClose: () => void }) => {
             취소
           </button>
           <button
-            onClick={handleDelete}
+            onClick={() => tryDeletePost()}
             className="w-full h-[50px] mt-8 bg-primary text-white rounded-[27px]"
           >
             삭제

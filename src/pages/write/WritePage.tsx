@@ -16,6 +16,8 @@ import {
   checklistApiType,
 } from '../../data/type';
 import DormitoryTypeInput from '../../components/writePage/DormitoryInput';
+import { useSetRecoilState } from 'recoil';
+import { keywordState } from '../../data/atoms';
 
 const WritePage = () => {
   const navigate = useNavigate();
@@ -81,6 +83,16 @@ const WritePage = () => {
     console.log(finalArticle);
   }, [finalArticle]);
 
+  const setKeywordState = useSetRecoilState(keywordState);
+
+  useEffect(() => {
+    console.log('키워드 초기화');
+    setKeywordState({
+      keyword: '',
+      match: '',
+    });
+  }, []);
+
   const { mutate: tryPostArticle } = useMutation(
     () => postNewPostApi(finalArticle as articlePostType),
     {
@@ -102,6 +114,21 @@ const WritePage = () => {
     // 여기에 게시글 등록 로직을 작성합니다.
     console.log('게시글 등록');
     console.log(finalArticle);
+
+    // 입력값이 모두 채워져있는지 확인
+    if (
+      title === '' ||
+      intro === '' ||
+      keyword === '' ||
+      match === '' ||
+      callCheck === undefined ||
+      period === '' ||
+      roomType === '' ||
+      dormitoryType === ''
+    ) {
+      alert('모든 항목을 입력해주세요');
+      return;
+    }
     tryPostArticle();
   };
 

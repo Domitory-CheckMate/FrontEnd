@@ -1,3 +1,7 @@
+import React from 'react';
+import { useMutation } from 'react-query';
+import { deletePost } from '../../api/articleApi';
+
 const DeleteArticlesModal = ({
   onClose,
   postIds,
@@ -11,8 +15,31 @@ const DeleteArticlesModal = ({
 
   const handleDelete = () => {
     console.log('handleDelete-posts', postIds);
+    postIds.map((postId) => {
+      tryDeletePost(postId);
+    });
     onClose();
   };
+
+  const { mutate: tryDeletePost } = useMutation(
+    async (postId: number) => {
+      // 비동기 작업을 수행하는 함수 내에서 API 호출
+      const data = await deletePost(parseFloat(postId.toString()));
+      return data; // 반환된 데이터를 반환
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        // 성공 시 실행할 코드
+        console.log('게시물 삭제');
+        onClose();
+      },
+      onError: (error) => {
+        console.error(error);
+        // 에러 시 실행할 코드
+      },
+    },
+  );
   return (
     <div className="fixed top-0 left-0 w-full h-full bg-transparent flex justify-center items-center z-50">
       <div

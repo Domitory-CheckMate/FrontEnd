@@ -122,6 +122,20 @@ const ModifyPage = () => {
     // 여기에 게시글 등록 로직을 작성합니다.
     console.log('게시글 수정');
     console.log(finalArticle);
+    // 입력값이 모두 채워져있는지 확인
+    if (
+      title === '' ||
+      intro === '' ||
+      keyword === '' ||
+      match === '' ||
+      callCheck === undefined ||
+      period === '' ||
+      roomType === '' ||
+      dormitoryType === ''
+    ) {
+      alert('모든 항목을 입력해주세요');
+      return;
+    }
     tryPatchArticle();
   };
 

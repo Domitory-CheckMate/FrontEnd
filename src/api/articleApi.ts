@@ -112,8 +112,17 @@ export const postScrap = async (postId: number) => {
 /**
  *
  * @param postId
- * @returns 스크랩
+ * @returns 스크랩 삭제
  */
 export const deleteScrap = async (postId: number) => {
   return authAxios.delete(`/scrap/${postId}`);
+};
+
+/**
+ *
+ * @param postId
+ * @returns 게시글 삭제
+ */
+export const deletePost = async (postId: number) => {
+  return authAxios.delete(`/post/${postId}`);
 };
