@@ -43,13 +43,13 @@ const OnboardingSlider = () => {
   };
 
   return (
-    <div className="w-full grow flex flex-col justify-start mb-10 gap-y-4">
+    <div className="w-full grow flex flex-col justify-start gap-y-4">
       <div
         className="grow flex gap-x-20 overflow-hidden items-center"
         onClick={handleSlideNext}
       >
         <div
-          className={`flex items-center h-full transition-transform ease-in-out delay-150  ${moveStyle[state]}`}
+          className={`flex h-full items-center transition-transform ease-in-out delay-150  ${moveStyle[state]}`}
           onTouchStart={onTouchStart}
           onTouchEnd={onTouchEnd}
         >
@@ -58,7 +58,7 @@ const OnboardingSlider = () => {
           <OnboardingSlide state={3} />
         </div>
       </div>
-      <div className="flex w-full gap-x-2 items-center justify-center">
+      <div className="flex w-full gap-x-2 items-center justify-center pb-10">
         <div
           className={
             'w-2 h-2 rounded-full ' +

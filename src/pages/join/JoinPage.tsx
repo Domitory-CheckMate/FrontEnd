@@ -99,25 +99,27 @@ const JoinPage = () => {
           onClick={changePersonalInfoProvidedChecked}
         />
       </div>
-      <NextButton
-        text="다음"
-        isCanBeNext={isCanBeNext}
-        onClick={() =>
-          navigate('/join/info', {
-            state: {
-              joinInfo: {
-                email: '',
-                password: '',
-                name: '',
-                school: '가천',
-                major: '',
-                genderType: 'MAN',
-                mbtiType: '',
+      <div className="w-full px-4">
+        <NextButton
+          text="다음"
+          isCanBeNext={isCanBeNext}
+          onClick={() =>
+            navigate('/join/info', {
+              state: {
+                joinInfo: {
+                  email: '',
+                  password: '',
+                  name: '',
+                  school: '가천',
+                  major: '',
+                  genderType: 'MAN',
+                  mbtiType: '',
+                },
               },
-            },
-          })
-        }
-      />
+            })
+          }
+        />
+      </div>
     </div>
   );
 };

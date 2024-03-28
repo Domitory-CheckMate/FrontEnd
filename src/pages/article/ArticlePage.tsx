@@ -167,7 +167,7 @@ const ArticlePage = () => {
   // if (isLoading) return <div>로딩중...</div>;
 
   return (
-    <div className="w-full h-full flex flex-col items-center justify-center">
+    <div className="w-full h-full flex flex-col items-center justify-start scrollbar-hide">
       {article && (
         <>
           <div className="w-full flex flex-col grow">
