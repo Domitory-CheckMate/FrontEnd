@@ -37,3 +37,11 @@ export const setMemberName = (name: string) => {
 export const getMemberName = () => {
   return localStorage.getItem('memberName');
 };
+
+export const setIsDoneChecklist = (isDone: boolean) => {
+  localStorage.setItem('isDoneChecklist', JSON.stringify(isDone));
+};
+
+export const getIsDoneChecklist = () => {
+  return JSON.parse(localStorage.getItem('isDoneChecklist') || 'false');
+};

@@ -1,11 +1,33 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const RoomTypeInput = () => {
+interface RoomTypeInputProps {
+  onRoomTypeChange: (newRoomType: string) => void;
+  defaultRoomType?: string;
+}
+
+const RoomTypeInput: React.FC<RoomTypeInputProps> = ({
+  onRoomTypeChange,
+  defaultRoomType,
+}) => {
   const [roomType, setRoomType] = useState(-1);
 
   const handleRoomTypeChange = (selectedOption: number) => {
-    setRoomType(selectedOption);
+    if (selectedOption == 0) {
+      onRoomTypeChange('1');
+      setRoomType(0);
+    }
+    if (selectedOption == 1) {
+      onRoomTypeChange('2');
+      setRoomType(1);
+    }
   };
+
+  useEffect(() => {
+    if (defaultRoomType != undefined) {
+      if (defaultRoomType == '1') setRoomType(0);
+      if (defaultRoomType == '2') setRoomType(1);
+    }
+  }, []);
 
   return (
     <div className="flex-col ">

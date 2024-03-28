@@ -14,7 +14,12 @@ export type mbtiType = {
   fourth: string;
 };
 
-export type articleStateType = '모집 중' | '모집 완료';
+export type departmentType = {
+  department: string;
+  college: string;
+};
+
+export type articleStateType = '모집중' | '모집완료';
 
 export type userType = {
   id: number;
@@ -23,6 +28,19 @@ export type userType = {
   major: string;
   gender: '남자' | '여자';
   mbti: string;
+};
+
+export type articleListType = {
+  postId: number;
+  title: string;
+  content: string;
+  importantKey: keywordType;
+  similarityKey: string;
+  scrapCount: number;
+  remainDate: number;
+  accuracy: number;
+  gender: '남자' | '여자';
+  postState: articleStateType;
 };
 
 export type articleType = {
@@ -50,6 +68,19 @@ export type articleDetailType = {
   user: userType;
 };
 
+export type getArticleDetailType = {
+  memberId: number;
+  name: string;
+  major: string;
+  profile: string;
+  gender: string;
+  mbti: string;
+  isScrap: boolean;
+  checkList: checklistApiType;
+  roomType: string;
+  dormitoryType: string;
+};
+
 export type checklistType = {
   smoke: '흡연자 선호' | '비흡연자 선호';
   pattern: '아침형 인간' | '저녁형 인간';
@@ -65,6 +96,34 @@ export type checklistType = {
   noise: noiseType[];
 };
 
+export type checklistApiType = {
+  cleanType: string;
+  drinkType: string;
+  homeType: string;
+  lifePatternType: string;
+  callType: string;
+  earPhoneType: string;
+  smokeType: string;
+  sleepGrindingType: string;
+  sleepSnoreType: string;
+  sleepTalkingType: string;
+  sleepTurningType: string;
+};
+
+// export type checklistApiType = {
+//   cleanType: 'RARELY' | 'SOMETIMES' | 'OFTEN' | 'USUALLY' | 'ALWAYS';
+//   drinkType: 'NEVER' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS';
+//   homeType: 'RARELY' | 'SOMETIMES' | 'OFTEN' | 'ALWAYS';
+//   lifePatternType: 'MORNING' | 'EVENING';
+//   callType: 'OUTSIDE' | 'INSIDE' | 'ANYWAY';
+//   earPhoneType: 'NEED' | 'NOT_NEED';
+//   smokeType: 'NONE' | 'SMOKE';
+//   sleepGrindingType: 'TRUE' | 'FALSE';
+//   sleepSnoreType: 'TRUE' | 'FALSE';
+//   sleepTalkingType: 'TRUE' | 'FALSE';
+//   sleepTurningType: 'TRUE' | 'FALSE';
+// };
+
 export type sleepType = '코골이' | '이갈이' | '잠꼬대' | '뒤척임';
 
 export type noiseType =
@@ -73,11 +132,104 @@ export type noiseType =
   | '전화는 짧게'
   | '상관없음';
 
+export type keywordType =
+  | '청결도'
+  | '비흡연'
+  | '흡연'
+  | '아침형'
+  | '저녁형'
+  | '잠버릇'
+  | '애주가';
+
+export const convertKeywordToNum: Record<keywordType, string> = {
+  청결도: '1',
+  비흡연: '2',
+  흡연: '3',
+  아침형: '4',
+  저녁형: '5',
+  잠버릇: '6',
+  애주가: '7',
+};
+
+export const convertNumToKeyword: Record<string, keywordType> = {
+  '1': '청결도',
+  '2': '비흡연',
+  '3': '흡연',
+  '4': '아침형',
+  '5': '저녁형',
+  '6': '잠버릇',
+  '7': '애주가',
+};
+
+export type orderType =
+  | '일치율 높은 순'
+  | '등록일 순'
+  | '모집마감 임박 순'
+  | '저장 많은 순'
+  | '에러 확인용';
+
+export const convertOrderToNum: Record<orderType, string> = {
+  '등록일 순': '1',
+  '일치율 높은 순': '2',
+  '모집마감 임박 순': '3',
+  '저장 많은 순': '4',
+  '에러 확인용': '5',
+};
+
+export const convertNumToOrder: Record<string, orderType> = {
+  '1': '등록일 순',
+  '2': '일치율 높은 순',
+  '3': '모집마감 임박 순',
+  '4': '저장 많은 순',
+};
+
+export type genderType = '남자' | '여자';
+
+export const convertGenderToNum: Record<genderType, string> = {
+  남자: '1',
+  여자: '2',
+};
+
+export type dormitoryType = '1기숙사' | '2기숙사' | '3기숙사';
+
+export const convertDormitoryToNum: Record<dormitoryType, string> = {
+  '1기숙사': '1',
+  '2기숙사': '2',
+  '3기숙사': '3',
+};
+
+export const convertArticleKeywordToNum: Record<string, string> = {
+  청결: '1',
+  비흡연자: '2',
+  흡연자: '3',
+  아침형인간: '4',
+  저녁형인간: '5',
+  잠버릇: '6',
+  애주가: '7',
+};
+
+export const convertMatchToNum: Record<string, string> = {
+  '100%': '1',
+  '90%': '2',
+  '80%': '3',
+  '70%': '4',
+  '60%': '5',
+  '50%': '6',
+  '40%': '7',
+  '30%': '8',
+  '20%': '9',
+  '10%': '10',
+};
+export const convertRoomToNum: Record<string, string> = {
+  '2인실': '1',
+  '4인실': '2',
+};
+
 export type keywordCardType = {
   tag: string;
   title: string;
   text: string;
-  keyword: 'clean' | 'smoke' | 'morning' | 'night';
+  keyword: keywordType;
 };
 
 export type bottomNavType = 'home' | 'chat' | 'user';
@@ -91,3 +243,28 @@ export type joinInfoType = {
   genderType: 'MAN' | 'WOMAN';
   mbtiType: string;
 };
+
+// export type myInfoType = {
+//   profileImg: string;
+//   name: string;
+//   major: string;
+//   gender: 'man' | 'woman';
+//   mbti: string;
+// };
+export interface msgItemType {
+  content: string;
+  isRead: boolean;
+  sendTime: string;
+  userId: number;
+}
+
+export interface articlePostType {
+  title: string;
+  content: string;
+  importantKey: string;
+  similarityKey: string;
+  roomType: string;
+  dormitoryType: string;
+  endDate: string;
+  checkList: checklistApiType;
+}

@@ -515,17 +515,15 @@ const JoinInfoPage = () => {
           </div>
         </div>
       )}
-      <div className="w-full px-4 pt-[100px]">
-        <NextButton
-          text="회원가입"
-          isCanBeNext={isCanBeNext}
-          onClick={() =>
-            navigate('/join/mbti', {
-              state: { joinInfo: joinInfo },
-            })
-          }
-        />
-      </div>
+      <NextButton
+        text="회원가입"
+        isCanBeNext={isCanBeNext}
+        onClick={() =>
+          navigate('/join/mbti', {
+            state: { joinInfo: joinInfo },
+          })
+        }
+      />
       {showFailModal && <AuthCheckModal onClose={handleCloseModal} />}
     </div>
   );

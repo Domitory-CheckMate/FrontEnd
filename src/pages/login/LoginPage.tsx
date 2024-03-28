@@ -9,8 +9,10 @@ import {
   setAccessToken,
   setMemberId,
   setRefreshToken,
-} from '../../api/manageToken';
+} from '../../api/manageLocalStorage';
 import { CustomError } from '../../data/type';
+import { useSetRecoilState } from 'recoil';
+import { memberIdState, myEmailState } from '../../data/atoms';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -19,6 +21,9 @@ const LoginPage = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [errorType, setErrorType] = useState<'ERROR' | 'ID' | 'PW'>('ERROR');
   const [errorMessage, setErrorMessage] = useState<string>('');
+
+  const setRecoilMemberId = useSetRecoilState(memberIdState);
+  const setRecoilMyEmail = useSetRecoilState(myEmailState);
 
   useEffect(() => {
     if (isError) {
@@ -30,6 +35,9 @@ const LoginPage = () => {
     onSuccess: (data) => {
       console.log(data);
       setMemberId(data.data.data.memberId.toString());
+      setRecoilMemberId(data.data.data.memberId);
+      setRecoilMyEmail(data.data.data.email);
+
       setAccessToken(data.data.data.accessToken);
       setRefreshToken(data.data.data.refreshToken);
       navigate('/main');
@@ -104,7 +112,7 @@ const LoginPage = () => {
             className="w-full flex items-center mt-[31px] justify-center cursor-pointer text-sm"
             onClick={() => navigate('/login/pw')}
           >
-            비밀번호 찾기
+            비밀번호를 잊으셨나요?
           </div>
         </div>
       </div>

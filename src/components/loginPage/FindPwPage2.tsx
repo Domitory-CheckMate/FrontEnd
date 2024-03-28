@@ -3,11 +3,16 @@ import { useNavigate } from 'react-router-dom';
 import CompleteButton from './CompleteButton';
 import { ReactComponent as CheckGray } from '../../assets/icon/icon_check_gray.svg';
 import { ReactComponent as CheckPrimary } from '../../assets/icon/icon_check_primary.svg';
+import { useMutation } from 'react-query';
+import { changePwApi } from '../../api/userApi';
+import { CustomError } from '../../data/type';
 
 const FindPwPage2 = ({
   handleNextStep,
+  email,
 }: {
   handleNextStep: (step: number) => void;
+  email: string;
 }) => {
   const navigate = useNavigate();
   const [password, setPassword] = useState('');
@@ -15,6 +20,8 @@ const FindPwPage2 = ({
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const [isPasswordConfirmVisible, setIsPasswordConfirmVisible] =
     useState(false);
+  const [isError, setIsError] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string>('');
 
   const hasUppercase = /[A-Z]/.test(password);
   const hasLowercase = /[a-z]/.test(password);
@@ -32,9 +39,40 @@ const FindPwPage2 = ({
     password === passwordConfirm && passwordConfirm !== '' && password !== '';
 
   const nextStepHandler = () => {
-    navigate('/login');
-    handleNextStep(1);
+    if (!isPasswordValid) {
+      setIsError(true);
+      setErrorMessage('올바른 비밀번호를 입력해주세요.');
+      return;
+    }
+
+    tryChangePw();
   };
+
+  const { mutate: tryChangePw } = useMutation(
+    () => changePwApi(email, password),
+    {
+      onSuccess: (data) => {
+        console.log(data);
+        console.log('비밀번호 변경 성공');
+        navigate('/login');
+        handleNextStep(1);
+      },
+      onError: (error: unknown) => {
+        console.log(error);
+        setIsError(true);
+        const customErr = error as CustomError;
+        if (customErr.response?.status === 404) {
+          setErrorMessage(customErr.response.data.message);
+        } else if (customErr.response?.status === 500) {
+          console.log('서버 내부 오류');
+          setErrorMessage('오류가 발생했습니다. 다시 시도해주세요.');
+        } else {
+          console.log('원인 불명확');
+          setErrorMessage('오류가 발생하였습니다. 다시 시도해주세요.');
+        }
+      },
+    },
+  );
 
   return (
     <>
@@ -62,7 +100,7 @@ const FindPwPage2 = ({
               </div>
             </div>
             <div className="w-full h border border-solid border-dividerGray" />
-            <div className="flex gap-x-2 items-center mt-[10px] text-[#CBCBCC]">
+            <div className="flex gap-x-2 items-center mt-[10px] text-sm text-[#CBCBCC]">
               <div
                 className={
                   'flex gap-x-0.5 items-center' +
@@ -119,13 +157,15 @@ const FindPwPage2 = ({
                     ? 'text-primary'
                     : 'text-grayScale3')
                 }
-                onClick={() => setIsPasswordConfirmVisible(!isPasswordVisible)}
+                onClick={() =>
+                  setIsPasswordConfirmVisible(!isPasswordConfirmVisible)
+                }
               >
                 보기
               </div>
             </div>
             <div className="w-full h border border-solid border-dividerGray" />
-            <div className="flex gap-x-2 items-center mt-[10px]">
+            <div className="flex gap-x-2 items-center text-sm mt-[10px]">
               <div
                 className={
                   'flex gap-x-0.5 items-center' +
@@ -137,6 +177,11 @@ const FindPwPage2 = ({
               </div>
             </div>
           </div>
+          {isError && (
+            <div className="text-xs mt-[8px] text-[#FF6C3E]">
+              {errorMessage}
+            </div>
+          )}
         </div>
       </div>
       <div className="w-full flex items-center">
