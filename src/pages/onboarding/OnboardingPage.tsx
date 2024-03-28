@@ -2,7 +2,7 @@ import React from 'react';
 import CompleteButton from '../../components/loginPage/CompleteButton';
 import { useNavigate } from 'react-router-dom';
 import OnboardingSlider from '../../components/onboardingPage/OnboardingSlider';
-import { setOnboardingFinished } from '../../api/manageToken';
+import { setOnboardingFinished } from '../../api/manageLocalStorage';
 
 const OnboardingPage = () => {
   const navigate = useNavigate();
@@ -13,7 +13,7 @@ const OnboardingPage = () => {
   };
 
   return (
-    <div className="w-full h-full flex flex-col items-center bg-[#FFF6F3]">
+    <div className="w-full h-screen flex flex-col items-center bg-[#FFF6F3] overflow-hidden">
       <OnboardingSlider />
       <div className="w-full px-4 flex flex-col items-center">
         <CompleteButton

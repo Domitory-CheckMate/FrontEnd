@@ -1,12 +1,12 @@
 import React from 'react';
-import { ReactComponent as Onboarding1 } from '../../assets/icon/onboarding_1.svg';
-import { ReactComponent as Onboarding2 } from '../../assets/icon/onboarding_2.svg';
-import { ReactComponent as Onboarding3 } from '../../assets/icon/onboarding_3.svg';
+import { ReactComponent as Onboarding1 } from '../../assets/illust/onboarding1.svg';
+import { ReactComponent as Onboarding2 } from '../../assets/illust/onboarding2.svg';
+import { ReactComponent as Onboarding3 } from '../../assets/illust/onboarding3.svg';
 
 const OnboardingSlide = ({ state }: { state: number }) => {
   return (
-    <div className="w-screen max-w-[450px] h-full flex flex-col justify-between gap-y-16">
-      <div className="w-full text-[22px] p-4 font-medium flex flex-col justify-center items-start leading-8 mt-[132px]">
+    <div className="w-screen max-w-[450px] h-full flex flex-col justify-center pt-8">
+      <div className="w-full text-xl p-4 font-medium flex flex-col justify-center items-start leading-8">
         {state === 1 ? (
           <>
             <div>
@@ -34,10 +34,10 @@ const OnboardingSlide = ({ state }: { state: number }) => {
           </>
         )}
       </div>
-      <div className="relative w-full">
-        {state === 1 && <Onboarding1 width={'100%'} />}
-        {state === 2 && <Onboarding2 width={'100%'} />}
-        {state === 3 && <Onboarding3 width={'100%'} />}
+      <div className="relative w-full xs:h-60 sm:h-80 h-96 mt-10 flex justify-center items-center">
+        {state === 1 && <Onboarding1 className="w-full object-cover" />}
+        {state === 2 && <Onboarding2 className="w-full object-cover" />}
+        {state === 3 && <Onboarding3 className="w-full object-cover" />}
       </div>
     </div>
   );
