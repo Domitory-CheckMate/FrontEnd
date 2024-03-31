@@ -7,7 +7,7 @@ import { ReactComponent as BookmarkFill } from '../../assets/icon/icon_bookmark_
 import ArticleHeaderBar from '../../components/articlePage/ArticleHeaderBar';
 import ChecklistTag from '../../components/articlePage/ChecklistTag';
 import Divider from '../../components/mainPage/Divider';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { useState } from 'react';
 import { getArticleDetailType, articlePostType } from '../../data/type';
@@ -24,6 +24,7 @@ import { memberIdState } from '../../data/atoms';
 import { useMutation } from 'react-query';
 // import { CustomError } from '../../data/type';
 const ArticlePage = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   console.log('게시글 아이디 : ', id);
 
@@ -37,6 +38,9 @@ const ArticlePage = () => {
 
   const handleChat = () => {
     console.log('채팅하기');
+    if (!article) return;
+
+    navigate(`/chat/${article.memberId}`);
   };
 
   const { data, error, refetch } = useQuery('postData', () =>
