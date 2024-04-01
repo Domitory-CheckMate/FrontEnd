@@ -115,7 +115,7 @@ const FindPwPage1 = ({
           <div className="w-full flex flex-col">
             <div className="flex w-full items-center">
               <input
-                type="tel"
+                type="email"
                 placeholder="아이디 (이메일)"
                 className="grow py-[23px] outline-none bg-transparent placeholder:text-grayScale3 disabled:text-grayScale3"
                 value={id}
@@ -124,7 +124,7 @@ const FindPwPage1 = ({
               />
               <button
                 className={
-                  'flex items-center justify-center text-sm px-[14px] h-9 leading-normal rounded-full text-white disabled:bg-grayScale3 ' +
+                  'flex items-center justify-center text-sm px-[14px] h-9 leading-normal rounded-full text-white disabled:bg-grayScale3 break-keep whitespace-pre-wrap ' +
                   ((id != '' && !sendRequest) ||
                   (sendRequest && sendRequestAgain)
                     ? 'bg-primary'

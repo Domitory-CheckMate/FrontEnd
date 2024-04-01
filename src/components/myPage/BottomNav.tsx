@@ -20,7 +20,7 @@ const BottomNav = ({
   const navigate = useNavigate();
 
   return (
-    <div className="w-full h-[99px] flex border-t border-[#EEE] pb-10 pt-[14px]">
+    <div className="fixed bottom-0 bg-white w-full h-[99px] flex justify-center items-start border-t border-[#EEE] pb-10 pt-[14px]">
       <div className="grow 1 flex justify-center items-center">
         <div
           className="w-[21px] h-[21px] cursor-pointer"

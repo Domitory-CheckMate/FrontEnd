@@ -42,7 +42,7 @@ const KeywordMatchingPage = () => {
         if (keywordIdx < selectedIndex) {
           setKeywordIdx(selectedIndex);
           scrollContainerRef.current.scrollTo({
-            left: selectedIndex * 100,
+            left: selectedIndex * 80,
             behavior: 'smooth',
           });
         } else {

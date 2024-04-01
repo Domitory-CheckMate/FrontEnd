@@ -32,7 +32,7 @@ const ChatPage = ({
           {isEdit ? '삭제' : '편집'}
         </div> */}
       </div>
-      <div className="w-full grow">
+      <div className="w-full grow mb-[100px]">
         <div className="h-full w-full px-4 flex flex-col">
           {chatRoomList.length < 1 ? (
             <div className="grow w-full flex justify-center items-center">
@@ -71,7 +71,6 @@ const ChatPage = ({
           )}
         </div>
       </div>
-
       <BottomNav state="chat" notReadCnt={notReadCnt} />
     </div>
   );

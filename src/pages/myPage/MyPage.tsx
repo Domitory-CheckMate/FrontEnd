@@ -356,7 +356,7 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
 
   return (
     <div className="w-full h-full flex flex-col items-center">
-      <div className="w-full grow flex-col items-center overflow-y-auto scrollbar-hide">
+      <div className="w-full grow flex-col items-center overflow-y-auto scrollbar-hide mb-[100px]">
         <div className="px-4 mt-[56px] w-full flex justify-end">
           <div className="w-[19px] h-[19px] focus-cursor">
             <Settings onClick={() => navigate('/settings')} />
@@ -455,7 +455,6 @@ const MyPage = ({ notReadCnt }: { notReadCnt: number }) => {
           <div></div>
         </div>
       </div>
-
       <BottomNav state="user" notReadCnt={notReadCnt} />
       <ChangeProfileModal open={showModal} onClose={handleCloseModal} />
     </div>

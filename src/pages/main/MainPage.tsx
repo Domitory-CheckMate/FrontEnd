@@ -49,7 +49,7 @@ const MainPage = ({ notReadCnt }: { notReadCnt: number }) => {
 
   return (
     <div className="w-full h-full flex flex-col items-center justify-start">
-      <div className="w-full grow flex-col items-center overflow-y-auto scrollbar-hide">
+      <div className="w-full grow flex-col items-center overflow-y-auto scrollbar-hide mb-[100px]">
         <div className="w-full h-[90px] flex justify-between items-end pb-[12px] px-4">
           <Logo />
           <div className="flex gap-x-[19px] items-center">
