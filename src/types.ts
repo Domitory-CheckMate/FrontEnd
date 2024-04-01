@@ -1,6 +1,5 @@
 // types.ts 파일에 ChatItem 타입 정의
 export interface ChatItem {
-
   img: string;
   name: string;
   info: string;

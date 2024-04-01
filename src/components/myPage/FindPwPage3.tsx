@@ -78,7 +78,7 @@ const FindPwPage3 = () => {
           <div className="w-full flex flex-col items-start mb-[41px]">
             <div>새 비밀번호</div>
 
-            <div className="flex w-full items-center gap-x-10">
+            <div className="flex w-full items-center gap-x-5 justify-between">
               <input
                 type={isPasswordVisible ? 'text' : 'password'}
                 placeholder="8~20자 대소문자 영문, 숫자, 특수문자"
@@ -141,7 +141,7 @@ const FindPwPage3 = () => {
           <div className="w-full flex flex-col items-start">
             <div>새 비밀번호 확인</div>
 
-            <div className="flex w-full items-center gap-x-10">
+            <div className="flex w-full items-center gap-x-5 justify-between">
               <input
                 type={isPasswordConfirmVisible ? 'text' : 'password'}
                 placeholder="비밀번호 확인"
