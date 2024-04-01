@@ -126,10 +126,10 @@ const ArticlePage = () => {
       console.log(myMemberId);
       setArticle(data.data.data);
       setOriginalArticle({
-        title: topArticle.title,
-        content: topArticle.content,
-        importantKey: topArticle.importantKey,
-        similarityKey: topArticle.similarityKey,
+        title: data.data.data.title,
+        content: data.data.data.content,
+        importantKey: data.data.data.importantKey,
+        similarityKey: data.data.data.similarityKey,
         roomType: data.data.data.roomType,
         dormitoryType: data.data.data.dormitoryType,
         endDate: calculateRemainingDaysForArticle(topArticle.remainDate),
@@ -186,7 +186,7 @@ const ArticlePage = () => {
                     : topArticle.postState}
                 </div>
                 <div className="text-lg font-semibold mt-2.5">
-                  {topArticle.title}
+                  {article.title}
                 </div>
                 <div className="w-full flex flex-col items-start p-4 gap-y-2.5 mt-[27px] rounded-xl bg-white">
                   <div className="flex items-center gap-x-2.5 text-xs">
@@ -218,7 +218,7 @@ const ArticlePage = () => {
               <div className="w-full px-4 pt-[30px] pb-[22px] flex flex-col items-start gap-y-[9px]">
                 <div className="text-sm font-semibold">한줄소개</div>
                 <div className="w-full whitespace-pre-line text-[12px] leading-[21px] text-textGray4">
-                  {topArticle.content}
+                  {article.content}
                 </div>
               </div>
               <Divider />
@@ -226,11 +226,11 @@ const ArticlePage = () => {
                 <div className="text-sm font-semibold">키워드</div>
                 <div className="w-full flex flex-wrap justify-start items-center gap-[7px] ">
                   <div className="px-4 py-1.5 flex items-center justify-center rounded-full bg-primaryBg text-primary text-xs">
-                    {topArticle.importantKey}
+                    {article.importantKeyType}
                   </div>
 
                   <div className="px-4 py-1.5 flex items-center justify-center rounded-full bg-primaryBg text-primary text-xs">
-                    {topArticle.similarityKey}
+                    {article.similarityKeyType}
                   </div>
                 </div>
               </div>

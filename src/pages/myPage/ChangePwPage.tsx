@@ -9,7 +9,7 @@ const ChangePwPage = () => {
 
   return (
     <div className="w-full h-full flex flex-col items-center relative">
-      <div className="flex justify-between items-center w-full px-4 mt-[65px] relative">
+      <div className="flex justify-between items-center w-full h-[24px] px-4 mt-[65px] relative">
         <div className="w-1/3 flex items-center gap-[16px]">
           <Prev className="cursor-pointer" onClick={() => navigate(-1)} />{' '}
           <Home className="cursor-pointer" onClick={() => navigate('/main')} />{' '}

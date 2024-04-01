@@ -70,11 +70,15 @@ export type articleDetailType = {
 
 export type getArticleDetailType = {
   memberId: number;
+  title: string;
+  content: string;
   name: string;
   major: string;
   profile: string;
   gender: string;
   mbti: string;
+  importantKeyType: string;
+  similarityKeyType: string;
   isScrap: boolean;
   checkList: checklistApiType;
   roomType: string;
