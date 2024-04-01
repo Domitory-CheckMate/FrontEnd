@@ -245,7 +245,7 @@ const ChangeProfileModal = ({
         }`}
       >
         <div
-          className={` w-full h-[352px] font-semibold text-lg text-center flex-col justify-center bg-white rounded-[28px] pb-[93px] px-[16px] pt-[13px] text-black z-50 transition-all duration-500 ease-in-out bottom-${modalBottom}`}
+          className={` w-full h-[296px] font-semibold text-lg text-center flex-col justify-center bg-white rounded-[28px] pb-[93px] px-[16px] pt-[13px] text-black z-50 transition-all duration-500 ease-in-out bottom-${modalBottom}`}
         >
           <div className="w-full flex justify-center items-center">
             <ModalLine />
