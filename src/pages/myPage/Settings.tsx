@@ -99,7 +99,7 @@ const SettingsPage = () => {
           isLogOutOpen ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
-        <div className="w-full flex flex-col justify-center items-center py-4 relative border-b border-solid border-grayScale1">
+        <div className="w-full flex flex-col justify-center items-center pt-4 relative border-b border-solid border-grayScale1">
           <div className="text-black text-[20px] font-semibold] mt-[30px]">
             로그아웃하시겠습니까?
           </div>
@@ -121,7 +121,6 @@ const SettingsPage = () => {
             </button>
           </div>
         </div>
-        <div className="w-full flex flex-col gap-y-5 pt-4 pb-6 px-4 border-b border-solid border-grayScale1"></div>
       </div>
       <div
         className={`w-full max-w-[450px] h-full bg-black opacity-50 fixed left-0 right-0 bottom-0 mx-auto z-5 ${
@@ -134,7 +133,7 @@ const SettingsPage = () => {
           isWithdrawOpen ? 'translate-y-0' : 'translate-y-full'
         }`}
       >
-        <div className="w-full flex flex-col justify-center items-center py-4 relative border-b border-solid border-grayScale1">
+        <div className="w-full flex flex-col justify-center items-center pt-4 relative border-b border-solid border-grayScale1">
           <div className="text-black text-[20px] font-semibold] mt-[30px]">
             정말 탈퇴하시겠습니까?
           </div>
@@ -144,7 +143,7 @@ const SettingsPage = () => {
           <div className="flex mt-[43px] justify-evenly w-full">
             <button
               className="w-[174px] h-[57px] rounded-[27px] bg-[#E5E5E5] text-black text-[18px]"
-              onClick={() => setIsLogOutOpen(false)}
+              onClick={() => setIsWithdrawOpen(false)}
             >
               아니요
             </button>
@@ -156,7 +155,6 @@ const SettingsPage = () => {
             </button>
           </div>
         </div>
-        <div className="w-full flex flex-col gap-y-5 pt-4 pb-6 px-4 border-b border-solid border-grayScale1"></div>
       </div>
     </div>
   );

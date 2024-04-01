@@ -42,6 +42,7 @@ const PeriodInput: React.FC<PeriodInputProps> = ({
     const date = value.getDate().toString().padStart(2, '0');
 
     onPeriodChange(`${year}-${month}-${date}`);
+    setIsEdit(false);
   };
 
   return (
