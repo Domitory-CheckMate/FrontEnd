@@ -19,9 +19,11 @@ import {
 } from '../../api/articleApi';
 
 import { useLocation } from 'react-router-dom';
-import { useRecoilValue } from 'recoil';
-import { memberIdState } from '../../data/atoms';
+// import { useRecoilValue } from 'recoil';
+// import { memberIdState } from '../../data/atoms';
 import { useMutation } from 'react-query';
+import { getMemberId } from '../../api/manageLocalStorage';
+
 // import { CustomError } from '../../data/type';
 const ArticlePage = () => {
   const { id } = useParams();
@@ -30,7 +32,8 @@ const ArticlePage = () => {
   const location = useLocation();
   const topArticle = location.state?.article;
   const [article, setArticle] = useState<getArticleDetailType>();
-  const myMemberId = useRecoilValue(memberIdState);
+  const myMemberId = getMemberId();
+
   const [state, setState] = useState<string>();
 
   const [originalArticle, setOriginalArticle] = useState<articlePostType>();
@@ -276,7 +279,7 @@ const ArticlePage = () => {
           </div>
           <div className="w-full h-[97px] shrink-0 flex items-top px-4 justify-center pt-[10px] border-t border-solid border-buttonContainerBorder">
             <div className="w-full h-[41px] justify-center flex items-center gap-x-[22px]">
-              {article.memberId == myMemberId && (
+              {article.memberId.toString() == myMemberId && (
                 <div
                   className="flex grow  py-[13px] items-center justify-center bg-primary rounded-full text-white text-sm font-semibold cursor-pointer"
                   onClick={handleChangeArticleState}
@@ -284,7 +287,7 @@ const ArticlePage = () => {
                   {state === 'RECRUITING' ? '모집완료' : '모집중'}
                 </div>
               )}
-              {article.memberId != myMemberId && (
+              {article.memberId.toString() != myMemberId && (
                 <>
                   {article.isScrap == false ? (
                     <Bookmark

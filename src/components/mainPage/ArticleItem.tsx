@@ -63,7 +63,9 @@ const ArticleItem = ({
           ) : (
             <>
               <div className="flex items-center gap-x-1 text-white mb-[5px]">
-                {article.postState != '모집완료' && (
+                {!(
+                  article.postState === '모집완료' || article.remainDate < 0
+                ) && (
                   <div className="flex items-center justify-center px-2 py-1 bg-primaryLight rounded-full">{`D-${article.remainDate}`}</div>
                 )}
                 <div

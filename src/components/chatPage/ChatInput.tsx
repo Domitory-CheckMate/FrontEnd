@@ -32,7 +32,7 @@ const ChatInput = ({ sendHandler }: { sendHandler: (msg: string) => void }) => {
             }
           }}
         >
-          보내기
+          {value.length > 0 && '보내기'}
         </div>
       </div>
     </div>

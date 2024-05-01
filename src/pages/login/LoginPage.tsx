@@ -95,11 +95,10 @@ const LoginPage = () => {
               value={pw}
               onChange={(e) => setPw(e.target.value)}
             />
-            {isError && errorType !== 'ID' && (
-              <div className="text-xs mt-[8px] text-primary">
-                {errorMessage}
-              </div>
-            )}
+
+            <div className="text-xs h-[12px] mt-[8px] text-primary">
+              {isError && errorType !== 'ID' ? errorMessage : ' '}
+            </div>
           </div>
         </div>
         <div className="w-full px-4">
@@ -112,7 +111,7 @@ const LoginPage = () => {
             className="w-full flex items-center mt-[31px] justify-center cursor-pointer text-sm"
             onClick={() => navigate('/login/pw')}
           >
-            비밀번호를 잊으셨나요?
+            비밀번호 찾기
           </div>
         </div>
       </div>

@@ -24,6 +24,8 @@ const ChatItem = ({
     const end = new Date(date);
     const timeDiff = end.getTime() - today.getTime();
     const dayDiff = Math.ceil(timeDiff / (1000 * 3600 * 24));
+    if (dayDiff === 0) return 'D-Day';
+    if (dayDiff < 0) return `기간만료`;
     return `D-${dayDiff}`;
   };
   return (

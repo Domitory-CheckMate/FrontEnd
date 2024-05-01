@@ -307,7 +307,7 @@ const JoinInfoPage = () => {
             value={name}
           />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col overflow-auto">
           <div className="mt-[0px] text-sm font-semibold">
             아이디(학교 이메일)
           </div>
